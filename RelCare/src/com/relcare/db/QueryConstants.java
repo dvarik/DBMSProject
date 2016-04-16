@@ -48,4 +48,6 @@ public class QueryConstants {
 
 	public static final String LOAD_USER = "select * from userfile where email = ?";
 
+	public static final String REGISTER_USER = "insert into userfile(useid,fname,lname,email,password,role) values(16002,?,?,?,?,?)";
+
 }

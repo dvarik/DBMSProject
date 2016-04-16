@@ -10,6 +10,9 @@
 <c:if test="${param.error=='true'}">
 	<div style="font-color:red">Username and/or password is incorrect! Please try again.</div>
 </c:if>
+<c:if test="${param.registered=='true'}">
+	<div style="font-color:red">You have been registered. Please log in.</div>
+</c:if>
 <div align="center">
 <form style="align:center" method="post" action="<%=request.getContextPath()%>/j_spring_security_check">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
@@ -24,6 +27,11 @@
 		</tr>
 		</table>
 	<input type="submit" value="Login" name="Login-Submit" class="Login-Input" />
+	
+	 <div class="form-actions">
+            <a href="<%=request.getContextPath()%>/reg" class="btn btn-link">Register</a>
+     </div>
+        
 </form>
 </div>
 </body>

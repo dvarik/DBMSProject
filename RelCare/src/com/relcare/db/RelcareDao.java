@@ -2,6 +2,7 @@ package com.relcare.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
 
@@ -141,5 +142,17 @@ public class RelcareDao {
 				return r;
 			}
 		}, userName);
+	}
+
+	public boolean registerUser(String fname, String lname, String email, String pword, String role) {
+		
+		// define query arguments
+		Object[] params = new Object[] { fname, lname, email, pword, role };
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+
+		return (row == 1);
 	}
 }

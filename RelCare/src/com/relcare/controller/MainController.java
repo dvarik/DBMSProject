@@ -24,7 +24,7 @@ import com.relcare.object.InsuranceStats;
 public class MainController {
 
 	@Autowired
-	public static RelcareDao dao;
+	public RelcareDao dao;
 
 	/**
 	 * Test method
@@ -33,9 +33,24 @@ public class MainController {
 	 */
 	@RequestMapping("/test")
 	public String test() {
-		return "home";
+		return "home.html";
 	}
 
+	@RequestMapping("/registeruser")
+	public String register(@RequestParam("fname") String fname, @RequestParam("lname") String lname,
+			@RequestParam("email") String email, @RequestParam("pword") String pword) {
+		
+		boolean res = dao.registerUser(fname,lname,email,pword,"patient");
+
+		return "login.jsp?registered=" + (res ? "true" : "false");
+	}
+	
+	@RequestMapping("/reg")
+	public String registerPage() {
+		System.out.println("page");
+		return "register.jsp";
+	}
+	
 	/*
 	 * @RequestMapping(value = "/login", method = RequestMethod.GET) public
 	 * String loginPage() { System.out.println("here"); return "login"; }
