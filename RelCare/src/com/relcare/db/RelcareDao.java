@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.relcare.authenticator.RelUserDetails;
+import com.relcare.object.Appointment;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.IllnessStats;
@@ -141,5 +142,22 @@ public class RelcareDao {
 				return r;
 			}
 		}, userName);
+	}
+	
+	public List<Appointment> getAppointmentForDoctor(int docId) {
+		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						Appointment row = new Appointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
+								rs.getString("fname"), rs.getString("lname"),
+								rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
+
+						return row;
+					}
+				},
+				docId);
+		return apt;
 	}
 }
