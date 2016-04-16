@@ -155,4 +155,21 @@ public class RelcareDao {
 
 		return (row == 1);
 	}
+	
+	public List<Appointment> getAppointmentForDoctor(int docId) {
+		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						Appointment row = new Appointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
+								rs.getString("fname"), rs.getString("lname"),
+								rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
+
+						return row;
+					}
+				},
+				docId);
+		return apt;
+	}
 }
