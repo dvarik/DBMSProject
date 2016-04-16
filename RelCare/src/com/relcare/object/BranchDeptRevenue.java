@@ -1,6 +1,6 @@
 package com.relcare.object;
 
-public class TotalCostPerBranchDept {
+public class BranchDeptRevenue {
 
 	int branchid;
 	
@@ -12,7 +12,7 @@ public class TotalCostPerBranchDept {
 	
 	int totalCost;
 	
-  	public TotalCostPerBranchDept(int branchid, String branchCity, int deptid, String deptName, int totalCost) {
+  	public BranchDeptRevenue(int branchid, String branchCity, int deptid, String deptName, int totalCost) {
 		super();
 		this.branchid = branchid;
 		this.branchCity = branchCity;
