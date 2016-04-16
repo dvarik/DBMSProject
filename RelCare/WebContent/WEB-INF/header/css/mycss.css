@@ -1,0 +1,82 @@
+.loginBox {
+  max-width:  90%;
+  width: 500px
+}
+
+.profileBox {
+  max-width:  90%;
+  width: 500px
+}
+
+.stretch input  {
+  width: 60%
+}
+
+.table-hover {
+  > tbody > tr:hover {
+    > td,
+    > th {
+      background-color: @table-bg-hover;
+    }
+  }
+}
+
+.whiteframedemoBasicClassUsage md-whiteframe {
+      margin: 20px;
+      height: 90px;
+      background-color: #fcddde; }
+	  
+	  
+.padding60
+{
+	padding: 60px;
+	
+}
+.font_blue
+{
+	color : #6699FF;
+	font-family: "Lucida Console";
+}
+.container-label
+{
+	display: inline;
+	width: 40px;
+}
+.large-Modal .modal-dialog{
+    width:600px;
+    height: 60%;
+    
+}
+.padding-horizontal
+{
+	padding-left:30px;
+	padding-right:30px;
+}
+#login {
+    margin-right: 50px;
+}
+
+
+.wrapper {	
+	margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+#greybox {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:220px;
+    width:500px;
+    float:left;
+    padding-top:5px;
+	padding-left:20px;
+	margin-bottom: 30px;
+}
+.padding50
+{
+	padding-top: 60px;
+	padding-bottom: 60px;
+	padding-right: 60px;
+	
+	
+}
