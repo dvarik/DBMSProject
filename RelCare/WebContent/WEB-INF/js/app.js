@@ -1,70 +1,66 @@
-var routerApp = angular.module('routerApp', ['ui.router', "ngMaterial", "ngMessages"]);
+var hospApp = angular.module('hospApp', [ "ngMaterial",
+		"ngMessages", 'ngRoute' ]);
 
-routerApp.config(function($stateProvider, $urlRouterProvider) {
-    
-    $urlRouterProvider.otherwise('/home');
-    
-    $stateProvider
-        
-        // HOME STATES AND NESTED VIEWS ========================================
-        .state('home', {
-            url: '/home',
-            views: {
-                'main@': {
-                    templateUrl: 'home.html'
-                }
-            }
-        })
-		.state('profile', {
-            url: '/profile',
-            views: {
-                'main@': {
-                    templateUrl: 'profile.html',
-					controller: 'profileController'
-                }
-            }
-        })
-		.state('payment', {
-            url: '/payment',
-            views: {
-                'main@': {
-                    templateUrl: 'payment.html'
-                }
-            }
-        })
-		.state('appointment', {
-            url: '/appointment',
-            views: {
-                'main@': {
-                    templateUrl: 'appointment.html',
-					controller: 'appointmentController'
-                }
-            }
-        })
+hospApp.config(function($routeProvider, $httpProvider) {
+
+	$routeProvider.when('/', {
+		templateUrl : 'home.html',
+		controller : 'home'
+	}).when('/login', {
+		templateUrl : 'login.html',
+		controller : 'loginController'
+	}).when('/profile', {
+		templateUrl : 'profile.html',
+		controller : 'profileController'
+	}).when('/payment', {
+		templateUrl : 'payment.html',
+		controller : 'paymentController'
+	}).when('/appointment', {
+		templateUrl : 'appointment.html',
+		controller : 'appointmentController'
+	}).otherwise('/');
 
 });
- 
-  
-routerApp.controller('profileController', function($scope) {
-    
-    $scope.user = {
-      name: 'John Doe',
-    };
-	$scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-    'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-    'WY').split(' ').map(function(state) {
-        return {abbrev: state};
-      });
-    
-});
 
-routerApp.controller('appointmentController', function($scope) {
-  $scope.status = '  ';
-  //$scope.customFullscreen = $mdMedia('md') || $mdMedia('gt-sm');
-  $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-    'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-    'WY').split(' ').map(function(state) {
-        return {abbrev: state};
-      });
-});
+hospApp.controller('navigation',
 
+function($rootScope, $scope, $http, $location) {
+
+	var authenticate = function(credentials, callback) {
+
+		var headers = credentials ? {
+			authorization : "Basic "
+					+ btoa(credentials.username + ":" + credentials.password)
+		} : {};
+
+		$http.get('user', {
+			headers : headers
+		}).success(function(data) {
+			if (data.name) {
+				$rootScope.authenticated = true;
+			} else {
+				$rootScope.authenticated = false;
+			}
+			callback && callback();
+		}).error(function() {
+			$rootScope.authenticated = false;
+			callback && callback();
+		});
+
+	}
+
+	authenticate();
+	$scope.credentials = {};
+	$scope.login = function() {
+
+		authenticate($scope.credentials, function() {
+			if ($rootScope.authenticated) {
+				$location.path("/");
+				$scope.error = false;
+			} else {
+				$location.path("/login");
+				$scope.error = true;
+			}
+		});
+	}
+});
