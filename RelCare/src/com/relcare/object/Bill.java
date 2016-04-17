@@ -5,18 +5,16 @@ import java.sql.Date;
 public class Bill {
 
 	private Date d;
-	private String docFname;
-	private String docLname;
+	private String docName;
 	private int fees;
 	private float insuranceCoverage;
 	private float amount;
 	private String status;
 	
-	public Bill(String docFname, String docLname,Date d,int fees, float amount, int status) {
+	public Bill(String docName,Date d,int fees, float amount, int status) {
 		super();
 		this.d = d;
-		this.docFname = docFname;
-		this.docLname = docLname;
+		this.docName = docName;
 		this.fees = fees;
 		this.insuranceCoverage =  fees - amount;
 		this.amount = amount;
@@ -33,18 +31,11 @@ public class Bill {
 		this.d = d;
 	}
 
-	public String getDocFame() {
-		return docFname;
+	public String getDocName() {
+		return docName;
 	}
-	public void setDocFame(String docFname) {
-		this.docFname = docFname;
-	}
-
-	public String getDocLname() {
-		return docLname;
-	}
-	public void setDocLname(String docLname) {
-		this.docLname = docLname;
+	public void setDocName(String docName) {
+		this.docName = docName;
 	}
 
 	public int getFees() {
