@@ -67,7 +67,6 @@ public class Appointment {
 	}
 
 	public String getName() {
-	public String getPatientFirstName() {
 		return name;
 	}
 	public void setName(String name) {
@@ -105,8 +104,6 @@ public class Appointment {
 				+ id + ", PatientFirstName=" + name + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", appointmentDate="
 				+ appointmentDate + "]";
-		return "Appointment [appointmentId=" + appointmentId + ", patientId=" + id + ", PatientName=" + name
-				+ ", startTime=" + startTime + ", endTime=" + endTime + ", appointmentDate=" + appointmentDate + "]";
 	}
 
 	public Status getStat() {
