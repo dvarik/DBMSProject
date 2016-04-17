@@ -206,7 +206,7 @@ public class RelcareDao {
 				new RowMapper<Bill>() {
 					@Override
 					public Bill mapRow(ResultSet rs, int arg1) throws SQLException {
-						Bill row = new Bill(rs.getString("fname"),rs.getString("lname"),rs.getDate("appointmentdate"),
+						Bill row = new Bill(rs.getString("docName"),rs.getDate("appointmentdate"),
 								rs.getInt("fees"),rs.getFloat("cost"),rs.getInt("status"));
 						return row;
 					}

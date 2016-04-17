@@ -60,15 +60,15 @@ public class QueryConstants {
 	
 	public static final String GET_INSURANCE = "select insurancetype from patient where patientid = ?";
 
-	final static String PAYMENT_HISTORY = "select u.fname,u.lname,a.appointmentdate,r.fees,b.cost,b.status "
-			+ "from userfile u join doctor d on u.useid = d.doctorid "
-			+ "join appointment a on a.doctorid = d.doctorid "
-			+ "join rank r on r.rankid = d.rankid "
-			+ "join bill b on a.appointmentid = b.appointmentid "
-			+ "where p.patientid = ?";
+	final static String PAYMENT_HISTORY = "select u.fname||' ' ||u.lname as docName,a.appointmentdate,r.fees,b.cost,b.status "
+			+ "from appointment a join bill b on a.appointmentid = b.appointmentid "
+			+ "join doctors d on d.doctorid = a.doctorid "
+			+ "join rank r on d.rankid = r.rankid "
+			+ "join userfile u on d.doctorid = u.useid "
+			+ "where a.patientid = ?";
 	
 	final static String APPOINTMENT_PATIENTS = "select u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
-			+ "from doctor d join appointment a on a.doctorid = d.doctorid "
+			+ "from doctors d join appointment a on a.doctorid = d.doctorid "
 			+ "join userfile u on u.useid = d.doctorid "
 			+ "join timeslot t on a.timeslotid = t.timeslotid "
 			+ "where p.patientid = ?";
