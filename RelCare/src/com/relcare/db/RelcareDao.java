@@ -174,19 +174,19 @@ public class RelcareDao {
 		return apt;
 	}
 	
-	public List<PatientProfile> getPatientProfile(int pId) {
-		List<PatientProfile> profile = jdbcTemplate.query(QueryConstants.PATIENT_PROFILE,
+	public PatientProfile getPatientProfile(int pId) {
+		PatientProfile profile = jdbcTemplate.queryForObject(QueryConstants.PATIENT_PROFILE,
 				new RowMapper<PatientProfile>() {
 					@Override
 					public PatientProfile mapRow(ResultSet rs, int arg1) throws SQLException {
 
-						PatientProfile row = new PatientProfile(rs.getString("fname"),rs.getString("lname"),rs.getDate("dateofbirth"),
-								rs.getString("gender"),rs.getString("city"),rs.getString("state"),rs.getString("zip"),rs.getString("insurance"));
+						PatientProfile row = new PatientProfile(rs.getString("fname"), rs.getString("lname"),
+								rs.getDate("dateofbirth"), rs.getString("gender"), rs.getString("city"),
+								rs.getString("state"), rs.getString("zip"), rs.getString("insurancetype"));
 
 						return row;
 					}
-				},
-				pId);
+				}, pId);
 		return profile;
 	}
 }

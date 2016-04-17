@@ -56,7 +56,7 @@ public class QueryConstants {
 			+ "where a.doctorid = ?";
 	
 	final static String PATIENT_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,p.insurancetype "
-			+ "from usefile u join patient p on u.useid = p.patientid "
+			+ "from userfile u join patient p on u.useid = p.patientid "
 			+ "where p.patientid = ?";
 	
 }
