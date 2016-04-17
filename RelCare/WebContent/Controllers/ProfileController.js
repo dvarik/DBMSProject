@@ -1,11 +1,13 @@
-angular.module('hospApp').controller('ProfileController', ['$rootScope', '$scope', '$q', '$http', function($rootScope, $scope, $q, $http)
+angular.module('hospApp').controller('ProfileController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
-	var obj = services.getProfile();
-	$scope.name = obj.fname+obj.lname;
-	$scope.city = obj.city;
-	$scope.state = obj.state;
-	$scope.zipcode = obj.zip;
-	$scope.gender = obj.gender;
-	$scope.dob = obj.dob;
-	$scope.insurance = obj.insurance;
+
+	getDataSvc.getProfile().then(function(res) {
+        if (res != null) {
+           $scope.user = res;
+        } else {
+            console.log("Error");
+        }
+    });
+
+
 }]);

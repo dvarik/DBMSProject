@@ -20,6 +20,7 @@ import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.PatientProfile;
 
 @Controller
 public class MainController {
@@ -60,11 +61,21 @@ public class MainController {
 	 * public String home() { return "home"; }
 	 */
 
-	@RequestMapping("/getUser")
-	public String getUser() {
+	@RequestMapping("/getUserId")
+	public String getUserId() {
 		RelUserDetails userDetails = (RelUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		return String.valueOf(userDetails.getUserid());
+	}
+	
+	@RequestMapping(value="/getProfile", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getUserProfile() {
+		int userid = Integer.parseInt(getUserId());
+		PatientProfile profile = dao.getPatientProfile(userid);
+		Type type = new TypeToken<PatientProfile>() {
+		}.getType();
+		return new Gson().toJson(profile, type);
 	}
 
 	@RequestMapping(value = "/getAppointments", method = RequestMethod.GET, produces = "application/json")
