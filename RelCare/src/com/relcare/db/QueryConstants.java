@@ -48,11 +48,10 @@ public class QueryConstants {
 
 	public static final String LOAD_USER = "select * from userfile where email = ?";
 	
-	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname,u.lname,a.appointmentdate,t.starttime,e.endtime "
+	public static final String REGISTER_USER = "insert into userfile(useid,fname,lname,email,password,role) values(16002,?,?,?,?,?)";
+	
+	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
 			+ "where a.doctorid = ?";
-	
-	public static final String REGISTER_USER = "insert into userfile(useid,fname,lname,email,password,role) values(16002,?,?,?,?,?)";
-
 }
