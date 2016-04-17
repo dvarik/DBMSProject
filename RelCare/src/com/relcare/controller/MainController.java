@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.relcare.authenticator.RelUserDetails;
 import com.relcare.db.RelcareDao;
+import com.relcare.object.Appointment;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.IllnessStats;
@@ -24,7 +25,7 @@ import com.relcare.object.InsuranceStats;
 public class MainController {
 
 	@Autowired
-	public static RelcareDao dao;
+	public RelcareDao dao;
 
 	/**
 	 * Test method
@@ -33,9 +34,24 @@ public class MainController {
 	 */
 	@RequestMapping("/test")
 	public String test() {
-		return "home";
+		return "home.html";
 	}
 
+	@RequestMapping("/registeruser")
+	public String register(@RequestParam("fname") String fname, @RequestParam("lname") String lname,
+			@RequestParam("email") String email, @RequestParam("pword") String pword) {
+		
+		boolean res = dao.registerUser(fname,lname,email,pword,"patient");
+
+		return "login.jsp?registered=" + (res ? "true" : "false");
+	}
+	
+	@RequestMapping("/reg")
+	public String registerPage() {
+		System.out.println("page");
+		return "register.jsp";
+	}
+	
 	/*
 	 * @RequestMapping(value = "/login", method = RequestMethod.GET) public
 	 * String loginPage() { System.out.println("here"); return "login"; }
@@ -51,17 +67,17 @@ public class MainController {
 		return String.valueOf(userDetails.getUserid());
 	}
 
-	@RequestMapping(value = "/relcare/getAppointments", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getAppointments", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public String getAvgDeptPatientsReport(@RequestParam(value = "userid") Integer userId) {
-		List<DeptPatients> res = null;// dao.getAppointmentsForDoc(userId);
+	public String getAppointmentListForDoctor(@RequestParam(value = "userid") Integer userId) {
+		List<Appointment> res = dao.getAppointmentsForDoctor(userId);
 		Gson gson = new Gson();
-		Type type = new TypeToken<List<DeptPatients>>() {
+		Type type = new TypeToken<List<Appointment>>() {
 		}.getType();
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/relcare/getAvgDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getAvgDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getAvgDeptPatientsReport() {
 		List<DeptPatients> res = dao.getAvgPatientsPerDept();
@@ -71,7 +87,7 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/relcare/getTotalDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getTotalDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getTotalDeptPatientsReport() {
 		List<DeptPatients> res = dao.getTotalPatientsPerDept();
@@ -81,7 +97,7 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/relcare/getIllnessStatsReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getIllnessStatsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getIllnessStats() {
 		List<IllnessStats> res = dao.getIllnessStats();
@@ -91,7 +107,7 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/relcare/getInsuranceStatsReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getInsuranceStatsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getInsuranceStats() {
 		List<InsuranceStats> res = dao.getInsuranceStats();
@@ -101,7 +117,7 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/relcare/getBranchRevenueReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getBranchRevenueReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getBranchRevenueReport() {
 		List<BranchDeptRevenue> res = dao.getRevenuePerDept();

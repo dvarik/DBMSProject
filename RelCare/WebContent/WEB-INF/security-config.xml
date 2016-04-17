@@ -15,6 +15,10 @@
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/login*"
 			access="permitAll" />
+			<security:intercept-url pattern="/reg*"
+			access="permitAll" />
+			<security:intercept-url pattern="/registeruser*"
+			access="permitAll" />
 		<security:intercept-url pattern="/home*"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_DOCTOR','ROLE_PATIENT')" />
 		<security:intercept-url pattern="/**"

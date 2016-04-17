@@ -2,6 +2,7 @@ package com.relcare.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
 
@@ -144,8 +145,20 @@ public class RelcareDao {
 			}
 		}, userName);
 	}
+
+	public boolean registerUser(String fname, String lname, String email, String pword, String role) {
+		
+		// define query arguments
+		Object[] params = new Object[] { fname, lname, email, pword, role };
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+
+		return (row == 1);
+	}
 	
-	public List<Appointment> getAppointmentForDoctor(int docId) {
+	public List<Appointment> getAppointmentsForDoctor(int docId) {
 		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
 				new RowMapper<Appointment>() {
 					@Override
@@ -154,7 +167,6 @@ public class RelcareDao {
 						Appointment row = new Appointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
 								rs.getString("fname"), rs.getString("lname"),
 								rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
-
 						return row;
 					}
 				},
