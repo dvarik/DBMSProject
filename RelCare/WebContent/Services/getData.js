@@ -1,6 +1,4 @@
-var app = angular.module('hospApp', []);
-
-app.service('services', function(){
+angular.module('hospApp').service('services', function(){
 	
 	this.getAppointmentForDoc = function($http){
 		var url = "/relcare/getAppointments";
@@ -17,5 +15,3 @@ app.service('services', function(){
 	};
 	
 });
-
-
