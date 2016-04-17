@@ -1,10 +1,16 @@
 angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 	
 	this.getAppointmentForDoc = function(){
-		var url = "getAppointments";
-		$http.get(url).success( function(response) {
-			return response.data; 
-		});
+		var myurl = "getAppointments";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
 	};
 	
 	this.getProfile = function(){
@@ -12,6 +18,33 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getPatientsForDoc = function(){
+		var myurl = "getPatientsForDoc";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getHistory = function(patientId){
+		var myurl = "getDiagnosisHistory";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params: {patientid:patientId}
 		    }).then(function(response) {
 		    	console.log(response.data);
 		        return response.data;

@@ -2,8 +2,9 @@ package com.relcare.object;
 
 import java.sql.Date;
 
-public class PatientProfile {
+public class UserProfile {
 
+	private int id;
 	private String fname;
 	private String lname;
 	private Date dob;
@@ -11,10 +12,14 @@ public class PatientProfile {
 	private String city;
 	private String state;
 	private String zip;
+	private String role;
 	private String insurance;
 	
-	public PatientProfile(String fname, String lname, Date dob, String gender,
-			String city, String state, String zip, String insurance) {
+	public UserProfile(){
+		super();
+	}
+	public UserProfile(String fname, String lname, Date dob, String gender,
+			String city, String state, String zip, String insurance, String role) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
@@ -24,6 +29,7 @@ public class PatientProfile {
 		this.state = state;
 		this.zip = zip;
 		this.insurance = insurance;
+		this.setRole(role);
 	}
 
 	public String getFname() {
@@ -80,5 +86,19 @@ public class PatientProfile {
 	}
 	public void setInsurance(String insurance) {
 		this.insurance = insurance;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

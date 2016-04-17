@@ -18,9 +18,10 @@ import com.relcare.db.RelcareDao;
 import com.relcare.object.DocAppointment;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
+import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
-import com.relcare.object.PatientProfile;
+import com.relcare.object.UserProfile;
 
 @Controller
 public class MainController {
@@ -72,8 +73,8 @@ public class MainController {
 	@ResponseBody
 	public String getUserProfile() {
 		int userid = Integer.parseInt(getUserId());
-		PatientProfile profile = dao.getPatientProfile(userid);
-		Type type = new TypeToken<PatientProfile>() {
+		UserProfile profile = dao.getUserProfile(userid);
+		Type type = new TypeToken<UserProfile>() {
 		}.getType();
 		return new Gson().toJson(profile, type);
 	}
@@ -86,6 +87,24 @@ public class MainController {
 		Type type = new TypeToken<List<DocAppointment>>() {
 		}.getType();
 		return gson.toJson(res, type);
+	}
+	
+	@RequestMapping(value="/getPatientsForDoc", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getPatientsForDoc() {
+		List<UserProfile> pats = dao.getPatientsForDoc(getUserId());
+		Type type = new TypeToken<List<UserProfile>>() {
+		}.getType();
+		return new Gson().toJson(pats, type);
+	}
+	
+	@RequestMapping(value="/getDiagnosisHistory", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getDiagnosisHistory(@RequestParam(value = "patientid") Integer patientid) {
+		List<DiagnosisHistory> profile = dao.getDiagnosisHistory(patientid);
+		Type type = new TypeToken<List<DiagnosisHistory>>() {
+		}.getType();
+		return new Gson().toJson(profile, type);
 	}
 
 	@RequestMapping(value = "/getAvgDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")

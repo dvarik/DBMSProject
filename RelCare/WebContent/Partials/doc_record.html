@@ -1,56 +1,15 @@
-<div>
-
-
+<div class="container">
 <!---Dropdown to select patients--->
 <div class = "padding60">
 <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Patient
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">John</a></li>
-    <li><a href="#">Alex</a></li>
-  </ul>
+  <label for="select">Select Patient</label>
+  <select ng-options="pat.fname for pat in pats"  ng-model="selectedPat" ng-change="showHistory()"></select>
 </div>
 </div>
 
-<!--Patient Details box--->
-
-<div id="greybox" >
-    <h5 align="center">Patient Details</h5>
-	
-	 <form class="form-horizontal" name="diagReport1">
-		  <div class="box-body">
-		  
-			<div class="form-group">
-			  <label for="report_date" class="control-label font_blue">Name : </label>
-
-			  <label>
-			  <div class="col-sm-6">
-				
-			  </div>
-				
-			  </div>
-			  <div class="form-group">
-			  <label for="report_doctor" class="control-label font_blue">Age : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-			<div class="form-group">
-			  <label for="report_doctor" class="control-label font_blue">Gender : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-		</div>
-		</form>
-   
-</div>
-</div>
-
-
+<h4 class="modal-title">
+     Diagnosis Report
+</h4>                
 <!--  Patient Record Table -->
 <div class="table-responsive-vertical shadow-z-1 padding50">
   <!-- Table starts here -->
@@ -58,105 +17,20 @@
       <thead>
         <tr class="info">
           <th>Date</th>
-          <th>Doctor</th>
-          <th>Purpose</th>
-		  <th>Diagnosis</th>
+          <th>Patient name</th>
+          <th>Diagnosis</th>
+		  <th>Medicines</th>
         </tr>
       </thead>
       <tbody>
-	  <tr>
-          <td data-title="Date">04/10/2016</td>
-		  <td data-title="Doctor">abc xyz</td>
-          <td data-title="Purpose"></td>
-		  <td data-title="report">
-			<button class="btn btn-primary" data-toggle="modal" data-target="#viewReportModal">View Report</button>
-		  </td>
+	  <tr ng-repeat="history in historyDetail">
+          <td data-title="Date">{{history.appointmentDate}}</td>
+		  <td data-title="Patient">{{history.patientFirstName}} {{history.patientLastName}}</td>
+          <td data-title="Diagnosis">{{history.illnessDesc}}</td>
+		  <td data-title="Medicines">{{history.medicines}}</td>
       </tr>
 		
 	  </tbody>
 </table>
-</div>
-
-<!-- Patient report modal  -->
-<div class="modal fade" id="viewReportModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content col-sm-8">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" 
-                   data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="reportModal">
-                    Diagnosis Report
-                </h4>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="modal-body">
-                
-          <form class="form-horizontal" name="diagReport">
-		  <div class="box-body">
-		  
-			<div class="form-group">
-			  <label for="report_date" class="control-label font_blue">Date : </label>
-
-			  <label>
-			  <div class="col-sm-6">
-				
-			  </div>
-				
-			  </div>
-			  <div class="form-group">
-			  <label for="report_doctor" class="control-label font_blue">Doctor : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-			<div class="form-group">
-			  <label for="report_name" class="control-label font_blue">Patient name : </label>
-
-			  <div>
-				
-			  </div>
-			  </div>
-			  <div class="form-group">
-			  <label for="report_dob" class="control-label font_blue">Date of birth : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-		  
-			<div class="form-group">
-			  <label for="report_illness" class="control-label font_blue">Illness description: </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-			
-			<div class="form-group">
-			  <label for="report_medicine" class="control-label font_blue">Medicines prescribed: </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-		</form>
-            </div>
-            
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                            Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 </div>

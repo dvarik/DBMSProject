@@ -8,8 +8,11 @@
 </head>
 <body>
 <c:if test="${param.error=='true'}">
-	<div style="font-color:red">Username and/or password is incorrect! Please try again.</div>
-</c:if>
+	<div style="font-color:red">
+            Your login attempt was not successful, try again.<br/> 
+            Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.  
+	</div>
+</c:if>  
 <c:if test="${param.registered=='true'}">
 	<div style="font-color:red">You have been registered. Please log in.</div>
 </c:if>

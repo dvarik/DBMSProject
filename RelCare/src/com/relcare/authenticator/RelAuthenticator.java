@@ -1,5 +1,7 @@
 package com.relcare.authenticator;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,8 +40,12 @@ public class RelAuthenticator implements AuthenticationProvider {
 			} else {
 				throw new BadCredentialsException("Wrong password.");
 			}
+		} catch (SQLException s) {
+			s.printStackTrace();
+			throw new BadCredentialsException(s.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new BadCredentialsException("Error" + e.getMessage());
 		}
 		if (user != null) {
 			auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

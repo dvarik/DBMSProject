@@ -17,10 +17,11 @@ import com.relcare.object.DocAppointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
+import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.PatientAppointment;
-import com.relcare.object.PatientProfile;
+import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
 public class RelcareDao {
@@ -175,17 +176,28 @@ public class RelcareDao {
 		return apt;
 	}
 	
-	public PatientProfile getPatientProfile(int pId) {
-		PatientProfile profile = jdbcTemplate.queryForObject(QueryConstants.PATIENT_PROFILE,
-				new RowMapper<PatientProfile>() {
-					@Override
-					public PatientProfile mapRow(ResultSet rs, int arg1) throws SQLException {
-						PatientProfile row = new PatientProfile(rs.getString("fname"),rs.getString("lname"),rs.getDate("dateofbirth"),
-								rs.getString("gender"),rs.getString("city"),rs.getString("state"),rs.getString("zip"),rs.getString("insurance"));
-						return row;
-					}
-				},
-				pId);
+	public UserProfile getUserProfile(int pId) {
+		UserProfile profile = jdbcTemplate.queryForObject(QueryConstants.USER_PROFILE, new RowMapper<UserProfile>() {
+			@Override
+			public UserProfile mapRow(ResultSet rs, int arg1) throws SQLException {
+				UserProfile row = new UserProfile(rs.getString("fname"), rs.getString("lname"),
+						rs.getDate("dateofbirth"), rs.getString("gender"), rs.getString("city"), rs.getString("state"),
+						rs.getString("zip"), null, rs.getString("role"));
+				return row;
+			}
+		}, pId);
+		
+		if (profile.getRole().equals("Patient")) {
+
+			String insuranceType = jdbcTemplate.queryForObject(QueryConstants.GET_INSURANCE, new RowMapper<String>() {
+				@Override
+				public String mapRow(ResultSet rs, int arg1) throws SQLException {
+					return rs.getString("insuranceType");
+				}
+			}, pId);
+			profile.setInsurance(insuranceType);
+		}
+
 		return profile;
 	}
 	
@@ -216,5 +228,33 @@ public class RelcareDao {
 					}
 				}, pId);
 		return profile;
+	}
+
+	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
+		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
+				new RowMapper<DiagnosisHistory>() {
+					@Override
+					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
+						DiagnosisHistory row = new DiagnosisHistory(rs.getInt("diagnosisid"),rs.getInt("patientid"),
+								rs.getString("fname"),rs.getString("lname"),rs.getDate("appointmentdate"),
+								rs.getString("medslist"),rs.getString("illnessname"));
+						return row;
+					}
+				}, patientid);
+		return history;
+	}
+
+	public List<UserProfile> getPatientsForDoc(String userId) {
+		List<UserProfile> pats = jdbcTemplate.query(QueryConstants.GET_PATIENTS_FOR_DOC,
+				new RowMapper<UserProfile>() {
+					@Override
+					public UserProfile mapRow(ResultSet rs, int arg1) throws SQLException {
+						UserProfile row = new UserProfile();
+						row.setId(rs.getInt("patientid"));
+						row.setFname(rs.getString("fullname"));
+						return row;
+					}
+				}, userId);
+		return pats;
 	}
 }

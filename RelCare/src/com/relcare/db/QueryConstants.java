@@ -55,9 +55,10 @@ public class QueryConstants {
 			+ "join userfile u on a.patientid = u.useid "
 			+ "where a.doctorid = ? and date >= sysdate";
 
-	final static String PATIENT_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,p.insurancetype "
-			+ "from userfile u join patient p on u.useid = p.patientid "
-			+ "where p.patientid = ?";
+	final static String USER_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,u.role "
+			+ "from userfile u where u.useid = ?";
+	
+	public static final String GET_INSURANCE = "select insurancetype from patient where patientid = ?";
 
 	final static String PAYMENT_HISTORY = "select u.fname,u.lname,a.appointmentdate,r.fees,b.cost,b.status "
 			+ "from userfile u join doctor d on u.useid = d.doctorid "
@@ -71,5 +72,22 @@ public class QueryConstants {
 			+ "join userfile u on u.useid = d.doctorid "
 			+ "join timeslot t on a.timeslotid = t.timeslotid "
 			+ "where p.patientid = ?";
+
+	public static final String DIAGNOSIS_HISTORY = "select p.fname,p.lname,d.*,a.APPOINTMENTDATE,a.PATIENTID,meds.medslist "
+			+ "from diagnosis d "
+			+ "join appointment a on a.appointmentid = d.diagnosisid "
+			+ "join userfile p on p.useid = a.PATIENTID "
+			+ "join (select diagnosisid, ltrim(max(sys_connect_by_path(medicinename, ';' )), ';') medslist "
+			+ "from (select medicinename, diagnosisid, row_number() over "
+			+ "(partition by diagnosisid order by medicinename) rn from MEDICINEPRESCRIBED) "
+			+ "start with rn = 1 connect by prior rn = rn-1 "
+			+ "and prior diagnosisid = diagnosisid group by diagnosisid order by diagnosisid) meds "
+			+ "on meds.diagnosisid = d.DIAGNOSISID "
+			+ "where a.patientid = ? order by a.appointmentdate desc";
+
+	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName"
+			+ " from userfile u,appointment ap where ap.PATIENTID = u.useid and ap.DOCTORID = ?";
+
+	
 	
 }
