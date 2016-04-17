@@ -118,6 +118,16 @@ public class MainController {
 		return new Gson().toJson(profile, type);
 	}
 	
+	@RequestMapping(value="/getDiagnosisHistoryOfPatient", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getDiagnosisHistoryOfPatient() {
+		int userid = Integer.parseInt(getUserId());
+		List<DiagnosisHistory> profile = dao.getDiagnosisPatient(userid);
+		Type type = new TypeToken<List<Appointment>>() {
+		}.getType();
+		return new Gson().toJson(profile, type);
+	}
+	
 	@RequestMapping(value="/getPaymentHistory", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getPaymentHistory() {

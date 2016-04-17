@@ -69,12 +69,12 @@ public class QueryConstants {
 			+ "join userfile u on d.doctorid = u.useid "
 			+ "where a.patientid = ?";
 	
-	final static String APPOINTMENT_PATIENTS = "select a.appointmentid,d.doctorid, u.fname || ' ' || u.lname as doctorName,"
-			+ "a.appointmentdate,t.starttime,t.endtime "
-			+ "from doctors d join appointment a on a.doctorid = d.doctorid "
-			+ "join userfile u on u.useid = d.doctorid "
+	final static String APPOINTMENT_PATIENTS = "select a.appointmentid,u.doctorid, u.fname || ' ' || u.lname as doctorName,"
+			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
+			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
+			+ "from appointment a join userfile u on u.useid = a.doctorid "
 			+ "join timeslot t on a.timeslotid = t.timeslotid "
-			+ "where a.patientid = ?";
+			+ "where a.patientid = ? and a.status in (0,1) order by a.appointmentdate asc, t.starttime asc";
 
 	public static final String DIAGNOSIS_HISTORY = "select p.fname,p.lname,d.*,a.APPOINTMENTDATE,a.PATIENTID,meds.medslist "
 			+ "from diagnosis d "
@@ -92,6 +92,16 @@ public class QueryConstants {
 			+ " u.gender, u.dateofbirth as dob"
 			+ " from userfile u,appointment ap where ap.PATIENTID = u.useid and ap.DOCTORID = ?";
 
-	
-	
+	public static final String PAT_DIAGNOSIS = "select u.fname || ' ' || u.lname as docName, d.*, "
+			+ "a.APPOINTMENTDATE,a.PATIENTID,meds.medslist "
+			+ "from diagnosis d "
+			+ "join appointment a on a.appointmentid = d.diagnosisid "
+			+ "join userfile u on u.useid = a.doctorid "
+			+ "join (select diagnosisid, ltrim(max(sys_connect_by_path(medicinename, ';' )), ';') medslist "
+			+ "from (select medicinename, diagnosisid, row_number() over "
+			+ "(partition by diagnosisid order by medicinename) rn from MEDICINEPRESCRIBED) "
+			+ "start with rn = 1 connect by prior rn = rn-1 "
+			+ "and prior diagnosisid = diagnosisid group by diagnosisid order by diagnosisid) meds "
+			+ "on meds.diagnosisid = d.DIAGNOSISID "
+			+ "where a.patientid = ? order by a.appointmentdate desc";
 }

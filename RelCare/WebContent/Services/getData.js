@@ -66,8 +66,8 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
-	this.getUpcomingAppointmentForPat = function(){
-		var myurl = "getUpcomingAppointmentsForPatient";
+	this.getAppointmentForPat = function(){
+		var myurl = "getAppointmentsForPatient";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
@@ -79,8 +79,8 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
-	this.getCompletedAppointmentForPat = function(){
-		var myurl = "getCompletedAppointmentsForPatient";
+	this.getHistoryForPat = function(){
+		var myurl = "getDiagnosisHistoryOfPatient";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
@@ -88,8 +88,6 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		    	console.log(response.data);
 		        return response.data;
 		    });
-		 
 		 return promise;
 	};
-	
 }]);

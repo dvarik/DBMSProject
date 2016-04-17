@@ -16,7 +16,7 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr ng-repeat = "a in apt1">
+		  <tr ng-repeat = "a in apt | filter : { a.cancancel : 'true' }" >
 			  <td data-title="Date">{{a.id}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
@@ -37,7 +37,7 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr ng-repeat = "a in apt2">
+		  <tr ng-repeat = "a in apt | filter : { a.cancancel : 'false' }">
 			  <td data-title="Date">{{a.id}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>

@@ -268,10 +268,25 @@ public class RelcareDao {
 						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
 								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
 								rs.getDate("appointmentdate"));
-
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
 						return row;
 					}
 				}, pId);
+		return profile;
+	}
+	
+	public List<DiagnosisHistory> getDiagnosisPatient(int id) {
+		List<DiagnosisHistory> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
+				new RowMapper<DiagnosisHistory>() {
+					@Override
+					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
+						DiagnosisHistory row = new DiagnosisHistory(rs.getInt("diagnosisid"),
+								rs.getString("docName"), rs.getInt("doctorId"),
+								rs.getDate("appointmentdate"),rs.getString("illnessname"),rs.getString("medslist"));
+						return row;
+					}
+				},id);
 		return profile;
 	}
 }

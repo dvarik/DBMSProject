@@ -8,11 +8,23 @@ public class DiagnosisHistory {
 	private int patientId;
 	private String patientFirstName;
 	private String patientLastName;
+	private String docName;
+	private int docId;
 	private Date appointmentDate;
 	private String illnessDesc;
 	private String medicines;
 	
-	
+	public DiagnosisHistory(int diagnosisId, String docName, int docId,
+			Date appointmentDate, String illnessDesc, String medicines) {
+		super();
+		this.diagnosisId = diagnosisId;
+		this.docName = docName;
+		this.docId = docId;
+		this.appointmentDate = appointmentDate;
+		this.illnessDesc = illnessDesc;
+		this.medicines = medicines;
+	}
+
 	public DiagnosisHistory(int dia, int patientId,
 			String patientFirstName, String patientLastName, Date appointmentDate, String medList, String illness) {
 		super();
@@ -83,5 +95,19 @@ public class DiagnosisHistory {
 
 	public void setMedicines(String medicines) {
 		this.medicines = medicines;
+	}
+	
+	public String getDocName() {
+		return docName;
+	}
+	public void setDocName(String docName) {
+		this.docName = docName;
+	}
+
+	public int getDocId() {
+		return docId;
+	}
+	public void setDocId(int docId) {
+		this.docId = docId;
 	}
 }
