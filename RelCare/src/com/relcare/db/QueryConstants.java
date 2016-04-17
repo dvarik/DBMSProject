@@ -53,10 +53,23 @@ public class QueryConstants {
 	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
-			+ "where a.doctorid = ?";
-	
+			+ "where a.doctorid = ? and date >= sysdate";
+
 	final static String PATIENT_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,p.insurancetype "
-			+ "from usefile u join patient p on u.useid = p.patientid "
+			+ "from userfile u join patient p on u.useid = p.patientid "
+			+ "where p.patientid = ?";
+
+	final static String PAYMENT_HISTORY = "select u.fname,u.lname,a.appointmentdate,r.fees,b.cost,b.status "
+			+ "from userfile u join doctor d on u.useid = d.doctorid "
+			+ "join appointment a on a.doctorid = d.doctorid "
+			+ "join rank r on r.rankid = d.rankid "
+			+ "join bill b on a.appointmentid = b.appointmentid "
+			+ "where p.patientid = ?";
+	
+	final static String APPOINTMENT_PATIENTS = "select u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
+			+ "from doctor d join appointment a on a.doctorid = d.doctorid "
+			+ "join userfile u on u.useid = d.doctorid "
+			+ "join timeslot t on a.timeslotid = t.timeslotid "
 			+ "where p.patientid = ?";
 	
 }

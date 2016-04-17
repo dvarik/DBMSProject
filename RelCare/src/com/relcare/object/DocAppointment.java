@@ -2,7 +2,7 @@ package com.relcare.object;
 
 import java.sql.Date;
 
-public class Appointment {
+public class DocAppointment {
 	
 	private int appointmentId;
 	private int patientId;
@@ -12,7 +12,7 @@ public class Appointment {
 	private int endTime;
 	private Date appointmentDate;
 	
-	public Appointment(int appointmentId, int patientId,
+	public DocAppointment(int appointmentId, int patientId,
 			String patientFirstName, String patientLastName, int startTime,
 			int endTime, Date appointmentDate) {
 		super();
