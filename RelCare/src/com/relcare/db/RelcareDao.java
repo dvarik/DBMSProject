@@ -160,6 +160,22 @@ public class RelcareDao {
 		return (row == 1);
 	}
 	
+	public List<Appointment> getAppointmentsForDoctor(int docId) {
+		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
+								rs.getString("fullname"), rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
+						return row;
+					}
+				},
+				docId);
+		return apt;
+	}
+	
 	public UserProfile getUserProfile(int pId) {
 		UserProfile profile = jdbcTemplate.queryForObject(QueryConstants.USER_PROFILE, new RowMapper<UserProfile>() {
 			@Override
@@ -198,7 +214,22 @@ public class RelcareDao {
 				pId);
 		return profile;
 	}
+/*	
+	public List<Appointment> getPatientAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.PAYMENT_HISTORY,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getDate("appointmentdate"),
+								rs.getString("fname"),rs.getString("lname"),
+								rs.getInt("starttime"),rs.getInt("endtime"));
 
+						return row;
+					}
+				}, pId);
+		return profile;
+	}
+*/
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
 				new RowMapper<DiagnosisHistory>() {

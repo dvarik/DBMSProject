@@ -5,9 +5,9 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	$routeProvider.when('/profile', {
 		templateUrl : 'Partials/profile.html',
 		controller : 'ProfileController'
-	}).when('/appointment', {
+	}).when('/docappointment', {
 		templateUrl : 'Partials/doc_appointment.html',
-		controller : 'AppointmentController'
+		controller : 'DocAppointmentController'
 	}).when('/history', {
 		templateUrl : 'Partials/doc_record.html',
 		controller : 'HistoryController'

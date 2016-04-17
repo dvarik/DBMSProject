@@ -10,10 +10,39 @@ public class Appointment {
 	private int startTime;
 	private int endTime;
 	private Date appointmentDate;
+	private Status stat;
+	private boolean canCancel;
 	
-	public Appointment(int appointmentId, int id,
-			String name, int startTime,
-			int endTime, Date appointmentDate) {
+	public enum Status {
+
+		BOOKED(0, "Booked"), COMPLETED(1, "Completed"), CANCELLED(2, "Cancelled");
+
+		private int statusInt;
+		private String statusLabel;
+
+		Status(int statInt, String statLabel) {
+			this.statusInt = statInt;
+			this.statusLabel = statLabel;
+		}
+
+		public static Status getEnumFromTypeInt(int statInt) {
+
+			Status stat = null;
+			for (Status s : Status.values()) {
+				if (s.statusInt == statInt)
+					return s;
+			}
+			return stat;
+
+		}
+
+		public String getStatusLabel() {
+			return statusLabel;
+		}
+
+	}
+	
+	public Appointment(int appointmentId, int id, String name, int startTime, int endTime, Date appointmentDate) {
 		super();
 		this.appointmentId = appointmentId;
 		this.id = id;
@@ -38,10 +67,15 @@ public class Appointment {
 	}
 
 	public String getName() {
+	public String getPatientFirstName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void setPatientFirstName(String patientFirstName) {
+		name = patientFirstName;
 	}
 
 	public int getStartTime() {
@@ -71,5 +105,23 @@ public class Appointment {
 				+ id + ", PatientFirstName=" + name + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", appointmentDate="
 				+ appointmentDate + "]";
+		return "Appointment [appointmentId=" + appointmentId + ", patientId=" + id + ", PatientName=" + name
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", appointmentDate=" + appointmentDate + "]";
+	}
+
+	public Status getStat() {
+		return stat;
+	}
+
+	public void setStat(Status stat) {
+		this.stat = stat;
+	}
+
+	public boolean isCanCancel() {
+		return canCancel;
+	}
+
+	public void setCanCancel(boolean canCancel) {
+		this.canCancel = canCancel;
 	}
 }
