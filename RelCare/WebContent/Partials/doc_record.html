@@ -6,9 +6,20 @@
   <select ng-options="pat.fname for pat in pats"  ng-model="selectedPat" ng-change="showHistory()"></select>
 </div>
 </div>
-
+<div class="row" ng-show="selectedPat!=null">
 <h4 class="modal-title">
-     Diagnosis Report
+     Patient Details
+</h4>                
+<!--  Patient Record Table -->
+<div class="table-responsive-vertical shadow-z-1 padding50">
+  <div><label for="fname">Patient name:</label>{{selectedPat.fname}}</div>
+  <div><label for="fname">Patient dob:</label>{{selectedPat.dob}}</div>
+  <div><label for="fname">Patient gender:</label>{{selectedPat.gender}}</div>
+</div>
+</div>
+<div class="row">
+<h4 class="modal-title">
+     Diagnosis Report History
 </h4>                
 <!--  Patient Record Table -->
 <div class="table-responsive-vertical shadow-z-1 padding50">
@@ -17,7 +28,6 @@
       <thead>
         <tr class="info">
           <th>Date</th>
-          <th>Patient name</th>
           <th>Diagnosis</th>
 		  <th>Medicines</th>
         </tr>
@@ -25,12 +35,12 @@
       <tbody>
 	  <tr ng-repeat="history in historyDetail">
           <td data-title="Date">{{history.appointmentDate}}</td>
-		  <td data-title="Patient">{{history.patientFirstName}} {{history.patientLastName}}</td>
           <td data-title="Diagnosis">{{history.illnessDesc}}</td>
 		  <td data-title="Medicines">{{history.medicines}}</td>
       </tr>
 		
 	  </tbody>
 </table>
+</div>
 </div>
 </div>

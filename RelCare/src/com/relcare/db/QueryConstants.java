@@ -85,7 +85,8 @@ public class QueryConstants {
 			+ "on meds.diagnosisid = d.DIAGNOSISID "
 			+ "where a.patientid = ? order by a.appointmentdate desc";
 
-	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName"
+	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName,"
+			+ " u.gender, u.dateofbirth as dob"
 			+ " from userfile u,appointment ap where ap.PATIENTID = u.useid and ap.DOCTORID = ?";
 
 	

@@ -252,6 +252,8 @@ public class RelcareDao {
 						UserProfile row = new UserProfile();
 						row.setId(rs.getInt("patientid"));
 						row.setFname(rs.getString("fullname"));
+						row.setDob(rs.getDate("dob"));
+						row.setGender(rs.getString("gender"));
 						return row;
 					}
 				}, userId);

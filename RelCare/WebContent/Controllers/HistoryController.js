@@ -1,7 +1,7 @@
 angular.module('hospApp').controller('HistoryController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
 
-	$scope.selectedPat = 825;
+	$scope.selectedPat = null;
 
 	getDataSvc.getPatientsForDoc().then(function(res) {
         if (res != null) {
