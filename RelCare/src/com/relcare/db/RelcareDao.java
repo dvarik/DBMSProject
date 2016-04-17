@@ -13,14 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.relcare.authenticator.RelUserDetails;
-import com.relcare.object.DocAppointment;
+import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
-import com.relcare.object.PatientAppointment;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
@@ -161,21 +160,6 @@ public class RelcareDao {
 		return (row == 1);
 	}
 	
-	public List<DocAppointment> getAppointmentsForDoctor(int docId) {
-		List<DocAppointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
-				new RowMapper<DocAppointment>() {
-					@Override
-					public DocAppointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						DocAppointment row = new DocAppointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
-								rs.getString("fname"), rs.getString("lname"),
-								rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
-						return row;
-					}
-				},
-				docId);
-		return apt;
-	}
-	
 	public UserProfile getUserProfile(int pId) {
 		UserProfile profile = jdbcTemplate.queryForObject(QueryConstants.USER_PROFILE, new RowMapper<UserProfile>() {
 			@Override
@@ -214,21 +198,6 @@ public class RelcareDao {
 				pId);
 		return profile;
 	}
-	
-	public List<PatientAppointment> getPatientAppointments(int pId) {
-		List<PatientAppointment> profile = jdbcTemplate.query(QueryConstants.PAYMENT_HISTORY,
-				new RowMapper<PatientAppointment>() {
-					@Override
-					public PatientAppointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						PatientAppointment row = new PatientAppointment(rs.getDate("appointmentdate"),
-								rs.getString("fname"),rs.getString("lname"),
-								rs.getInt("starttime"),rs.getInt("endtime"));
-
-						return row;
-					}
-				}, pId);
-		return profile;
-	}
 
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
@@ -258,5 +227,20 @@ public class RelcareDao {
 					}
 				}, userId);
 		return pats;
+	}
+	
+	public List<Appointment> getPatientAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
+								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
+								rs.getDate("appointmentdate"));
+
+						return row;
+					}
+				}, pId);
+		return profile;
 	}
 }

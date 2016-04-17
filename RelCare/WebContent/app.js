@@ -14,6 +14,9 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	}).when('/billing', {
 		templateUrl : 'Partials/pat_payment.html',
 		controller : 'PaymentController'
+	}).when('/patientappointments', {
+		templateUrl : 'Partials/pat_appointment.html',
+		controller : 'PatientAppointmentController'
 	}).otherwise('/profile');
 
 });

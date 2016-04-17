@@ -2,24 +2,22 @@ package com.relcare.object;
 
 import java.sql.Date;
 
-public class DocAppointment {
+public class Appointment {
 	
 	private int appointmentId;
-	private int patientId;
-	private String PatientFirstName;
-	private String PatientLastName;
+	private int id;
+	private String name;
 	private int startTime;
 	private int endTime;
 	private Date appointmentDate;
 	
-	public DocAppointment(int appointmentId, int patientId,
-			String patientFirstName, String patientLastName, int startTime,
+	public Appointment(int appointmentId, int id,
+			String name, int startTime,
 			int endTime, Date appointmentDate) {
 		super();
 		this.appointmentId = appointmentId;
-		this.patientId = patientId;
-		PatientFirstName = patientFirstName;
-		PatientLastName = patientLastName;
+		this.id = id;
+		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.appointmentDate = appointmentDate;
@@ -32,25 +30,18 @@ public class DocAppointment {
 		this.appointmentId = appointmentId;
 	}
 
-	public int getPatientId() {
-		return patientId;
+	public int getId() {
+		return id;
 	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
-	}
-
-	public String getPatientFirstName() {
-		return PatientFirstName;
-	}
-	public void setPatientFirstName(String patientFirstName) {
-		PatientFirstName = patientFirstName;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getPatientLastName() {
-		return PatientLastName;
+	public String getName() {
+		return name;
 	}
-	public void setPatientLastName(String patientLastName) {
-		PatientLastName = patientLastName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getStartTime() {
@@ -77,8 +68,7 @@ public class DocAppointment {
 	@Override
 	public String toString() {
 		return "Appointment [appointmentId=" + appointmentId + ", patientId="
-				+ patientId + ", PatientFirstName=" + PatientFirstName
-				+ ", PatientLastName=" + PatientLastName + ", startTime="
+				+ id + ", PatientFirstName=" + name + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", appointmentDate="
 				+ appointmentDate + "]";
 	}
