@@ -66,9 +66,13 @@ public class Appointment {
 		this.id = id;
 	}
 
-	public String getPatientFirstName() {
+	public String getName() {
 		return name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public void setPatientFirstName(String patientFirstName) {
 		name = patientFirstName;
 	}
@@ -96,8 +100,10 @@ public class Appointment {
 
 	@Override
 	public String toString() {
-		return "Appointment [appointmentId=" + appointmentId + ", patientId=" + id + ", PatientName=" + name
-				+ ", startTime=" + startTime + ", endTime=" + endTime + ", appointmentDate=" + appointmentDate + "]";
+		return "Appointment [appointmentId=" + appointmentId + ", patientId="
+				+ id + ", PatientFirstName=" + name + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", appointmentDate="
+				+ appointmentDate + "]";
 	}
 
 	public Status getStat() {

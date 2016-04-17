@@ -1,7 +1,6 @@
 <div class="row">
 	<div class="padding60">
 	<section layout="row" layout-align="center center" layout-wrap>
-		  <!--<md-button class="md-primary" ng-click="appDialog($event)">Book a new appointment</md-button>-->
 		  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#aptModal">Make a new appointment</button>
 	</section>
 	</div>
@@ -13,20 +12,37 @@
 			  <th>Date</th>
 			  <th>Doctor</th>
 			  <th>Time-slot</th>
-			  <th>Diagnosis Report</th>
 			  <th>Cancel Appointment</th>
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr>
-			  <td data-title="Date">04/10/2016</td>
-			  <td data-title="Doctor">abc xyz</td>
-			  <td data-title="slot">2-3</td>
-			  <td data-title="report">
-				<button class="btn btn-primary" data-toggle="modal" data-target="#reportModal">View Report</button>
-			  </td>
+		  <tr ng-repeat = "a in apt1">
+			  <td data-title="Date">{{a.id}}</td>
+			  <td data-title="Doctor">{{a.name}}</td>
+			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
 			  <td data-title="cancel">
 				<md-button class="md-raised md-primary">Cancel</md-button>
+			  </td>
+			</tr>
+		  </tbody>
+	</table>
+	
+	<table id="table" class="table table-bordered table-hover table-mc-light-blue">
+		  <thead>
+			<tr class="info">
+			  <th>Date</th>
+			  <th>Doctor</th>
+			  <th>Time-slot</th>
+			  <th>Diagnosis Report</th>
+			</tr>
+		  </thead>
+		  <tbody>
+		  <tr ng-repeat = "a in apt2">
+			  <td data-title="Date">{{a.id}}</td>
+			  <td data-title="Doctor">{{a.name}}</td>
+			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
+			  <td data-title="report">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#reportModal">View Report</button>
 			  </td>
 			</tr>
 		  </tbody>

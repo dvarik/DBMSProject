@@ -217,20 +217,20 @@ public class RelcareDao {
 		return profile;
 	}
 	
-	/*public List<Appointment> getPatientAppointments(int pId) {
-		List<Appointment> profile = jdbcTemplate.query(QueryConstants.PAYMENT_HISTORY,
+	public List<Appointment> getPatientAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
 				new RowMapper<Appointment>() {
 					@Override
 					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						Appointment row = new Appointment(rs.getDate("appointmentdate"),
-								rs.getString("fname"),rs.getString("lname"),
-								rs.getInt("starttime"),rs.getInt("endtime"));
+						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
+								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
+								rs.getDate("appointmentdate"));
 
 						return row;
 					}
 				}, pId);
 		return profile;
-	}*/
+	}
 
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,

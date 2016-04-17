@@ -69,11 +69,12 @@ public class QueryConstants {
 			+ "join userfile u on d.doctorid = u.useid "
 			+ "where a.patientid = ?";
 	
-	final static String APPOINTMENT_PATIENTS = "select u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
+	final static String APPOINTMENT_PATIENTS = "select a.appointmentid,d.doctorid, u.fname || ' ' || u.lname as doctorName,"
+			+ "a.appointmentdate,t.starttime,t.endtime "
 			+ "from doctors d join appointment a on a.doctorid = d.doctorid "
 			+ "join userfile u on u.useid = d.doctorid "
 			+ "join timeslot t on a.timeslotid = t.timeslotid "
-			+ "where p.patientid = ?";
+			+ "where a.patientid = ?";
 
 	public static final String DIAGNOSIS_HISTORY = "select p.fname,p.lname,d.*,a.APPOINTMENTDATE,a.PATIENTID,meds.medslist "
 			+ "from diagnosis d "
