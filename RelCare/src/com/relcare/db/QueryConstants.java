@@ -50,10 +50,12 @@ public class QueryConstants {
 	
 	public static final String REGISTER_USER = "insert into userfile(useid,fname,lname,email,password,role) values(16002,?,?,?,?,?)";
 	
-	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname,u.lname,a.appointmentdate,t.starttime,t.endtime "
+	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname || ' ' || u.lname As fullname, "
+			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
+			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
-			+ "where a.doctorid = ? and date >= sysdate";
+			+ "where a.doctorid = ? and a.status in (0,1) order by a.appointmentdate desc, t.starttime asc";
 
 	final static String USER_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,u.role "
 			+ "from userfile u where u.useid = ?";

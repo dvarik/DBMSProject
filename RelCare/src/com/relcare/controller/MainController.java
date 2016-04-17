@@ -15,8 +15,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.relcare.authenticator.RelUserDetails;
 import com.relcare.db.RelcareDao;
+import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
-import com.relcare.object.DocAppointment;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
@@ -80,12 +80,12 @@ public class MainController {
 		return new Gson().toJson(profile, type);
 	}
 
-	@RequestMapping(value = "/getAppointments", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getAppointmentsForDoctor", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public String getAppointmentListForDoctor(@RequestParam(value = "userid") Integer userId) {
-		List<DocAppointment> res = dao.getAppointmentsForDoctor(userId);
+	public String getAppointmentListForDoctor() {
+		List<Appointment> res = dao.getAppointmentsForDoctor(Integer.parseInt(getUserId()));
 		Gson gson = new Gson();
-		Type type = new TypeToken<List<DocAppointment>>() {
+		Type type = new TypeToken<List<Appointment>>() {
 		}.getType();
 		return gson.toJson(res, type);
 	}

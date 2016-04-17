@@ -13,14 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.relcare.authenticator.RelUserDetails;
-import com.relcare.object.DocAppointment;
+import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
-import com.relcare.object.PatientAppointment;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
@@ -161,14 +160,15 @@ public class RelcareDao {
 		return (row == 1);
 	}
 	
-	public List<DocAppointment> getAppointmentsForDoctor(int docId) {
-		List<DocAppointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
-				new RowMapper<DocAppointment>() {
+	public List<Appointment> getAppointmentsForDoctor(int docId) {
+		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
+				new RowMapper<Appointment>() {
 					@Override
-					public DocAppointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						DocAppointment row = new DocAppointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
-								rs.getString("fname"), rs.getString("lname"),
-								rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentId"), rs.getInt("patientId"), 
+								rs.getString("fullname"), rs.getInt("starttime"),rs.getInt("endtime"),rs.getDate("appointmentdate"));
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
 						return row;
 					}
 				},
@@ -215,12 +215,12 @@ public class RelcareDao {
 		return profile;
 	}
 	
-	public List<PatientAppointment> getPatientAppointments(int pId) {
-		List<PatientAppointment> profile = jdbcTemplate.query(QueryConstants.PAYMENT_HISTORY,
-				new RowMapper<PatientAppointment>() {
+	/*public List<Appointment> getPatientAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.PAYMENT_HISTORY,
+				new RowMapper<Appointment>() {
 					@Override
-					public PatientAppointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						PatientAppointment row = new PatientAppointment(rs.getDate("appointmentdate"),
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getDate("appointmentdate"),
 								rs.getString("fname"),rs.getString("lname"),
 								rs.getInt("starttime"),rs.getInt("endtime"));
 
@@ -228,7 +228,7 @@ public class RelcareDao {
 					}
 				}, pId);
 		return profile;
-	}
+	}*/
 
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,

@@ -2,24 +2,51 @@ package com.relcare.object;
 
 import java.sql.Date;
 
-public class DocAppointment {
+public class Appointment {
 	
 	private int appointmentId;
-	private int patientId;
-	private String PatientFirstName;
-	private String PatientLastName;
+	private int id;
+	private String name;
 	private int startTime;
 	private int endTime;
 	private Date appointmentDate;
+	private Status stat;
+	private boolean canCancel;
 	
-	public DocAppointment(int appointmentId, int patientId,
-			String patientFirstName, String patientLastName, int startTime,
-			int endTime, Date appointmentDate) {
+	public enum Status {
+
+		BOOKED(0, "Booked"), COMPLETED(1, "Completed"), CANCELLED(2, "Cancelled");
+
+		private int statusInt;
+		private String statusLabel;
+
+		Status(int statInt, String statLabel) {
+			this.statusInt = statInt;
+			this.statusLabel = statLabel;
+		}
+
+		public static Status getEnumFromTypeInt(int statInt) {
+
+			Status stat = null;
+			for (Status s : Status.values()) {
+				if (s.statusInt == statInt)
+					return s;
+			}
+			return stat;
+
+		}
+
+		public String getStatusLabel() {
+			return statusLabel;
+		}
+
+	}
+	
+	public Appointment(int appointmentId, int id, String name, int startTime, int endTime, Date appointmentDate) {
 		super();
 		this.appointmentId = appointmentId;
-		this.patientId = patientId;
-		PatientFirstName = patientFirstName;
-		PatientLastName = patientLastName;
+		this.id = id;
+		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.appointmentDate = appointmentDate;
@@ -32,25 +59,18 @@ public class DocAppointment {
 		this.appointmentId = appointmentId;
 	}
 
-	public int getPatientId() {
-		return patientId;
+	public int getId() {
+		return id;
 	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getPatientFirstName() {
-		return PatientFirstName;
+		return name;
 	}
 	public void setPatientFirstName(String patientFirstName) {
-		PatientFirstName = patientFirstName;
-	}
-
-	public String getPatientLastName() {
-		return PatientLastName;
-	}
-	public void setPatientLastName(String patientLastName) {
-		PatientLastName = patientLastName;
+		name = patientFirstName;
 	}
 
 	public int getStartTime() {
@@ -76,10 +96,23 @@ public class DocAppointment {
 
 	@Override
 	public String toString() {
-		return "Appointment [appointmentId=" + appointmentId + ", patientId="
-				+ patientId + ", PatientFirstName=" + PatientFirstName
-				+ ", PatientLastName=" + PatientLastName + ", startTime="
-				+ startTime + ", endTime=" + endTime + ", appointmentDate="
-				+ appointmentDate + "]";
+		return "Appointment [appointmentId=" + appointmentId + ", patientId=" + id + ", PatientName=" + name
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", appointmentDate=" + appointmentDate + "]";
+	}
+
+	public Status getStat() {
+		return stat;
+	}
+
+	public void setStat(Status stat) {
+		this.stat = stat;
+	}
+
+	public boolean isCanCancel() {
+		return canCancel;
+	}
+
+	public void setCanCancel(boolean canCancel) {
+		this.canCancel = canCancel;
 	}
 }

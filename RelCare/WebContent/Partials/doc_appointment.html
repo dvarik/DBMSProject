@@ -1,4 +1,4 @@
-<div class="row">
+<div class="container">
 	<div class="padding60">
 
 	</div>
@@ -15,15 +15,15 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr>
-			  <td data-title="Date">04/10/2016</td>
-			  <td data-title="Doctor">abc xyz</td>
-			  <td data-title="slot">2-3</td>
+		  <tr ng-repeat="apt in apts">
+			  <td data-title="Date">{{apt.appointmentDate}}</td>
+			  <td data-title="Patient">{{apt.name}}</td>
+			  <td data-title="slot">{{apt.startTime}}:00 - {{apt.endTime}}:00</td>
 			  <td data-title="report">
-				<button class="btn btn-primary" data-toggle="modal" data-target="#fillRepModal">Enter Diagnosis</button>
+				<button ng-show="apt.status.statusLabel='Booked'" class="btn btn-primary" data-toggle="modal" data-target="#fillRepModal">Enter Diagnosis</button>
 			  </td>
 			  <td data-title="cancel">
-				<md-button class="md-raised md-primary">Cancel</md-button>
+				<button ng-show="apt.canCancel==true" class="md-raised md-primary">Cancel</button>
 			  </td>
 			</tr>
 		  </tbody>

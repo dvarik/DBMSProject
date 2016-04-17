@@ -1,7 +1,7 @@
 angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 	
 	this.getAppointmentForDoc = function(){
-		var myurl = "getAppointments";
+		var myurl = "getAppointmentsForDoctor";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
