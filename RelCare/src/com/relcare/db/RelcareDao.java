@@ -17,6 +17,7 @@ import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.PatientProfile;
 
 @Component("RelCareDAO")
 public class RelcareDao {
@@ -159,5 +160,21 @@ public class RelcareDao {
 				},
 				docId);
 		return apt;
+	}
+	
+	public List<PatientProfile> getPatientProfile(int pId) {
+		List<PatientProfile> profile = jdbcTemplate.query(QueryConstants.PATIENT_PROFILE,
+				new RowMapper<PatientProfile>() {
+					@Override
+					public PatientProfile mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						PatientProfile row = new PatientProfile(rs.getString("fname"),rs.getString("lname"),rs.getDate("dateofbirth"),
+								rs.getString("gender"),rs.getString("city"),rs.getString("state"),rs.getString("zip"),rs.getString("insurance"));
+
+						return row;
+					}
+				},
+				pId);
+		return profile;
 	}
 }

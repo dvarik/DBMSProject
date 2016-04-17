@@ -1,3 +1,23 @@
+<head>     
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+	
+    <script src="../header/js/angular-ui-router.min.js"></script>
+    <script src="app.js"></script>
+	<script src="http://code.angularjs.org/1.2.10/angular.js"></script>
+    
+</head>
+
+<body ng-app = "hospApp" ng-controller = "profileController">
 <div class="col-md-7">
 			<div class="box box-info">
 				<div class="box-header with-border">
@@ -11,14 +31,14 @@
 					  <label for="patientName" class="col-sm-2 control-label">Name</label>
 
 					  <div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.name" >
+						<input type="text" class="form-control" ng-model="name" >
 					  </div>
 					</div>
 					<div class="form-group">
 					  <label for="city" class="col-sm-2 control-label">City</label>
 
 					  <div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.city">
+						<input type="text" class="form-control" ng-model="city">
 					  </div>
 					</div>
 					
@@ -26,51 +46,30 @@
 					  <label for="patientState" class="col-sm-2 control-label">State</label>
 
 					  <div class="col-sm-5">
-						
-						 <select class="form-control select2" ng-model="user.state" style="width: 100%;" >
-							  <option ng-repeat="state in states" value="{{state.abbrev}}">
-								{{state.abbrev}}
-							  </option>
-						</select>
+						<input type="text" class="form-control" ng-model="state">
 					  </div>
 					</div>
 					<div class="form-group">
 					  <label for="patientZip" class="col-sm-2 control-label">Zip</label>
 
 					  <div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.zipcode" >
+						<input type="text" class="form-control" ng-model="zipcode" >
 					  </div>
 					</div>
             		<div class="form-group">
 					  <label for="patientGender" class="col-sm-2 control-label">Gender</label>
 
 					  <div class="col-sm-5">
-						<form>
-						 <md-radio-group ng-model="user.gender">
-						  <md-radio-button value="Male" class="md-primary">Male</md-radio-button>
-						  <md-radio-button value="Female"> Female </md-radio-button>
-						</md-radio-group>
-						</form>
+						<input type="text" class="form-control" ng-model="gender" >
 					  </div>
 					</div>
 					<div class="form-group">
 					  <label for="patientDOB" class="col-sm-2 control-label">Date of birth</label>
-
-					  <div class="col-sm-5">
-						<md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
-						</div>
-					  
+					  	<input type="text" class="form-control" ng-model="dob" >
 					</div>
 					<div class="form-group">
 					  <label for="patientInsurance" class="col-sm-2 control-label">Insurance Type</label>
-
-					  <div class="col-sm-5">
-						<md-radio-group ng-model="user.insurance">
-						  <md-radio-button value="Platinum" class="md-primary">Platinum</md-radio-button>
-						  <md-radio-button value="Gold"> Gold </md-radio-button>
-						  <md-radio-button value="Silver">Diamond</md-radio-button>
-						</md-radio-group>
-					  </div>
+						<input type="text" class="form-control" ng-model="insurance" >
 					</div>
 					
 				  </div>
@@ -84,3 +83,4 @@
 			  </div>
 			  <!-- /.box -->
  </div>
+</body>

@@ -52,4 +52,9 @@ public class QueryConstants {
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
 			+ "where a.doctorid = ?";
+	
+	final static String PATIENT_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,p.insurancetype "
+			+ "from usefile u join patient p on u.useid = p.patientid "
+			+ "where p.patientid = ?";
+	
 }
