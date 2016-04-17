@@ -1,5 +1,6 @@
 package com.relcare.db;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -7,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -258,5 +260,37 @@ public class RelcareDao {
 					}
 				}, userId);
 		return pats;
+	}
+
+	public boolean saveDiagnosisReportid(final int id, String illness, String meds) {
+		
+		// define query arguments
+		Object[] params = new Object[] { id, illness };
+		
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.INTEGER, Types.VARCHAR };
+				// execute insert query to insert the data
+		
+		int row = jdbcTemplate.update(QueryConstants.ENTER_DIAG, params, types);
+		if(row == 1){
+			final String[] medList = meds.split(",");
+			jdbcTemplate.batchUpdate(QueryConstants.ENTER_MEDS, new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					ps.setInt(1, id);
+					ps.setString(2, medList[i] );
+					
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return medList.length;
+				}
+			});
+		}
+		
+		return (row == 1);
+		
 	}
 }

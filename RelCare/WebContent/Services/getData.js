@@ -66,4 +66,18 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+	this.saveRecord = function(rep){
+		var myurl = "saveDiagnosisReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params: {id: rep.id, meds:rep.meds, illness:rep.illness}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
 }]);

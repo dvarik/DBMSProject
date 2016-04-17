@@ -55,7 +55,7 @@ public class QueryConstants {
 			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
-			+ "where a.doctorid = ? and a.status in (0,1) order by a.appointmentdate desc, t.starttime asc";
+			+ "where a.doctorid = ? and a.status = 0 order by a.appointmentdate desc, t.starttime asc";
 
 	final static String USER_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,u.role "
 			+ "from userfile u where u.useid = ?";
@@ -90,6 +90,10 @@ public class QueryConstants {
 	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName,"
 			+ " u.gender, u.dateofbirth as dob"
 			+ " from userfile u,appointment ap where ap.PATIENTID = u.useid and ap.DOCTORID = ?";
+
+	public static final String ENTER_DIAG = "insert into diagnosis values(?,?)";
+
+	public static final String ENTER_MEDS = "INSERT INTO MEDICINEPRESCRIBED VALUES(?,?)";
 
 	
 	

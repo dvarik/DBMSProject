@@ -90,6 +90,15 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 	
+	@RequestMapping(value = "/saveDiagnosisReport", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String saveDiagnosisReport(@RequestParam("id") int id, @RequestParam("illness") String illness,
+			@RequestParam("meds") String meds) {
+		//trigger to change appt stat to 1
+		return String.valueOf(dao.saveDiagnosisReportid(id, illness, meds));
+	}
+	
+	
 	@RequestMapping(value="/getPatientsForDoc", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getPatientsForDoc() {
