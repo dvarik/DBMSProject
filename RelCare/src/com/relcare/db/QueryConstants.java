@@ -143,7 +143,7 @@ public class QueryConstants {
 			+ "extract(month from appointmentdate)<=12 then 1 else 0 end) as winter "
 			+ "from appointment join diagnosis on diagnosisid=appointmentid join userfile "
 			+ "on patientid = useid "
-			+ "group by illnessname, state";
+			+ "group by illnessname, state order by illnessname, state";
 			
 	
 }
