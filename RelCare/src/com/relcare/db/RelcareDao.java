@@ -114,8 +114,8 @@ public class RelcareDao {
 					public IllnessStats mapRow(ResultSet rs, int arg1) throws SQLException {
 
 						IllnessStats row = new IllnessStats(rs.getString("state"), rs.getString("illnessname"),
-								Arrays.asList(rs.getInt("0-5"), rs.getInt("6-12"), rs.getInt("13-19"),
-										rs.getInt("20-40"), rs.getInt("Above40")));
+								rs.getInt("0-5"), rs.getInt("6-12"), rs.getInt("13-19"),
+										rs.getInt("20-40"), rs.getInt("Above40"));
 
 						return row;
 					}
@@ -218,7 +218,7 @@ public class RelcareDao {
 				pId);
 		return profile;
 	}
-
+	
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
 				new RowMapper<DiagnosisHistory>() {
@@ -248,7 +248,7 @@ public class RelcareDao {
 				}, userId);
 		return pats;
 	}
-
+	
 	public List<Appointment> getPatientUpcomingAppointments(int pId) {
 		List<Appointment> profile = jdbcTemplate.query(QueryConstants.UPCOMING_APPOINTMENT_PATIENTS,
 				new RowMapper<Appointment>() {
@@ -281,6 +281,20 @@ public class RelcareDao {
 		return profile;
 	}
 	
+	public DiagnosisHistory getDiagnosisPatient(int id,int appointmentid) {
+		DiagnosisHistory profile = jdbcTemplate.queryForObject(QueryConstants.PAT_DIAGNOSIS,
+				new RowMapper<DiagnosisHistory>() {
+					@Override
+					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
+						DiagnosisHistory row = new DiagnosisHistory(rs.getInt("diagnosisid"),
+								rs.getString("docName"), rs.getInt("doctorId"),
+								rs.getDate("appointmentdate"),rs.getString("illnessname"),rs.getString("medslist"));
+						return row;
+					}
+				},id,appointmentid);
+		return profile;
+	}
+	
 	public boolean saveDiagnosisReportid(final int id, String illness, String meds) {
 		
 		// define query arguments
@@ -310,46 +324,26 @@ public class RelcareDao {
 		}
 		
 		return (row == 1);
+		
 	}
 	
-	public DiagnosisHistory getDiagnosisPatient(int id,int appointmentid) {
-		DiagnosisHistory profile = jdbcTemplate.queryForObject(QueryConstants.PAT_DIAGNOSIS,
-				new RowMapper<DiagnosisHistory>() {
-					@Override
-					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
-						DiagnosisHistory row = new DiagnosisHistory(rs.getInt("diagnosisid"),
-								rs.getString("docName"), rs.getInt("doctorId"),
-								rs.getDate("appointmentdate"),rs.getString("illnessname"),rs.getString("medslist"));
-						return row;
-					}
-				},id,appointmentid);
-		return profile;
-	}
+	public List<BranchDeptRevenue> getBranches() {
+		List<BranchDeptRevenue> a = jdbcTemplate.query(QueryConstants.GET_BRANCHES,
+				new RowMapper<BranchDeptRevenue>() {
 
-	public List<Location> getLocation() {
-		List<Location> loc = jdbcTemplate.query(QueryConstants.GET_LOCATION,
-				new RowMapper<Location>() {
 					@Override
-					public Location mapRow(ResultSet rs, int arg1) throws SQLException {
-						Location row = new Location(rs.getInt("branchid"),rs.getString("city"),rs.getString("state"));
+					public BranchDeptRevenue mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						BranchDeptRevenue row = new BranchDeptRevenue(rs.getInt("branchid"),
+								rs.getString("state") + " - " + rs.getString("city"), 0, null, 0);
+
 						return row;
 					}
 				});
-		return loc;
-	}
-
-	public List<Data> getDoc(String  state, String  city, int  dept) {
-		List<Data> doc = jdbcTemplate.query(QueryConstants.GET_DOC,
-				new RowMapper<Data>() {
-					@Override
-					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
-						Data row = new Data(rs.getInt("doctorid"),rs.getString("docName"));
-						return row;
-					}
-				},state,city,dept);
-		return doc;
+		return a;
 	}
 	
+<<<<<<< HEAD
 	public List<Data> getDept(String state, String city) {
 		List<Data> dept = jdbcTemplate.query(QueryConstants.GET_DEPT,
 				new RowMapper<Data>() {
@@ -364,6 +358,9 @@ public class RelcareDao {
 	
 
 	public boolean saveAppointment(int docId, int patientId, String date, int time) {
+=======
+	public boolean saveAppointment(final int id, String date, int time) {
+>>>>>>> branch 'master' of https://github.com/dvarik/DBMSProject.git
 		
 		// define query arguments
 		Object[] params = new Object[] { docId,patientId, date, time };
@@ -376,5 +373,4 @@ public class RelcareDao {
 		
 		return (row == 1);
 	}
-	
 }

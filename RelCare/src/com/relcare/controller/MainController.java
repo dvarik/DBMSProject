@@ -246,4 +246,14 @@ public class MainController {
 		}.getType();
 		return gson.toJson(res, type);
 	}
+	
+	@RequestMapping(value = "/getBranches", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getBranches() {
+		List<BranchDeptRevenue> res = dao.getBranches();
+		Gson gson = new Gson();
+		Type type = new TypeToken<List<BranchDeptRevenue>>() {
+		}.getType();
+		return gson.toJson(res, type);
+	}
 }

@@ -1,4 +1,4 @@
-var hospApp = angular.module('hospApp', [ 'ngRoute' ]);
+var hospApp = angular.module('hospApp', [ 'ngRoute']);
 
 hospApp.config(function($routeProvider, $httpProvider) {
 
@@ -17,6 +17,9 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	}).when('/patientappointments', {
 		templateUrl : 'Partials/pat_appointment.html',
 		controller : 'PatientAppointmentController'
+	}).when('/stats', {
+		templateUrl : 'Partials/stats.html',
+		controller : 'StatisticsController'
 	}).otherwise('/profile');
 
 });
