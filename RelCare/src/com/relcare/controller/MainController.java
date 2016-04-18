@@ -21,6 +21,7 @@ import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
+import com.relcare.object.IllnessSeasonStats;
 import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
@@ -255,7 +256,7 @@ public class MainController {
 		return gson.toJson(res, type);
 	}
 
-	@RequestMapping(value = "/getIllnessStatsReport", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getIllnessStatsPerAge", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getIllnessStats() {
 		List<IllnessStats> res = dao.getIllnessStats();
@@ -264,7 +265,17 @@ public class MainController {
 		}.getType();
 		return gson.toJson(res, type);
 	}
-
+	
+	@RequestMapping(value = "/getIllnessStatsPerSeason", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getIllnessStatsPerSeason() {
+		List<IllnessSeasonStats> res = dao.getIllnessStatsPerSeason();
+		Gson gson = new Gson();
+		Type type = new TypeToken<List<IllnessSeasonStats>>() {
+		}.getType();
+		return gson.toJson(res, type);
+	}
+	
 	@RequestMapping(value = "/getInsuranceStatsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getInsuranceStats() {

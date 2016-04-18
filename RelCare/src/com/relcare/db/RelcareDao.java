@@ -25,6 +25,7 @@ import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.Data;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
+import com.relcare.object.IllnessSeasonStats;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.Location;
@@ -89,7 +90,7 @@ public class RelcareDao {
 		return b;
 
 	}
-
+	
 	public List<IllnessStats> getIllnessStats() {
 
 		List<IllnessStats> b = jdbcTemplate.query(QueryConstants.ILLNESS_STATS_PER_STATE_PER_AGEGRP,
@@ -101,6 +102,27 @@ public class RelcareDao {
 						IllnessStats row = new IllnessStats(rs.getString("state"), rs.getString("illnessname"),
 								rs.getInt("0-5"), rs.getInt("6-12"), rs.getInt("13-19"),
 										rs.getInt("20-40"), rs.getInt("Above40"));
+
+						return row;
+					}
+				});
+
+		return b;
+
+	}
+
+
+	public List<IllnessSeasonStats> getIllnessStatsPerSeason() {
+
+		List<IllnessSeasonStats> b = jdbcTemplate.query(QueryConstants.ILLNESS_PER_SEASON_STATS,
+				new RowMapper<IllnessSeasonStats>() {
+
+					@Override
+					public IllnessSeasonStats mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						IllnessSeasonStats row = new IllnessSeasonStats(rs.getString("state"),
+								rs.getString("illnessname"), rs.getInt("spring"), rs.getInt("summer"),
+								rs.getInt("fall"), rs.getInt("winter"));
 
 						return row;
 					}

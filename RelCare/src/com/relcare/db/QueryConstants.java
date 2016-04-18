@@ -125,12 +125,13 @@ public class QueryConstants {
 
 	public static final String GET_BRANCHES = "select br.branchid, br.state, br.city "
 			+ "from branch br order by br.state,br.city";
-
+	
 	public static final String GET_TIME = "select * from timeslot t "
 			+ "where t.timeslotid not in (select a.timeslotid from appointment a "
 			+ "where appointmentdate = ? and a.doctorid = ?)";
 
 	public static final String CANCEL_APT = "update appointment set status = ? where appointmentid = ?";
+<<<<<<< HEAD
 
 	public static final String GET_RANK = "select * from rank";
 	
@@ -141,4 +142,21 @@ public class QueryConstants {
 	public static final String REGISTER_DOC = "insert into doctors(doctorid,registrationnum,departmentid,branchid,rankid) values(?,?,?,?,?)";
 
 	public static final String DELETE_DOC = "update doctors set active = 0 where doctorid = ?";
+=======
+	
+	public static final String ILLNESS_PER_SEASON_STATS = "select illnessname, state,"
+			+ "sum(case when extract(month from appointmentdate) >=1 and "
+			+ "extract(month from appointmentdate) <=3 then 1 else 0 end) as spring,"
+			+ "sum(case when extract(month from appointmentdate)>=4 and "
+			+ "extract(month from appointmentdate)<=6 then 1 else 0 end) as summer,"
+			+ "sum(case when extract(month from appointmentdate)>=7 and "
+			+ "extract(month from appointmentdate)<=9 then 1 else 0 end) as fall,"
+			+ "sum(case when extract(month from appointmentdate)>=10 and "
+			+ "extract(month from appointmentdate)<=12 then 1 else 0 end) as winter "
+			+ "from appointment join diagnosis on diagnosisid=appointmentid join userfile "
+			+ "on patientid = useid "
+			+ "group by illnessname, state order by illnessname, state";
+			
+	
+>>>>>>> branch 'master' of https://github.com/dvarik/DBMSProject.git
 }

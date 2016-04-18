@@ -16,6 +16,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	$scope.chart2='false';
 	$scope.chart3='false';
 	$scope.chart4='false';
+	$scope.chart5='false';
 	
 	$scope.selectedBranch = null;
 	$scope.branches = {};
@@ -26,6 +27,8 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 		$scope.chart2='false';
 		$scope.chart3='false';
 		$scope.chart4='false';
+		$scope.chart5='false';
+		
 		getDataSvc.getBranches().then(function(res) {
 	        if (res != null) {
 	           $scope.branches = res;
@@ -67,6 +70,8 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 		$scope.chart2='true';
 		$scope.chart3='false';
 		$scope.chart4='false';
+		$scope.chart5='false';
+		
     	tbl2 = []; 
     		
 		getDataSvc.getIllnessStats().then(function(res) {
@@ -119,6 +124,8 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     	$scope.chart2='false';
     	$scope.chart3='true';
     	$scope.chart4='false';
+    	$scope.chart5='false';
+    	
     	getDataSvc.getInsuranceStats().then(function(res) {
 	   	        if (res != null) {
 	   	           tbl3 = res;
@@ -163,6 +170,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 		$scope.chart2='false';
 		$scope.chart3='false';
 		$scope.chart4='true';
+		$scope.chart5='false';
     		
 		getDataSvc.getPatientCountStats().then(function(res) {
 	        if (res != null) {
@@ -214,6 +222,53 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     	    };
 
 	  chart.draw(data, options);
+    }
+    
+    var tbl5 = [];
+    $scope.charter5 = function(){
+    	
+    	$scope.chart1='false';
+		$scope.chart2='false';
+		$scope.chart3='false';
+		$scope.chart4='false';
+		$scope.chart5='true';
+    		
+		getDataSvc.getIllnessStatsPerSeason().then(function(res) {
+	        if (res != null) {
+        	   tbl5 = res;
+		       $scope.ills = [];
+		       var temp = [];
+	    	   $.each(tbl5,function(){
+	    		   if(temp.indexOf(this["illnessName"]) == -1){
+	    			   var obj = {"illnessName":this["illnessName"]};
+	    			   $scope.ills.push(obj);
+	    			   temp.push(this["illnessName"]);
+	    		   }
+	    	   });
+	    	   temp = [];
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+    }
+    
+    $scope.showChartSeason = function(){
+    	var inArray = [["State","Spring","Summer","Fall","Winter"]];
+	    $.each(tbl5, function() {
+	    	if(this["illnessName"] == $scope.selectedIll.illnessName){
+	        var item = [this["state"],this["springCount"],this["summerCount"],this["fallCount"],this["winterCount"]];
+	        inArray.push(item);
+	    	}
+	    });
+    
+	    console.log(inArray);
+		var data = google.visualization.arrayToDataTable(inArray);
+	      var chart = new google.visualization.AreaChart(document.getElementById('chartdiv5'));
+	      var options = {
+	    	      title : 'Seasonal stats for ' + $scope.selectedIll.illnessName
+	    	    };
+	
+		  chart.draw(data, options);
     }
 
 }]);
