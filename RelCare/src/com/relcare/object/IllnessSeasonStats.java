@@ -1,24 +1,22 @@
 package com.relcare.object;
 
-public class IllnessStats {
+public class IllnessSeasonStats {
 
 	String state;
 	String illnessName;
-	int below6;
-	int six12;
-	int thirteen19;
-	int twenty40;
-	int above40;
+	int springCount;
+	int summerCount;
+	int fallCount;
+	int winterCount;
 	
-	public IllnessStats(String state, String illnessName, int below6,int six,int thir,int twen, int abv) {
+	public IllnessSeasonStats(String state, String illnessName, int spring,int summer,int fall,int winter) {
 		super();
 		this.state = state;
 		this.illnessName = illnessName;
-		this.below6 = below6;
-		this.six12 = six;
-		this.thirteen19 = thir;
-		this.twenty40 = twen;
-		this.above40 = abv;
+		this.springCount = spring;
+		this.summerCount = summer;
+		this.fallCount = fall;
+		this.winterCount = winter;
 	}
 
 	public String getState() {
@@ -37,5 +35,4 @@ public class IllnessStats {
 		this.illnessName = illnessName;
 	}
 
-	
 }

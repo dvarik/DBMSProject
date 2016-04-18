@@ -146,7 +146,7 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 	};
 	
 	this.getIllnessStats = function(){
-		var myurl = "getIllnessStatsReport";
+		var myurl = "getIllnessStatsPerAge";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
@@ -241,6 +241,19 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 	
 	this.getPatientCountStats = function(){
 		var myurl = "getTotalDeptPatientsReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getIllnessStatsPerSeason = function(){
+		var myurl = "getIllnessStatsPerSeason";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl
