@@ -5,7 +5,7 @@
 			<li><a href="" ng-click="charter1()">Branch Revenues Chart</a></li>
 			<li><a href="" ng-click="charter2()">Illness Region Age-group Chart</a></li>
 			<li><a href="" ng-click="charter3()">Insurance Info Chart</a></li>
-			<li><a href="" ng-click="charter4()">Branch-Departmental Patient Count Chart</a></li>
+			<li><a href="" ng-click="charter4()">Branchwise Patient Count Chart</a></li>
 		</ul>
 	</div>
 
@@ -38,10 +38,12 @@
 				</div>
 				<div id="c4" ng-show="chart4=='true'" class="col-lg-12">
 					<h1>Patients per Departmental Branch</h1>
+					<label for="select">Select Branch</label>
+  					<select ng-options="b.branchCity for b in brs"  ng-model="selectedbrs" ng-change="chart4a()"></select>
 					<label for="select">Select Year</label>
-  					<select ng-options="i.illnessName for i in ils"  ng-model="selectedil" ng-change="showChartIns()"></select>
+  					<select ng-options="y.year for y in years"  ng-model="selectedYear" ng-change="showChartPat()"></select>
 					 <body>
-    					<div id="chartdiv3" style="width: 900px; height: 900px;"></div>
+    					<div id="chartdiv4" style="width: 900px; height: 900px;"></div>
   					</body>
 				</div>
 			</div>

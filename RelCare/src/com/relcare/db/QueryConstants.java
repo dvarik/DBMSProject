@@ -7,22 +7,14 @@ public class QueryConstants {
 			+ "department dt left join doctors dr on dt.deptid = dr.DEPARTMENTID "
 			+ "join appointment a on a.doctorid = dr.doctorid " + "join bill b on b.appointmentid = a.appointmentid "
 			+ "group by dt.deptid, dt.name, dt.branchid) tc " + "on br.branchid = tc.branchid";
-
-	final static String AVG_DEPT_PATIENTS = "select tc.deptid, tc.name, tc.branchid, br.city, avg(tc.c) as avgP "
+	
+	final static String COUNT_DEPT_PATIENTS_PER_YEAR = "select tc.deptid, tc.name, br.branchid, br.state || ' - ' || br.city as city, tc.c, tc.year "
 			+ "from branch br left join "
 			+ "( select count(distinct(a.patientid)) as c,  d.deptid, d.name, d.branchid, to_char(a.appointmentdate, 'YYYY') as year "
 			+ "from department d left join doctors dr on d.deptid = dr.departmentid "
 			+ "join appointment a on a.doctorid = dr.doctorid "
 			+ "group by d.deptid, d.name, d.branchid, to_char(a.appointmentdate, 'YYYY') ) tc "
-			+ "on br.branchid = tc.branchid " + "group by tc.deptid, tc.name, tc.branchid, br.city";
-
-	final static String COUNT_DEPT_PATIENTS_PER_YEAR = "select tc.deptid, tc.name, br.branchid, br.city, tc.c, tc.year "
-			+ "from branch br join "
-			+ "( select count(distinct(a.patientid)) as c,  d.deptid, d.name, d.branchid, to_char(a.appointmentdate, 'YYYY') as year "
-			+ "from department d left join doctors dr on d.deptid = dr.departmentid "
-			+ "join appointment a on a.doctorid = dr.doctorid "
-			+ "group by d.deptid, d.name, d.branchid, to_char(a.appointmentdate, 'YYYY') ) tc "
-			+ "on br.branchid = tc.branchid";
+			+ "on br.branchid = tc.branchid order by city,tc.name";
 
 	final static String INSURANCE_STATS = "select dia.illnessname, br.branchid, br.state || ' - ' || br.city as city, count(a.patientid) as c"
 			+ " from branch br left join department d on d.BRANCHID = br.BRANCHID "

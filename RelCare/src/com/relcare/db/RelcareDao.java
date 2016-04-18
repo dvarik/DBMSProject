@@ -47,24 +47,6 @@ public class RelcareDao {
 		return a;
 	}
 
-	public List<DeptPatients> getAvgPatientsPerDept() {
-
-		List<DeptPatients> b = jdbcTemplate.query(QueryConstants.AVG_DEPT_PATIENTS, new RowMapper<DeptPatients>() {
-
-			@Override
-			public DeptPatients mapRow(ResultSet rs, int arg1) throws SQLException {
-
-				DeptPatients row = new DeptPatients(rs.getInt("branchid"), rs.getString("city"), rs.getInt("deptid"),
-						rs.getString("name"), rs.getInt("avgP"));
-
-				return row;
-			}
-		});
-
-		return b;
-
-	}
-
 	public List<DeptPatients> getTotalPatientsPerDept() {
 
 		List<DeptPatients> b = jdbcTemplate.query(QueryConstants.COUNT_DEPT_PATIENTS_PER_YEAR,
