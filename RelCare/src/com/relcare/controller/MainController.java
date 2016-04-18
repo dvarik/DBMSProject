@@ -1,6 +1,7 @@
 package com.relcare.controller;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.Location;
+import com.relcare.object.TimeSlot;
 import com.relcare.object.UserProfile;
 
 @Controller
@@ -177,14 +179,28 @@ public class MainController {
 		return new Gson().toJson(loc, type);
 	}
 	
+	@RequestMapping(value="/getTimeSlot", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getTimeSlot(@RequestParam(value = "dateStr") String dateStr,@RequestParam(value = "docId") int docId) throws ParseException {
+		List<TimeSlot> loc = dao.getTimeSlot(dateStr,docId);
+		Type type = new TypeToken<List<TimeSlot>>() {
+		}.getType();
+		return new Gson().toJson(loc, type);
+	}
+	
 	@RequestMapping(value = "/saveAppointment", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String saveAppointment(@RequestParam("docId") int docid, @RequestParam("aptdate") String date,
-			@RequestParam("time") int timeId) {
+			@RequestParam("time") int timeId) throws ParseException {
 		int userid = Integer.parseInt(getUserId());
 		return String.valueOf(dao.saveAppointment(docid,userid, date, timeId));
 	}
-	
+
+	@RequestMapping(value = "/cancelAppointment", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String cancelAppointment(@RequestParam("aptId") int aptid) {
+		return String.valueOf(dao.cancelAppointment(aptid));
+	}
 	
 	@RequestMapping(value="/getPaymentHistory", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody

@@ -184,6 +184,19 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+	this.getTimeSlot = function(rep,rep2){
+		var myurl = "getTimeSlot";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params: {dateStr: rep,docId:rep2}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 return promise;
+	};
+	
 	this.getDept = function(a,b){
 		var myurl = "getDept";
 		console.log(a);
@@ -218,6 +231,20 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		        method : "GET",
 		        url : myurl,
 		        params: {docId: rep.doc, aptdate:rep.date, time:rep.time}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.cancelAppointment = function(rep){
+		var myurl = "cancelAppointment";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params: {aptId: rep}
 		    }).then(function(response) {
 		    	console.log(response.data);
 		        return response.data;

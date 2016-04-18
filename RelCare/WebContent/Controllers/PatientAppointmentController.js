@@ -1,10 +1,38 @@
 angular.module('hospApp').controller('PatientAppointmentController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
 	$scope.selectedPat = null;
+	$scope.selectedDoc = null;
 	$scope.selectedState = null;
 	$scope.selectedBranch = null;
 	$scope.historyDetail = {};
 	$scope.loc = {};
+	$scope.range = [];
+	$scope.selectedDay = null;
+	$scope.selectedMonth = null;
+	$scope.month = [{"id":"05","Name":"May"},
+	                {"id":"06","Name":"June"},
+	                {"id":"07","Name":"July"},
+	                {"id":"08","Name":"Aug"},
+	                {"id":"09","Name":"Sept"},
+	                {"id":"10","Name":"Oct"},
+	                {"id":"11","Name":"Nov"},
+	                {"id":"12","Name":"Dec"}];
+
+	
+    $scope.getDay = function(rep) {
+    	$scope.selectedMonth = rep;
+    	n = 31;
+        if(rep == "02"){
+        	n = 28;
+        }
+        if(rep == "04" || rep == "06" || rep == "09" || rep == "11"){
+        	n = 30;
+        }
+        $scope.range = new Array(n);
+        $scope.apt.month = rep;
+    };
+    
+    
 	
 	getDataSvc.getUpcomingAppointmentForPat().then(function(res) {
         if (res != null) {
@@ -56,6 +84,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	};
 	
 	$scope.getDoc = function(rep){
+		$scope.selectedDoc = rep;
 		getDataSvc.getDoc($scope.selectedState,$scope.selectedBranch,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.doc = res;
@@ -64,20 +93,43 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	        }
 	    });
 	};
+
+	$scope.getTimeSlot = function(){
+		var str = "";
+		str = str.concat($scope.selectedMonth + "-" + $scope.apt.day + "-2016");
+		$scope.apt.date = str;
+		getDataSvc.getTimeSlot(str,$scope.apt.doc).then(function(res) {
+	        if (res != null) {
+	           $scope.times = res;
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+	};
 	
-	$scope.saveAppointment = funtion(){
+	$scope.saveAppointment = function(){
 		console.log($scope.apt);
 		getDataSvc.saveAppointment($scope.apt).then(function(res) {
 	        if (res == 'true') {
 	           $('#aptModal').modal('hide');
 	       	   $scope.apt = {};
-	       	   init();
 	        } else {
 	            console.log("Error");
 	            $('#aptModal').modal('hide')
 		       	$scope.apt = {};
 	        }
 	    });
+	};
+	
+	$scope.cancelAppointment = function(rep,index){
+		console.log($scope.apt);
+		getDataSvc.cancelAppointment(rep).then(function(res) {
+	        if (res == 'true') {
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+		$scope.apt1.splice(index,1);
 	};
 	
 	$scope.showReportModal = function(rep){

@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.relcare.authenticator.RelUserDetails;
+import com.relcare.object.TimeSlot;
 import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
@@ -380,7 +385,25 @@ public class RelcareDao {
 	}
 	
 
-	public boolean saveAppointment(int docId, int patientId, String date, int time) {
+	public List<TimeSlot> getTimeSlot(String dateStr,int doctor) throws ParseException {
+		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+		Date d = format.parse(dateStr);
+		java.sql.Date date = new java.sql.Date(d.getTime()); 
+		List<TimeSlot> time = jdbcTemplate.query(QueryConstants.GET_TIME,
+				new RowMapper<TimeSlot>() {
+					@Override
+					public TimeSlot mapRow(ResultSet rs, int arg1) throws SQLException {
+						TimeSlot row = new TimeSlot(rs.getInt("timeslotid"),rs.getInt("starttime"),rs.getInt("endtime"));
+						return row;
+					}
+				},date,doctor);
+		return time;
+	}
+
+	public boolean saveAppointment(int docId, int patientId, String dateStr, int time) throws ParseException {
+		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+		Date d = format.parse(dateStr);
+		java.sql.Date date = new java.sql.Date(d.getTime()); 
 
 		// define query arguments
 		Object[] params = new Object[] { docId,patientId, date, time };
@@ -392,5 +415,19 @@ public class RelcareDao {
 		int row = jdbcTemplate.update(QueryConstants.ENTER_APT, params, types);
 		
 		return (row == 1);
+	}
+
+	public boolean cancelAppointment(int aptid) {
+		// define query arguments
+			int status = 2;
+				Object[] params = new Object[] { status, aptid };
+				
+				// define SQL types of the arguments
+				int[] types = new int[] { Types.INTEGER, Types.INTEGER };
+				
+				// execute insert query to insert the data
+				int row = jdbcTemplate.update(QueryConstants.CANCEL_APT, params, types);
+				
+				return (row == 1);
 	}
 }

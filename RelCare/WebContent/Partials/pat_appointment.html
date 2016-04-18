@@ -16,12 +16,12 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr ng-repeat = "a in apt1" >
+		  <tr ng-repeat = "a in apt1 track by $index" >
 			  <td data-title="Date">{{a.id}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
 			  <td data-title="cancel">
-				<md-button class="md-raised md-primary">Cancel</md-button>
+			  <button class="btn btn-primary" ng-click="cancelAppointment(a.appointmentId,$index)">Cancel</button>
 			  </td>
 			</tr>
 		  </tbody>
@@ -92,14 +92,21 @@
                   </div>
 				  <div class="form-group">
                     <label for="date">Appointment Date</label>
-                    <md-datepicker ng-model="apt.date" md-placeholder="Enter date"></md-datepicker>
+                    <label for="date">Year: 2016</label>
+                    <label for="date">Month: </label>
+                    <select class="form-control select2" ng-model="apt.month" style="width: 100%;" ng-change="getDay(apt.month)" >
+                    	<option ng-repeat="m in month" value="{{m.id}}">{{m.Name}}</option>
+					</select>
+					<label for="date">Day: </label>
+                    <select class="form-control select2" ng-model="apt.day" style="width: 100%;" ng-change="getTimeSlot()" >
+                    	<option ng-repeat="r in range track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
+					</select>
                   </div>
+                  
 				  <div class="form-group">
                     <label for="time_slot">Time-slot</label>
                       <select class="form-control select2" ng-model="apt.time" style="width: 100%;" >
-							  <option >
-								
-							  </option>
+							  <option ng-repeat="t in times" value="{{t.id}}">{{t.start}}:00</option>
 						</select>
                   </div>
                 </form>
@@ -108,7 +115,7 @@
             <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="insertAppointment()">Submit</button>
+                <button type="button" class="btn btn-primary" ng-click="saveAppointment()">Submit</button>
             </div>
         </div>
     </div>
