@@ -17,10 +17,12 @@ import com.relcare.authenticator.RelUserDetails;
 import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
+import com.relcare.object.Data;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.Location;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
