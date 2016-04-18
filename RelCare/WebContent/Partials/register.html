@@ -1,0 +1,199 @@
+<div id="wrapper">
+	<!-- Sidebar -->
+	<div id="sidebar-wrapper">
+		<ul class="sidebar-nav">
+			<li><a href="" ng-click="showRegisterDoc()">Register Doctor</a></li>
+			<li><a href="" ng-click="showDeregisterDoc()">De-Register Doctor</a></li>
+		</ul>
+	</div>
+
+	<div id="page-content-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div id="c1" ng-show="register=='true'" class="col-lg-12">
+					<!-- Register a doc -->
+					<div class="col-md-7">
+						<div class="box box-info">
+							<div class="box-header with-border"><h3 class="box-title">Register a Doctor</h3></div>
+							<!-- /.box-header -->
+							<!-- form start -->
+							<form class="form-horizontal" name="userForm">
+								<div class="box-body">
+			  						<h5 style="color:#9933ff;">Personal Information</h5>
+									<div class="form-group">
+				  						<label for="doctorFname" class="col-sm-2 control-label">First Name</label>
+										<div class="col-sm-5">
+											<input type="text" class="form-control" ng-model="user.fname" >
+				  						</div>
+									</div>
+									<div class="form-group">
+				  						<label for="doctorLname" class="col-sm-2 control-label">Last Name</label>
+										<div class="col-sm-5">
+											<input type="text" class="form-control" ng-model="user.lname" >
+				  						</div>
+									</div>
+									<div class="form-group">
+										<div class="form-group">
+					  						<label for="doctorCity" class="col-sm-2 control-label">City</label>
+											<div class="col-sm-5">
+												<input type="text" class="form-control" ng-model="user.city">
+					  						</div>
+										</div>
+										<div class="form-group">
+					  						<label for="doctorState" class="col-sm-2 control-label">State</label>
+											<div class="col-sm-5">
+												<input type="text" class="form-control" ng-model="user.state">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="doctorZip" class="col-sm-2 control-label">Zip</label>
+											<div class="col-sm-5">
+												<input type="text" class="form-control" ng-model="user.zip" >
+											</div>
+										</div>
+									</div>
+			            			<div class="form-group">
+										<label for="doctorGender" class="col-sm-2 control-label">Gender</label>				
+								 		<div class="col-sm-5 dropdown">
+											<select class="form-control select2" ng-model="user.gender" style="width: 100%;" >
+												<option value="Male">Male</option>
+										  		<option value="Female">Female</option>
+											</select>
+								  		</div>
+									</div>
+									<div class="form-group">
+				  						<label for="doctorDOB" class="col-sm-2 control-label">Date of birth</label>
+				  						<div class="col-sm-5">
+				  								<select class="form-control select2" ng-model="user.year" style="width: 30%;" >
+													<option ng-repeat="y in year track by $index" value="{{2015 - $index}}">{{2015 - $index}}</option>></option>
+												</select>
+												<select class="form-control select2" ng-model="user.month" style="width: 30%;" ng-change = "getDay(user.month)">
+													<option ng-repeat="m in month" value = "{{m.id}}">{{m.Name}}</option>
+												</select>
+												<select class="form-control select2" ng-model="user.day" style="width: 30%;" >
+													<option ng-repeat="r in range track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
+												</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="doctorEmail" class="col-sm-2 control-label">Email</label>				
+								 		<div class="col-sm-5 dropdown">
+											<input type = "text" class="form-control" ng-model = "user.email"></input>
+								  		</div>
+									</div>
+									<div class="form-group">
+										<label for="doctorPassword" class="col-sm-2 control-label">Password</label>				
+								 		<div class="col-sm-5 dropdown">
+											<input type = "password" class="form-control" ng-model = "user.password"></input>
+								  		</div>
+									</div>
+
+									<h5 style="color:#9933ff;">Professional Information</h5>
+									<div class="form-group">
+					  					<label for="doctorRegNum" class="col-sm-2 control-label">Registration Number</label>
+					  					<div class="col-sm-5">
+											<input type="text" class="form-control" ng-model="user.regnum" >
+					  					</div>
+									</div>
+									<div class="form-group">
+										<label for="doctorState" class="col-sm-2 control-label">State</label>
+										<div class="col-sm-5">
+											<select class="form-control select2" ng-model="user.stateB" style="width: 100%;" ng-change="loadBranch(user.stateB)">
+								  				<option ng-repeat="state in loc" value="{{state.state}}">{{state.state}}</option>
+											</select>
+					  					</div>
+									</div>
+									<div class="form-group">
+					  					<label for="doctorBranch" class="col-sm-2 control-label">Branch</label>
+										<div class="col-sm-5 dropdown">
+							  				<select class="form-control select2" ng-model="user.branch" style="width: 100%;" ng-change="getDept(user.branch)" >
+								  				<option ng-repeat="b in branch" value="{{b}}">{{b}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="doctorDept" class="col-sm-2 control-label">Department</label>
+										<div class="col-sm-5 dropdown">
+											<select class="form-control select2" ng-model="user.dept" style="width: 100%;" ng-change="getDoc(user.dept)">
+							  					<option ng-repeat="d in dept" value="{{d.id}}">{{d.name}}</option>
+											</select>
+					  					</div>
+									</div>
+									<div class="form-group">
+					  					<label for="doctorRank" class="col-sm-2 control-label">Rank</label>
+										<div class="col-sm-5 dropdown">
+						  					<select class="form-control select2" ng-model="user.rankid" style="width: 100%;" >
+							  					<option ng-repeat="r in rank" value = "{{r.id}}">{{r.name}}</option>
+							  				</select>
+							  			</div>
+							  		</div>
+							  	</div>
+							</div>
+							<!-- /.box-body -->
+							<div class="box-footer">
+								<button type="submit" class="btn btn-primary pull-right" ng-click = "registerDoc()">Save</button>
+				  			</div>
+				  			<!-- /.box-footer -->
+						</form>
+			  		</div>
+		  		<!-- /.box -->
+ 				</div>
+					
+				
+				<!-- DeRegister a doctor -->
+				<div id="c2" ng-show="deregister=='true'" class="col-lg-12">
+					<div class="col-md-7">
+						<div class="box box-info">
+							<div class="box-header with-border"><h3 class="box-title" style="color:#0099cc;">De-Register a Doctor</h3></div>
+							<!-- /.box-header -->
+							<!-- form start -->
+							<form class="form-horizontal" name="userForm">
+				  				<div class="box-body">
+									<div class="form-group">
+										<label for="doctorState" class="col-sm-2 control-label">State</label>
+										<div class="col-sm-5">
+											<select class="form-control select2" ng-model="doctor.state" style="width: 100%;" ng-change="loadBranch(doctor.state)">
+								  				<option ng-repeat="state in loc" value="{{state.state}}">{{state.state}}</option>
+											</select>
+					  					</div>
+									</div>
+									<div class="form-group">
+					  					<label for="doctorBranch" class="col-sm-2 control-label">Branch</label>
+										<div class="col-sm-5 dropdown">
+							  				<select class="form-control select2" ng-model="doctor.branch" style="width: 100%;" ng-change="getDept(doctor.branch)" >
+								  				<option ng-repeat="b in branch" value="{{b}}">{{b}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="doctorDept" class="col-sm-2 control-label">Department</label>
+										<div class="col-sm-5 dropdown">
+											<select class="form-control select2" ng-model="doctor.dept" style="width: 100%;" ng-change="getDoc(doctor.dept)">
+							  					<option ng-repeat="d in dept" value="{{d.id}}">{{d.name}}</option>
+											</select>
+					  					</div>
+									</div>
+									<div class="form-group">
+						  				<label for="doctorName" class="col-sm-2 control-label">Name</label>
+	
+						  				<div class="col-sm-5 dropdown">
+								  			<select class="form-control select2" ng-model="doctor.id" style="width: 100%;" >
+									  			<option ng-repeat="d in doc" value="{{d.id}}">{{d.name}}</option>
+									 		</select>
+						  				</div>
+									</div>
+							  </div>
+							  <!-- /.box-body -->
+							  <div class="box-footer">
+								<button type="submit" class="btn btn-primary pull-right" ng-click = "deregisterDoc()">De-register</button>
+							  </div>
+							  <!-- /.box-footer -->
+							</form>
+						  </div>
+						  <!-- /.box -->
+ 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

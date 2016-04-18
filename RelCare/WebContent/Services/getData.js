@@ -253,6 +253,58 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+	this.getRank = function(){
+		var myurl = "getRank";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 return promise;
+	};
+	
+	this.registerDoc = function(rep){
+		var myurl = "registerDoc";
+		var date = "";
+		var k = rep.day.toString();
+		var s = "0";
+		if(rep.day < 10)
+			k = s.concat(k);
+		date = (rep.year.toString()).concat("-",rep.month,"-",k);
+		var z = rep.zip.toString();
+		var p = rep.password.toString();
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params : {fname:rep.fname, lname:rep.lname,
+		        	dcity:rep.city, dstate:rep.state, zip:z,
+		        	gender:rep.gender, dob:date,
+		        	email:rep.email, pass:p,
+		        	reg:rep.regnum,
+		        	state:rep.stateB, branch:rep.branch, dept:rep.dept,
+		        	rankid:rep.rankid}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 return promise;
+	}
+	
+	this.deregisterDoc = function(rep){
+		var myurl = "deRegisterDoc";
+		var promise = $http({
+	        method : "GET",
+	        url : myurl,
+	        params : {doctorId: rep}
+	    }).then(function(response) {
+	    	console.log(response.data);
+	        return response.data;
+	    });
+		return promise;
+	}
+	
 	this.getInsuranceStats = function(){
 		var myurl = "getInsuranceStatsReport";
 		 var promise = $http({

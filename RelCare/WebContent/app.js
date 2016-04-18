@@ -20,7 +20,10 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	}).when('/stats', {
 		templateUrl : 'Partials/stats.html',
 		controller : 'StatisticsController'
+	}).when('/registration', {
+		templateUrl : 'Partials/register.html',
+		controller : 'RegistrationController'
 	}).otherwise('/profile');
-
+	
 });
 
