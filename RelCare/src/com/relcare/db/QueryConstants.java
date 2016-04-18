@@ -131,7 +131,6 @@ public class QueryConstants {
 			+ "where appointmentdate = ? and a.doctorid = ?)";
 
 	public static final String CANCEL_APT = "update appointment set status = ? where appointmentid = ?";
-<<<<<<< HEAD
 
 	public static final String GET_RANK = "select * from rank";
 	
@@ -142,7 +141,7 @@ public class QueryConstants {
 	public static final String REGISTER_DOC = "insert into doctors(doctorid,registrationnum,departmentid,branchid,rankid) values(?,?,?,?,?)";
 
 	public static final String DELETE_DOC = "update doctors set active = 0 where doctorid = ?";
-=======
+
 	
 	public static final String ILLNESS_PER_SEASON_STATS = "select illnessname, state,"
 			+ "sum(case when extract(month from appointmentdate) >=1 and "
@@ -158,5 +157,4 @@ public class QueryConstants {
 			+ "group by illnessname, state order by illnessname, state";
 			
 	
->>>>>>> branch 'master' of https://github.com/dvarik/DBMSProject.git
 }
