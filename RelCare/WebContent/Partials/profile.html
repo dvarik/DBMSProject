@@ -1,4 +1,4 @@
-<div class="col-md-7">
+<div class="container">
 	<div class="box box-info">
 		<div class="box-header with-border">
 			<h3 class="box-title">Personal Information</h3>
@@ -12,7 +12,7 @@
 						Name</label>
 
 					<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.fname">
+						<input ng-readOnly = "true" type="text" class="form-control" ng-model="user.fname">
 					</div>
 				</div>
 				<div class="form-group">
@@ -20,7 +20,7 @@
 						Name</label>
 
 					<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.lname">
+						<input ng-readOnly = "true" type="text" class="form-control" ng-model="user.lname">
 					</div>
 				</div>
 				<div class="form-group">
@@ -49,28 +49,31 @@
 					<label for="Gender" class="col-sm-2 control-label">Gender</label>
 
 					<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.gender">
+						<input ng-readOnly="true" type="text" class="form-control" ng-model="user.gender">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="DOB" class="col-sm-2 control-label">Date
 						of birth</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.dob">
+						<input ng-readOnly = "true" type="text" class="form-control" ng-model="user.dob">
 					</div>
 				</div>
-				<div ng-show="user.insurance!=null" class="form-group">
+				<div ng-show="user.role=='patient'" class="form-group">
 					<label for="patientInsurance" class="col-sm-2 control-label">Insurance
 						Type</label>
-					<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="user.insurance">
-					</div>
+						<select data-ng-model="user.insurance">
+  						<option>gold</option>
+  						<option>platinum</option>
+  						<option>diamond</option>
+						</select>
 				</div>
 
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer">
-				
+				<button class="btn btn-primary" ng-click="saveProfile()">Update</button>
+				<span ng-show="saved==true">Updated!</span>
 			</div>
 			<!-- /.box-footer -->
 		</form>

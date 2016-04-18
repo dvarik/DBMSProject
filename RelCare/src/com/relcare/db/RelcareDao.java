@@ -159,14 +159,17 @@ public class RelcareDao {
 		}, userName);
 	}
 
-	public boolean registerUser(String fname, String lname, String email, String pword, String role) {
-		
+	public boolean registerUser(String fname, String lname, String email, String pword, String role, String gender,
+			String dob) {
+
+		String sql = QueryConstants.REGISTER_USER.replace("%s", dob);
 		// define query arguments
-		Object[] params = new Object[] { fname, lname, email, pword, role };
+		Object[] params = new Object[] { fname, lname, email, pword, role, gender};
 		// define SQL types of the arguments
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.VARCHAR};
 		// execute insert query to insert the data
-		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+		int row = jdbcTemplate.update(sql, params, types);
 
 		return (row == 1);
 	}
@@ -198,7 +201,7 @@ public class RelcareDao {
 			}
 		}, pId);
 		
-		if (profile.getRole().equals("Patient")) {
+		if (profile.getRole().equals("patient")) {
 
 			String insuranceType = jdbcTemplate.queryForObject(QueryConstants.GET_INSURANCE, new RowMapper<String>() {
 				@Override
@@ -432,5 +435,22 @@ public class RelcareDao {
 				int row = jdbcTemplate.update(QueryConstants.CANCEL_APT, params, types);
 				
 				return (row == 1);
+	}
+
+	public void saveUserProfile(int userid, String state, String city, String zip, String insurance, String role) {
+
+		// define query arguments
+		Object[] params = new Object[] { state, city, zip, userid };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+
+		// execute update query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.UPDATE_USER_PROFILE, params, types);
+
+		if (role.equals("patient") && row == 1) {
+			params = new Object[] { insurance, userid };
+			types = new int[] { Types.VARCHAR, Types.INTEGER };
+			jdbcTemplate.update(QueryConstants.UPDATE_INSURANCE, params, types);
+		}
+
 	}
 }

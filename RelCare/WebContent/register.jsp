@@ -9,6 +9,7 @@
 <body>
 <div align="center">
 <form style="align:center" method="post" action="<%=request.getContextPath()%>/registeruser">
+<div>Please enter the following details to register as a patient.</div>
 <table border="0 none" >
 		<tr>
 			<td><span class="login-label">First Name:</span> </td>
@@ -26,7 +27,16 @@
 			<td><span class="login-label">Password:</span></td>
 			<td><input type="password" value="" name="pword" id="pword" class="Login-Input"/></td>
 		</tr>
-		</table>
+		<tr>
+			<td><span class="login-label">Gender:</span></td>
+			<td><input type="radio" name="gender" id="gender" value="Female">Female</input>
+			<input type="radio" name="gender" id="gender" value="Male">Male</input></td>
+		</tr>
+		<tr>
+			<td><span class="login-label">Dob:</span></td>
+			<td><input type="dob" value="" name="dob" id="dob" class="Login-Input"/>(MM/DD/YYYY)</td>
+		</tr>
+</table>
 	<input type="submit" value="Register" name="Login-Submit" class="Login-Input" />
 </form>
 </div>

@@ -293,4 +293,18 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+	this.saveProfile = function(s,c,z,i,r){
+		var myurl = "saveProfile";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl,
+		        params: {state:s,city:c,zip:z,insurance:i,role:r}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
 }]);

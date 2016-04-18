@@ -2,6 +2,7 @@ package com.relcare.controller;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ import com.relcare.db.RelcareDao;
 import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
+import com.relcare.object.Data;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
 import com.relcare.object.IllnessSeasonStats;
-import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.Location;
@@ -47,9 +48,17 @@ public class MainController {
 
 	@RequestMapping("/registeruser")
 	public String register(@RequestParam("fname") String fname, @RequestParam("lname") String lname,
-			@RequestParam("email") String email, @RequestParam("pword") String pword) {
+			@RequestParam("email") String email, @RequestParam("pword") String pword, @RequestParam("gender") String gender,  @RequestParam("dob") String dob) {
 		
-		boolean res = dao.registerUser(fname,lname,email,pword,"patient");
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		boolean res = false;
+		try {
+			formatter.parse(dob);
+			res = dao.registerUser(fname,lname,email,pword,"patient", gender, dob);
+		} catch (ParseException e) {
+			res = false;
+			e.printStackTrace();
+		}
 
 		return "login.jsp?registered=" + (res ? "true" : "false");
 	}
@@ -83,6 +92,15 @@ public class MainController {
 		Type type = new TypeToken<UserProfile>() {
 		}.getType();
 		return new Gson().toJson(profile, type);
+	}
+	
+	@RequestMapping(value="/saveProfile", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String saveUserProfile(@RequestParam("state") String state, @RequestParam("city") String city, @RequestParam("zip") String zip,
+			@RequestParam("insurance") String insurance, @RequestParam("role") String role) {
+		int userid = Integer.parseInt(getUserId());
+		dao.saveUserProfile(userid,state,city,zip,insurance,role);
+		return "true";
 	}
 
 	@RequestMapping(value = "/getAppointmentsForDoctor", method = RequestMethod.GET, produces = "application/json")

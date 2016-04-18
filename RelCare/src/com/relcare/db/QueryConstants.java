@@ -40,7 +40,8 @@ public class QueryConstants {
 
 	public static final String LOAD_USER = "select * from userfile where email = ?";
 	
-	public static final String REGISTER_USER = "insert into userfile(useid,fname,lname,email,password,role) values(16002,?,?,?,?,?)";
+	public static final String REGISTER_USER = "insert into userfile(fname,lname,email,password,role,gender,dateofbirth) values(?,?,?,?,?,?,"
+			+ "to_date('%s','MM/DD/YYYY'))";
 	
 	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname || ' ' || u.lname As fullname, "
 			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
@@ -144,6 +145,10 @@ public class QueryConstants {
 			+ "from appointment join diagnosis on diagnosisid=appointmentid join userfile "
 			+ "on patientid = useid "
 			+ "group by illnessname, state order by illnessname, state";
+
+	public static final String UPDATE_USER_PROFILE = "update userfile set state=?, city=?, zip=? where useid = ?";
+	
+	public static final String UPDATE_INSURANCE = "update patient set insurancetype=? where patientid = ?";
 			
 	
 }
