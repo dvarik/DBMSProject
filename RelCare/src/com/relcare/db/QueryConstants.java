@@ -42,6 +42,9 @@ public class QueryConstants {
 	
 	public static final String REGISTER_USER = "insert into userfile(fname,lname,email,password,role,gender,dateofbirth) values(?,?,?,?,?,?,"
 			+ "to_date('%s','MM/DD/YYYY'))";
+			
+	public static final String REGISTER_USER = "insert into userfile(fname,lname,email,password,gender,dateofbirth,state,city,zip,role) values(?,?,?,?,?,?,?,?,?,?)";
+	
 	
 	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname || ' ' || u.lname As fullname, "
 			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
@@ -108,7 +111,7 @@ public class QueryConstants {
 			+ "join branch b on b.branchid = d.branchid "
 			+ "join doctors d1 on d1.branchid = b.branchid "
 			+ "join userfile u on u.useid = d1.doctorid "
-			+ "where b.state = ? and b.city = ? and d.deptid = ?";
+			+ "where b.state = ? and b.city = ? and d.deptid = ? and d1.active = 1";
 
 	public static final String GET_DEPT = "select * from department d "
 			+ "join branch b on b.branchid = d.branchid "
@@ -132,6 +135,17 @@ public class QueryConstants {
 			+ "where appointmentdate = ? and a.doctorid = ?)";
 
 	public static final String CANCEL_APT = "update appointment set status = ? where appointmentid = ?";
+
+	public static final String GET_RANK = "select * from rank";
+	
+	public static final String GET_ID = "select useid from userfile where email = ?";
+
+	public static final String GET_BRANCHID = "select branchid from branch where state = ? and city = ?";
+	
+	public static final String REGISTER_DOC = "insert into doctors(doctorid,registrationnum,departmentid,branchid,rankid) values(?,?,?,?,?)";
+
+	public static final String DELETE_DOC = "update doctors set active = 0 where doctorid = ?";
+
 	
 	public static final String ILLNESS_PER_SEASON_STATS = "select illnessname, state,"
 			+ "sum(case when extract(month from appointmentdate) >=1 and "

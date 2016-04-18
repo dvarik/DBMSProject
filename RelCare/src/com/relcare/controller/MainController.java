@@ -220,6 +220,33 @@ public class MainController {
 	public String cancelAppointment(@RequestParam("aptId") int aptid) {
 		return String.valueOf(dao.cancelAppointment(aptid));
 	}
+
+	@RequestMapping(value="/getRank", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getRank() {
+		List<Data> loc = dao.getRank();
+		Type type = new TypeToken<List<Data>>() {
+		}.getType();
+		return new Gson().toJson(loc, type);
+	}
+	
+	
+	@RequestMapping(value = "/registerDoc", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String registerDoc(@RequestParam("fname") String fname, @RequestParam("lname") String lname,  
+			@RequestParam("dcity") String dcity, @RequestParam("dstate") String dstate, @RequestParam("zip") String dzip,
+			@RequestParam("gender") String gender,@RequestParam("dob") String dob, @RequestParam("email") String email, 
+			@RequestParam("pass") String pass,@RequestParam("reg") Integer reg, @RequestParam("state") String state, 
+			@RequestParam("branch") String branch, @RequestParam("dept") String dept,@RequestParam("rankid") Integer rankid) throws ParseException {
+		return String.valueOf(dao.registerDoc(fname,lname,dcity,dstate,dzip,gender,dob,email,pass,
+				reg,state,branch,dept,rankid));
+	}
+	
+	@RequestMapping(value = "/deRegisterDoc", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String deRegisterDoc(@RequestParam("doctorId") int id ) {
+		return String.valueOf(dao.deRegisterDoc(id));
+	}
 	
 	@RequestMapping(value="/getPaymentHistory", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody

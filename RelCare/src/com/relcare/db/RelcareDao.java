@@ -174,6 +174,23 @@ public class RelcareDao {
 		return (row == 1);
 	}
 	
+	public boolean registerUser(String fname, String lname, String email, String pword,String dob, String gender,
+			 String city, String state, String zip,String role) throws ParseException {
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = format.parse(dob);
+		java.sql.Date date = new java.sql.Date(d.getTime());
+		// define query arguments
+		Object[] params = new Object[] { fname, lname, email, pword, role };
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR ,
+				Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+
+		return (row == 1);
+	}
+	
 	public List<Appointment> getAppointmentsForDoctor(int docId) {
 		List<Appointment> apt = jdbcTemplate.query(QueryConstants.APPOINTMENT_FOR_DOC,
 				new RowMapper<Appointment>() {
@@ -452,5 +469,75 @@ public class RelcareDao {
 			jdbcTemplate.update(QueryConstants.UPDATE_INSURANCE, params, types);
 		}
 
+	}
+	
+	public List<Data> getRank() {
+		List<Data> loc = jdbcTemplate.query(QueryConstants.GET_RANK,
+				new RowMapper<Data>() {
+					@Override
+					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
+						Data row = new Data(rs.getInt("rankid"),rs.getString("experience"));
+						return row;
+					}
+				});
+		return loc;
+	}
+
+	public boolean registerDoc(String fname, String lname, String dcity,
+			String dstate, String dzip, String gender, String dob,
+			String email, String pass, int reg, String state, String branch,
+			String dept, int rankid) throws ParseException {
+
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = format.parse(dob);
+		java.sql.Date date = new java.sql.Date(d.getTime()); 
+
+		// define query arguments
+		String role = "doctor";
+		Object[] params = new Object[] { fname, lname, email, pass, gender, date, dstate, dcity, dzip,  role };
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+		
+		if(row==1){
+			Integer id = jdbcTemplate.queryForObject(QueryConstants.GET_ID, new RowMapper<Integer>() {
+				@Override
+				public Integer mapRow(ResultSet rs, int arg1) throws SQLException {
+
+					Integer r = new Integer(rs.getInt("useid"));
+					return r;
+				}
+			}, email);
+			
+			Integer branchId = jdbcTemplate.queryForObject(QueryConstants.GET_BRANCHID, new RowMapper<Integer>() {
+				@Override
+				public Integer mapRow(ResultSet rs, int arg1) throws SQLException {
+
+					Integer r = new Integer(rs.getInt("branchid"));
+					return r;
+				}
+			}, state,branch);
+
+			Object[] param1 = new Object[] { id, reg, dept, branchId, rankid};
+			// define SQL types of the arguments
+			int[] type1 = new int[] { Types.INTEGER, Types.INTEGER,  Types.INTEGER, Types.VARCHAR, Types.INTEGER};
+			// execute insert query to insert the data
+			int row1 = jdbcTemplate.update(QueryConstants.REGISTER_DOC, param1, type1);
+			return (row1 == 1);
+		}
+		
+		return (row == 1);
+	}
+
+	public boolean deRegisterDoc(int id) {
+		// define query arguments
+		Object[] params = new Object[] { id };
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.INTEGER };
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.DELETE_DOC, params, types);
+		return(row==1);		
 	}
 }
