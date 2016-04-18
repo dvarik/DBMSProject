@@ -3,7 +3,7 @@
 <div class = "padding60">
 <div class="dropdown">
   <label for="select">Select Patient</label>
-  <select ng-options="pat.fname for pat in pats"  ng-model="selectedPat" ng-change="showHistory()"></select>
+  <select ng-options="pat.fname for pat in pats"  ng-model="selectedPat" ng-change="showHistory(a.appointmentid)"></select>
 </div>
 </div>
 <div class="row" ng-show="selectedPat!=null">

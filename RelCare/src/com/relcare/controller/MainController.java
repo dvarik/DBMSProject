@@ -20,8 +20,10 @@ import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
+import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.Location;
 import com.relcare.object.UserProfile;
 
 @Controller
@@ -117,11 +119,21 @@ public class MainController {
 		return new Gson().toJson(profile, type);
 	}
 
-	@RequestMapping(value="/getAppointmentsForPatient", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value="/getUpcomingAppointmentsForPatient", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getUpcomingAppointmentsForPatient() {
 		int userid = Integer.parseInt(getUserId());
-		List<Appointment> profile = dao.getPatientAppointments(userid);
+		List<Appointment> profile = dao.getPatientUpcomingAppointments(userid);
+		Type type = new TypeToken<List<Appointment>>() {
+		}.getType();
+		return new Gson().toJson(profile, type);
+	}
+	
+	@RequestMapping(value="/getPastAppointmentsForPatient", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getPastAppointmentsForPatient() {
+		int userid = Integer.parseInt(getUserId());
+		List<Appointment> profile = dao.getPatientPastAppointments(userid);
 		Type type = new TypeToken<List<Appointment>>() {
 		}.getType();
 		return new Gson().toJson(profile, type);
@@ -129,13 +141,49 @@ public class MainController {
 	
 	@RequestMapping(value="/getDiagnosisHistoryOfPatient", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public String getDiagnosisHistoryOfPatient() {
+	public String getDiagnosisHistoryOfPatient(@RequestParam(value = "appointmentid") Integer appointmentid) {
 		int userid = Integer.parseInt(getUserId());
-		List<DiagnosisHistory> profile = dao.getDiagnosisPatient(userid);
-		Type type = new TypeToken<List<Appointment>>() {
+		DiagnosisHistory profile = dao.getDiagnosisPatient(userid,appointmentid);
+		Type type = new TypeToken<DiagnosisHistory>() {
 		}.getType();
 		return new Gson().toJson(profile, type);
 	}
+	
+	@RequestMapping(value="/getLocation", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getLocation() {
+		List<Location> loc = dao.getLocation();
+		Type type = new TypeToken<List<Location>>() {
+		}.getType();
+		return new Gson().toJson(loc, type);
+	}
+	
+	@RequestMapping(value="/getDoc", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getDoc(@RequestParam(value = "state") String state,@RequestParam(value = "dept") int dept,
+			@RequestParam(value = "city") String city) {
+		List<Data> loc = dao.getDoc(state,city,dept);
+		Type type = new TypeToken<List<Data>>() {
+		}.getType();
+		return new Gson().toJson(loc, type);
+	}
+	
+	@RequestMapping(value="/getDept", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getDept(@RequestParam(value = "state") String state,@RequestParam(value = "city") String city) {
+		List<Data> loc = dao.getDept(state,city);
+		Type type = new TypeToken<List<Data>>() {
+		}.getType();
+		return new Gson().toJson(loc, type);
+	}
+	
+	@RequestMapping(value = "/saveAppointment", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String saveAppointment(@RequestParam("docId") int id, @RequestParam("aptdate") String date,
+			@RequestParam("time") int timeId) {
+		return String.valueOf(dao.saveAppointment(id, date, id));
+	}
+	
 	
 	@RequestMapping(value="/getPaymentHistory", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody

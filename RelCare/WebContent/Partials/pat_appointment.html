@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="padding60">
 	<section layout="row" layout-align="center center" layout-wrap>
-		  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#aptModal">Make a new appointment</button>
+		  <button class="btn btn-primary btn-lg" ng-click="showAptModal()">Make a new appointment</button>
 	</section>
 	</div>
 	<div class="table-responsive-vertical shadow-z-1">
@@ -16,7 +16,7 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr ng-repeat = "a in apt | filter : { a.cancancel : 'true' }" >
+		  <tr ng-repeat = "a in apt1" >
 			  <td data-title="Date">{{a.id}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
@@ -37,12 +37,12 @@
 			</tr>
 		  </thead>
 		  <tbody>
-		  <tr ng-repeat = "a in apt | filter : { a.cancancel : 'false' }">
-			  <td data-title="Date">{{a.id}}</td>
+		  <tr ng-repeat = "a in apt2">
+			  <td data-title="Date">{{a.appointmentDate}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
 			  <td data-title="report">
-				<button class="btn btn-primary" data-toggle="modal" data-target="#reportModal">View Report</button>
+				<button class="btn btn-primary" ng-click="showReportModal(a.appointmentId)">View Report</button>
 			  </td>
 			</tr>
 		  </tbody>
@@ -56,60 +56,47 @@
         <div class="modal-content col-sm-8">
             <!-- Modal Header -->
             <div class="modal-header">
-                <button type="button" class="close" 
-                   data-dismiss="modal">
+                <button type="button" class="close" data-dismiss="modal">
                        <span aria-hidden="true">&times;</span>
                        <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="aptModal">
-                    New Appointment
-                </h4>
+                <h4 class="modal-title" id="aptModal">New Appointment</h4>
             </div>
             
             <!-- Modal Body -->
             <div class="modal-body">
-                
                 <form role="form">
                   <div class="form-group">
-                    <label for="name">Name</label>
-                      <input type="text" class="form-control" ng-model="apt.name"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="age">Age</label>
-                      <input type="number" class="form-control" ng-model="apt.age"/>
-                  </div>
-				  <div class="form-group">
-                    <label for="branch">Hospital Branch</label>
-                      <select class="form-control select2" ng-model="apt.branch" style="width: 100%;" >
-							  <option ng-repeat="state in states" value="{{state.abbrev}}">
-								{{state.abbrev}}
-							  </option>
+                    <label for="branch">State</label>
+                      <select class="form-control select2" ng-model="apt.state" style="width: 100%;" ng-change="loadBranch(apt.state)" >
+							  <option ng-repeat="state in loc" value="{{state.state}}">{{state.state}}</option>
 					  </select>
                   </div>
 				  <div class="form-group">
+                    <label for="branch">Branch</label>
+                      <select class="form-control select2" ng-model="apt.branch" style="width: 100%;" ng-change="getDept(apt.branch)">
+							  <option ng-repeat="b in branch" value="{{b}}">{{b}}</option>
+						</select>
+                  </div>
+				  <div class="form-group">
                     <label for="department">Department</label>
-                      <select class="form-control select2" ng-model="apt.branch" style="width: 100%;" >
-							  <option >
-								
-							  </option>
+                      <select class="form-control select2" ng-model="apt.dept" style="width: 100%;" ng-change="getDoc(apt.dept)">
+							  <option ng-repeat="d in dept" value="{{d.id}}">{{d.name}}</option>
+						</select>
+                  </div>
+				  <div class="form-group">
+                    <label for="doctor">Doctor</label>
+                      <select class="form-control select2" ng-model="apt.doc" style="width: 100%;" >
+							  <option ng-repeat="d in doc" value="{{d.id}}">{{d.name}}</option>
 						</select>
                   </div>
 				  <div class="form-group">
                     <label for="date">Appointment Date</label>
                     <md-datepicker ng-model="apt.date" md-placeholder="Enter date"></md-datepicker>
-			 
                   </div>
 				  <div class="form-group">
                     <label for="time_slot">Time-slot</label>
-                      <select class="form-control select2" ng-model="apt.branch" style="width: 100%;" >
-							  <option >
-								
-							  </option>
-						</select>
-                  </div>
-				  <div class="form-group">
-                    <label for="doctor">Doctor</label>
-                      <select class="form-control select2" ng-model="apt.branch" style="width: 100%;" >
+                      <select class="form-control select2" ng-model="apt.time" style="width: 100%;" >
 							  <option >
 								
 							  </option>
@@ -120,13 +107,8 @@
             
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                            Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                    Submit
-                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="insertAppointment()">Submit</button>
             </div>
         </div>
     </div>
@@ -139,78 +121,46 @@
         <div class="modal-content col-sm-8">
             <!-- Modal Header -->
             <div class="modal-header">
-                <button type="button" class="close" 
-                   data-dismiss="modal">
+                <button type="button" class="close" data-dismiss="modal">
                        <span aria-hidden="true">&times;</span>
                        <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="reportModal">
-                    Diagnosis Report
-                </h4>
+                <h4 class="modal-title" id="reportModal">Diagnosis Report</h4>
             </div>
             
             <!-- Modal Body -->
-            <div class="modal-body">
-                
+            <div class="modal-body">    
                 <form class="form-horizontal" name="diagReport">
-		  <div class="box-body">
+		  			<div class="box-body">
 		  
-			<div class="form-group">
-			  <label for="report_date" class="control-label font_blue">Date : </label>
+						<div class="form-group">
+			  				<label for="report_date" class="control-label font_blue">Date: </label>
+			  				<label for="report_date" class="control-label font_black">{{historyDetail.appointmentDate}}</label>
+						</div>
+							
+				  		<div class="form-group">
+				  			<label for="report_doctor" class="control-label font_blue">Doctor: </label>
+			  				<label for="report_date" class="control-label font_black">{{historyDetail.docName}}</label>
 
-			  <label>
-			  <div class="col-sm-6">
+						</div>
+						
+						<div class="form-group">
+				  			<label for="report_illness" class="control-label font_blue">Illness description: </label>
+			  				<label for="report_date" class="control-label font_black">{{historyDetail.illnessDesc}}</label>
+			  			</div>
+				  		
+						<div class="form-group">
+				  			<label for="report_medicine" class="control-label font_blue">Medicines prescribed: </label>
+				  			<label for="report_date" class="control-label font_black">{{historyDetail.medicines}}</label>
+				  		</div>
 				
-			  </div>
-				
-			  </div>
-			  <div class="form-group">
-			  <label for="report_doctor" class="control-label font_blue">Doctor : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-			<div class="form-group">
-			  <label for="report_name" class="control-label font_blue">Patient name : </label>
-
-			  <div>
-				
-			  </div>
-			  </div>
-			  <div class="form-group">
-			  <label for="report_dob" class="control-label font_blue">Date of birth : </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-		  
-			<div class="form-group">
-			  <label for="report_illness" class="control-label font_blue">Illness description: </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-			
-			<div class="form-group">
-			  <label for="report_medicine" class="control-label font_blue">Medicines prescribed: </label>
-
-			  <div>
-				
-			  </div>
-			</div>
-		</form>
-            </div>
-            
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                            Close
-                </button>
-            </div>
-        </div>
-    </div>
+					</div>
+				</form>   
+			</div> 
+        	<!-- Modal Footer -->
+        	<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	</div>
+    	</div>
+	</div>
 </div>

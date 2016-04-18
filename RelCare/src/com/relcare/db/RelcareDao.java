@@ -20,8 +20,10 @@ import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
+import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.Location;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
@@ -216,21 +218,6 @@ public class RelcareDao {
 				pId);
 		return profile;
 	}
-	
-	public List<Appointment> getPatientAppointments(int pId) {
-		List<Appointment> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
-				new RowMapper<Appointment>() {
-					@Override
-					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
-								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
-								rs.getDate("appointmentdate"));
-
-						return row;
-					}
-				}, pId);
-		return profile;
-	}
 
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
@@ -261,9 +248,9 @@ public class RelcareDao {
 				}, userId);
 		return pats;
 	}
-	/*
-	public List<Appointment> getPatientAppointments(int pId) {
-		List<Appointment> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
+
+	public List<Appointment> getPatientUpcomingAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.UPCOMING_APPOINTMENT_PATIENTS,
 				new RowMapper<Appointment>() {
 					@Override
 					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -277,7 +264,23 @@ public class RelcareDao {
 				}, pId);
 		return profile;
 	}
-	*/
+	
+	public List<Appointment> getPatientPastAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.PAST_APPOINTMENT_PATIENTS,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
+								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
+								rs.getDate("appointmentdate"));
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
+						return row;
+					}
+				}, pId);
+		return profile;
+	}
+	
 	public boolean saveDiagnosisReportid(final int id, String illness, String meds) {
 		
 		// define query arguments
@@ -309,8 +312,8 @@ public class RelcareDao {
 		return (row == 1);
 	}
 	
-	public List<DiagnosisHistory> getDiagnosisPatient(int id) {
-		List<DiagnosisHistory> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
+	public DiagnosisHistory getDiagnosisPatient(int id,int appointmentid) {
+		DiagnosisHistory profile = jdbcTemplate.queryForObject(QueryConstants.PAT_DIAGNOSIS,
 				new RowMapper<DiagnosisHistory>() {
 					@Override
 					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -319,7 +322,59 @@ public class RelcareDao {
 								rs.getDate("appointmentdate"),rs.getString("illnessname"),rs.getString("medslist"));
 						return row;
 					}
-				},id);
+				},id,appointmentid);
 		return profile;
 	}
+
+	public List<Location> getLocation() {
+		List<Location> loc = jdbcTemplate.query(QueryConstants.GET_LOCATION,
+				new RowMapper<Location>() {
+					@Override
+					public Location mapRow(ResultSet rs, int arg1) throws SQLException {
+						Location row = new Location(rs.getInt("branchid"),rs.getString("city"),rs.getString("state"));
+						return row;
+					}
+				});
+		return loc;
+	}
+
+	public List<Data> getDoc(String  state, String  city, int  dept) {
+		List<Data> doc = jdbcTemplate.query(QueryConstants.GET_DOC,
+				new RowMapper<Data>() {
+					@Override
+					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
+						Data row = new Data(rs.getInt("doctorid"),rs.getString("docName"));
+						return row;
+					}
+				},state,city,dept);
+		return doc;
+	}
+	
+	public List<Data> getDept(String state, String city) {
+		List<Data> dept = jdbcTemplate.query(QueryConstants.GET_DEPT,
+				new RowMapper<Data>() {
+					@Override
+					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
+						Data row = new Data(rs.getInt("deptid"),rs.getString("name"));
+						return row;
+					}
+				},state,city);
+		return dept;
+	}
+	
+
+	public boolean saveAppointment(final int id, String date, int time) {
+		
+		// define query arguments
+		Object[] params = new Object[] { id, date, time };
+		
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.INTEGER, Types.DATE, Types.INTEGER };
+				// execute insert query to insert the data
+		
+		int row = jdbcTemplate.update(QueryConstants.ENTER_DIAG, params, types);
+		
+		return (row == 1);
+	}
+	
 }
