@@ -15,6 +15,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	$scope.chart1='false';
 	$scope.chart2='false';
 	$scope.chart3='false';
+	$scope.chart4='false';
 	
 	$scope.selectedBranch = null;
 	$scope.branches = {};
@@ -24,7 +25,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 		$scope.chart1='true';
 		$scope.chart2='false';
 		$scope.chart3='false';
-		
+		$scope.chart4='false';
 		getDataSvc.getBranches().then(function(res) {
 	        if (res != null) {
 	           $scope.branches = res;
@@ -65,20 +66,20 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     	$scope.chart1='false';
 		$scope.chart2='true';
 		$scope.chart3='false';
+		$scope.chart4='false';
     	tbl2 = []; 
     		
 		getDataSvc.getIllnessStats().then(function(res) {
 	        if (res != null) {
         	   tbl2 = res;
-        	   $scope.st = [];
 		       $scope.il = [];
 		       var temp = [];
 	    	   $.each(tbl2,function(){
-	    		   if(temp.indexOf(this["state"]) == -1)
+	    		   if(temp.indexOf(this["illnessName"]) == -1)
 	    		   {
-	    			   var obj = {"state":this["state"]};
-	    			   $scope.st.push(obj);
-	    			   temp.push(this["state"]);
+	    			   var obj = {"illnessName":this["illnessName"]};
+	    			   $scope.il.push(obj);
+	    			   temp.push(this["illnessName"]);
 	    		   }
 	    	   });
 	    	   temp = [];
@@ -88,43 +89,132 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    });
     }
     
-    $scope.charter2a = function(){
-    	$scope.il = [];
-    	 $.each(tbl2,function(){
-  		   if($scope.selectedst.state == this["state"])
-  		   {
-  			   var obj2 = {"illnessName":this["illnessName"]};
-  			   $scope.il.push(obj2);
-  		   }
-  	   });
-    }
-    
     $scope.showChartil = function(){
-    	var ilArray = [["AgeGroup","Count"]];
+    	var ilArray = [["State","0-5 years","6-12 years","13-19 years","20-40 years","Above 40 years"]];
 	    $.each(tbl2, function() {
-	    	if(this["illnessName"] == $scope.selectedil.illnessName && this["state"] == $scope.selectedst.state){
-	        var item = ["0-5 years", this["below6"]];
-	        ilArray.push(item);
-	        var item = ["6-12 years", this["six12"]];
-	        ilArray.push(item);
-	        var item = ["13-19 years", this["thirteen19"]];
-	        ilArray.push(item);
-	        var item = ["20-40 years", this["twenty40"]];
-	        ilArray.push(item);
-	        var item = ["Above 40 years", this["above40"]];
-	        ilArray.push(item);
+	    	if(this["illnessName"] == $scope.selectedil.illnessName){
+	    		var item = [this["state"], this["below6"], this["six12"], this["thirteen19"], this["twenty40"], this["above40"]];
+	 	        ilArray.push(item);
 	    	}
 	    });
     
     console.log(ilArray);
 	var data = google.visualization.arrayToDataTable(ilArray);
       var options = {
-        title: $scope.selectedst.state + ' stats for illness ' + $scope.selectedil.illnessName
+        title: ' Age wise Stats for ' + $scope.selectedil.illnessName,
+        width: 1000,
+        height: 800,
+        bar: { groupWidth: '95%' },
+        isStacked: true
       };
-      var chart = new google.visualization.Histogram(document.getElementById('chartdiv2'));
+      var chart = new google.visualization.BarChart(document.getElementById('chartdiv2'));
 
 	  chart.draw(data, options);
     }   
+    
+    var tbl3 = [];
+    
+    $scope.charter3 = function(){
+        $scope.chart1='false';
+    	$scope.chart2='false';
+    	$scope.chart3='true';
+    	$scope.chart4='false';
+    	getDataSvc.getInsuranceStats().then(function(res) {
+	   	        if (res != null) {
+	   	           tbl3 = res;
+	   	           $scope.ils = [];
+	   	           var temp = [];
+	   	          $.each(tbl3, function() {
+	   	        	if(temp.indexOf(this["illnessName"]) == -1){
+	   	        		$scope.ils.push({"illnessName":this["illnessName"]});
+	   	        		temp.push(this["illnessName"]);
+	   	        	}
+	   		    	});
+	   	          temp = [];
+	   	        } else {
+	   	            console.log("Error");
+	   	        }
+	   	    });
+    }
+    
+    $scope.showChartIns = function(){
+    	var inArray = [["Branch","Insured Patients count"]];
+	    $.each(tbl3, function() {
+	    	if(this["illnessName"] == $scope.selectedil.illnessName){
+	        var item = [this["branchCity"], this["patientCount"]];
+	        inArray.push(item);
+	    	}
+	    });
+    
+    console.log(inArray);
+	var data = google.visualization.arrayToDataTable(inArray);
+      var chart = new google.visualization.PieChart(document.getElementById('chartdiv3'));
+      var options = {
+    	      title : 'Insured Patients Per Branch for Illness ' + $scope.selectedil.illnessName
+    	    };
+
+	  chart.draw(data, options);
+    }
+    
+    var tbl4 = [];
+    $scope.charter4 = function(){
+    	
+    	$scope.chart1='false';
+		$scope.chart2='false';
+		$scope.chart3='false';
+		$scope.chart4='true';
+    		
+		getDataSvc.getPatientCountStats().then(function(res) {
+	        if (res != null) {
+        	   tbl4 = res;
+		       $scope.brs = [];
+		       var temp = [];
+	    	   $.each(tbl4,function(){
+	    		   if(temp.indexOf(this["branchCity"]) == -1){
+	    			   var obj = {"branchCity":this["branchCity"],"branchId":this["branchid"]};
+	    			   $scope.brs.push(obj);
+	    			   temp.push(this["branchCity"]);
+	    		   }
+	    	   });
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+    }
+    
+    $scope.chart4a = function(){
+    	var t = [];
+    	$scope.years = [];
+	    $.each(tbl4, function() {
+	    	if(this["branchid"] == $scope.selectedbrs.branchId){
+	    		if(t.indexOf(this["year"]) == -1){
+	    			$scope.years.push({"year":this["year"]});
+	    			t.push(this["year"]);
+	    		}
+	    	}
+	    });
+	    t = [];
+    }
+	    
+    $scope.showChartPat = function(){
+    	var inArray = [["Department","Patients count"]];
+	    $.each(tbl4, function() {
+	    	if(this["branchid"] == $scope.selectedbrs.branchId && this["year"] == $scope.selectedYear.year){
+	        var item = [this["deptName"],this["totalPatients"]];
+	        inArray.push(item);
+	    	}
+	    });
+    
+    console.log(inArray);
+	var data = google.visualization.arrayToDataTable(inArray);
+      var chart = new google.visualization.LineChart(document.getElementById('chartdiv4'));
+      var options = {
+    	      title : 'Patients per Dept for branch ' + $scope.selectedbrs.branchCity + ' in ' + $scope.selectedYear.year,
+    	      curveType: 'function'
+    	    };
+
+	  chart.draw(data, options);
+    }
 
 }]);
 })(document, window, window.angular);

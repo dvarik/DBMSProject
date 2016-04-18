@@ -238,13 +238,39 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 
 		 return promise;
 	};
-	
+
 	this.cancelAppointment = function(rep){
 		var myurl = "cancelAppointment";
 		 var promise = $http({
 		        method : "GET",
 		        url : myurl,
 		        params: {aptId: rep}
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getInsuranceStats = function(){
+		var myurl = "getInsuranceStatsReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getPatientCountStats = function(){
+		var myurl = "getTotalDeptPatientsReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
 		    }).then(function(response) {
 		    	console.log(response.data);
 		        return response.data;

@@ -213,16 +213,6 @@ public class MainController {
 		return new Gson().toJson(bill, type);
 	}
 	
-	@RequestMapping(value = "/getAvgDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public String getAvgDeptPatientsReport() {
-		List<DeptPatients> res = dao.getAvgPatientsPerDept();
-		Gson gson = new Gson();
-		Type type = new TypeToken<List<DeptPatients>>() {
-		}.getType();
-		return gson.toJson(res, type);
-	}
-
 	@RequestMapping(value = "/getTotalDeptPatientsReport", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String getTotalDeptPatientsReport() {
