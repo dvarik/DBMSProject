@@ -363,16 +363,16 @@ public class RelcareDao {
 	}
 	
 
-	public boolean saveAppointment(final int id, String date, int time) {
+	public boolean saveAppointment(int docId, int patientId, String date, int time) {
 		
 		// define query arguments
-		Object[] params = new Object[] { id, date, time };
+		Object[] params = new Object[] { docId,patientId, date, time };
 		
 		// define SQL types of the arguments
-		int[] types = new int[] { Types.INTEGER, Types.DATE, Types.INTEGER };
-				// execute insert query to insert the data
+		int[] types = new int[] { Types.INTEGER, Types.INTEGER, Types.DATE, Types.INTEGER };
 		
-		int row = jdbcTemplate.update(QueryConstants.ENTER_DIAG, params, types);
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.ENTER_APT, params, types);
 		
 		return (row == 1);
 	}
