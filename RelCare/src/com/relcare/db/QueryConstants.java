@@ -24,16 +24,15 @@ public class QueryConstants {
 			+ "group by d.deptid, d.name, d.branchid, to_char(a.appointmentdate, 'YYYY') ) tc "
 			+ "on br.branchid = tc.branchid";
 
-	final static String INSURANCE_STATS_PER_BRANCH_YEARLY = "select tc.*, br.city " + "from branch br join "
-			+ "( select count(a.patientid) as c, b.COST ,d.branchid, to_char(a.appointmentdate, 'YYYY') as year, "
-			+ "p.insurancetype, dia.illnessname "
-			+ "from department d left join doctors dr on d.deptid = dr.DEPARTMENTID "
-			+ "join appointment a on a.doctorid = dr.doctorid " + "join patient p on p.patientid = a.patientid "
-			+ "join bill b on b.appointmentid = a.appointmentid "
+	final static String INSURANCE_STATS = "select dia.illnessname, br.branchid, br.state || ' - ' || br.city as city, count(a.patientid) as c"
+			+ " from branch br left join department d on d.BRANCHID = br.BRANCHID "
+			+ "join doctors dr on d.deptid = dr.DEPARTMENTID "
+			+ "join appointment a on a.doctorid = dr.doctorid "
+			+ "join patient p on p.patientid = a.patientid "
 			+ "join diagnosis dia on dia.DIAGNOSISID = a.appointmentid "
-			// where b.cost = 0
-			+ "group by d.branchid, p.insurancetype, dia.illnessname, to_char(a.appointmentdate, 'YYYY'), b.cost) tc "
-			+ "on br.branchid = tc.branchid";
+			+ "where p.INSURANCETYPE is not null "
+			+ "group by dia.illnessname,br.branchid,br.state || ' - ' || br.city "
+			+ "order by dia.ILLNESSNAME";
 
 	final static String ILLNESS_STATS_PER_STATE_PER_AGEGRP = "select p.state, dia.illnessname, "
 			+ "sum(case when trunc(months_between(sysdate, p.dateofbirth)/12) <= 5 then 1 else 0 end) as \"0-5\", "
@@ -42,7 +41,8 @@ public class QueryConstants {
 			+ "sum(case when trunc(months_between(sysdate, p.dateofbirth)/12) > 19 and trunc(months_between(sysdate, p.dateofbirth)/12) <= 40  then 1 else 0 end) as \"20-40\", "
 			+ "sum(case when trunc(months_between(sysdate, p.dateofbirth)/12) > 40 then 1 else 0 end) as \"Above40\" "
 			+ "from userfile p " + "join appointment a on p.useid = a.patientid "
-			+ "join diagnosis dia on a.appointmentid = dia.DIAGNOSISID " + "group by p.state, dia.illnessname order by p.state, dia.illnessname";
+			+ "join diagnosis dia on a.appointmentid = dia.DIAGNOSISID " 
+			+ "group by dia.illnessname,p.state order by dia.illnessname, p.state";
 
 	public static final String AUTHENTICATE_USER = "select count(*) as c from userfile where email = ? and password = ?";
 

@@ -65,7 +65,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	    });
 	};
 	
-	$scope.saveAppointment = funtion(){
+	$scope.saveAppointment = function(){
 		console.log($scope.apt);
 		getDataSvc.saveAppointment($scope.apt).then(function(res) {
 	        if (res == 'true') {

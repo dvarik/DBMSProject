@@ -86,15 +86,14 @@ public class RelcareDao {
 
 	public List<InsuranceStats> getInsuranceStats() {
 
-		List<InsuranceStats> b = jdbcTemplate.query(QueryConstants.INSURANCE_STATS_PER_BRANCH_YEARLY,
+		List<InsuranceStats> b = jdbcTemplate.query(QueryConstants.INSURANCE_STATS,
 				new RowMapper<InsuranceStats>() {
 
 					@Override
 					public InsuranceStats mapRow(ResultSet rs, int arg1) throws SQLException {
 
 						InsuranceStats row = new InsuranceStats(rs.getInt("branchid"), rs.getString("city"),
-								rs.getString("year"), rs.getString("illnessname"), rs.getString("insurancetype"),
-								rs.getInt("cost"), rs.getInt("c"));
+								rs.getString("illnessname"),  rs.getInt("c"));
 
 						return row;
 					}
