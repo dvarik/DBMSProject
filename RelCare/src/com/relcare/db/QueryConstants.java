@@ -69,12 +69,19 @@ public class QueryConstants {
 			+ "join userfile u on d.doctorid = u.useid "
 			+ "where a.patientid = ?";
 	
-	final static String APPOINTMENT_PATIENTS = "select a.appointmentid,d.doctorid, u.fname || ' ' || u.lname as doctorName,"
-			+ "a.appointmentdate,t.starttime,t.endtime "
-			+ "from doctors d join appointment a on a.doctorid = d.doctorid "
-			+ "join userfile u on u.useid = d.doctorid "
+	final static String UPCOMING_APPOINTMENT_PATIENTS = "select a.appointmentid,	a.doctorid, u.fname || ' ' || u.lname as doctorName,"
+			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
+			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
+			+ "from appointment a join userfile u on u.useid = a.doctorid "
 			+ "join timeslot t on a.timeslotid = t.timeslotid "
-			+ "where a.patientid = ?";
+			+ "where a.patientid = ? and a.status = 0 order by a.appointmentdate asc, t.starttime asc";
+
+	final static String PAST_APPOINTMENT_PATIENTS = "select a.appointmentid,	a.doctorid, u.fname || ' ' || u.lname as doctorName,"
+			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
+			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
+			+ "from appointment a join userfile u on u.useid = a.doctorid "
+			+ "join timeslot t on a.timeslotid = t.timeslotid "
+			+ "where a.patientid = ? and a.status = 1 order by a.appointmentdate asc, t.starttime asc";
 
 	public static final String DIAGNOSIS_HISTORY = "select p.fname,p.lname,d.*,a.APPOINTMENTDATE,a.PATIENTID,meds.medslist "
 			+ "from diagnosis d "
@@ -87,7 +94,33 @@ public class QueryConstants {
 			+ "and prior diagnosisid = diagnosisid group by diagnosisid order by diagnosisid) meds "
 			+ "on meds.diagnosisid = d.DIAGNOSISID "
 			+ "where a.patientid = ? order by a.appointmentdate desc";
+	
+	public static final String PAT_DIAGNOSIS = "select u.fname || ' ' || u.lname as docName, d.diagnosisid,d.illnessname, "
+			+ "a.APPOINTMENTDATE,a.doctorid,meds.medslist "
+			+ "from diagnosis d "
+			+ "join appointment a on a.appointmentid = d.diagnosisid "
+			+ "join userfile u on u.useid = a.doctorid "
+			+ "join (select diagnosisid, ltrim(max(sys_connect_by_path(medicinename, ';' )), ';') medslist "
+			+ "from (select medicinename, diagnosisid, row_number() over "
+			+ "(partition by diagnosisid order by medicinename) rn from MEDICINEPRESCRIBED) "
+			+ "start with rn = 1 connect by prior rn = rn-1 "
+			+ "and prior diagnosisid = diagnosisid group by diagnosisid order by diagnosisid) meds "
+			+ "on meds.diagnosisid = d.DIAGNOSISID "
+			+ "where a.patientid = ? and a.appointmentid = ?";
+	
+	public static final String GET_LOCATION = "select branchid,city,state from branch";
 
+	public static final String GET_DOC = "select u.fname||' '||u.lname as docName,d1.doctorid "
+			+ "from department d "
+			+ "join branch b on b.branchid = d.branchid "
+			+ "join doctors d1 on d1.branchid = b.branchid "
+			+ "join userfile u on u.useid = d1.doctorid "
+			+ "where b.state = ? and b.city = ? and d.deptid = ?";
+
+	public static final String GET_DEPT = "select * from department d "
+			+ "join branch b on b.branchid = d.branchid "
+			+ "where b.state = ? and b.city = ?";
+			
 	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName,"
 			+ " u.gender, u.dateofbirth as dob"
 			+ " from userfile u,appointment ap where ap.PATIENTID = u.useid and ap.DOCTORID = ?";
@@ -96,7 +129,9 @@ public class QueryConstants {
 
 	public static final String ENTER_MEDS = "INSERT INTO MEDICINEPRESCRIBED VALUES(?,?)";
 
-	final static String GET_BRANCHES = "select br.branchid, br.state, br.city "
+	public static final String GET_BRANCHES = "select br.branchid, br.state, br.city "
 			+ "from branch br order by br.state,br.city";
+			
+	public static final String ENTER_APT = "";
 	
 }

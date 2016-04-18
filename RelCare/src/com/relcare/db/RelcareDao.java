@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
+import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
+import com.relcare.object.Location;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
@@ -216,21 +219,6 @@ public class RelcareDao {
 		return profile;
 	}
 	
-	public List<Appointment> getPatientAppointments(int pId) {
-		List<Appointment> profile = jdbcTemplate.query(QueryConstants.APPOINTMENT_PATIENTS,
-				new RowMapper<Appointment>() {
-					@Override
-					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
-						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
-								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
-								rs.getDate("appointmentdate"));
-
-						return row;
-					}
-				}, pId);
-		return profile;
-	}
-
 	public List<DiagnosisHistory> getDiagnosisHistory(Integer patientid) {
 		List<DiagnosisHistory> history = jdbcTemplate.query(QueryConstants.DIAGNOSIS_HISTORY,
 				new RowMapper<DiagnosisHistory>() {
@@ -260,7 +248,53 @@ public class RelcareDao {
 				}, userId);
 		return pats;
 	}
-
+	
+	public List<Appointment> getPatientUpcomingAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.UPCOMING_APPOINTMENT_PATIENTS,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
+								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
+								rs.getDate("appointmentdate"));
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
+						return row;
+					}
+				}, pId);
+		return profile;
+	}
+	
+	public List<Appointment> getPatientPastAppointments(int pId) {
+		List<Appointment> profile = jdbcTemplate.query(QueryConstants.PAST_APPOINTMENT_PATIENTS,
+				new RowMapper<Appointment>() {
+					@Override
+					public Appointment mapRow(ResultSet rs, int arg1) throws SQLException {
+						Appointment row = new Appointment(rs.getInt("appointmentid"),rs.getInt("doctorid"),
+								rs.getString("doctorName"), rs.getInt("starttime"),rs.getInt("endtime"),
+								rs.getDate("appointmentdate"));
+						row.setStat(Appointment.Status.getEnumFromTypeInt(rs.getInt("status")));
+						row.setCanCancel(rs.getString("canCancel").equals("true"));
+						return row;
+					}
+				}, pId);
+		return profile;
+	}
+	
+	public DiagnosisHistory getDiagnosisPatient(int id,int appointmentid) {
+		DiagnosisHistory profile = jdbcTemplate.queryForObject(QueryConstants.PAT_DIAGNOSIS,
+				new RowMapper<DiagnosisHistory>() {
+					@Override
+					public DiagnosisHistory mapRow(ResultSet rs, int arg1) throws SQLException {
+						DiagnosisHistory row = new DiagnosisHistory(rs.getInt("diagnosisid"),
+								rs.getString("docName"), rs.getInt("doctorId"),
+								rs.getDate("appointmentdate"),rs.getString("illnessname"),rs.getString("medslist"));
+						return row;
+					}
+				},id,appointmentid);
+		return profile;
+	}
+	
 	public boolean saveDiagnosisReportid(final int id, String illness, String meds) {
 		
 		// define query arguments
@@ -307,5 +341,19 @@ public class RelcareDao {
 					}
 				});
 		return a;
+	}
+	
+	public boolean saveAppointment(final int id, String date, int time) {
+		
+		// define query arguments
+		Object[] params = new Object[] { id, date, time };
+		
+		// define SQL types of the arguments
+		int[] types = new int[] { Types.INTEGER, Types.DATE, Types.INTEGER };
+				// execute insert query to insert the data
+		
+		int row = jdbcTemplate.update(QueryConstants.ENTER_DIAG, params, types);
+		
+		return (row == 1);
 	}
 }
