@@ -126,6 +126,12 @@ public class QueryConstants {
 	public static final String GET_BRANCHES = "select br.branchid, br.state, br.city "
 			+ "from branch br order by br.state,br.city";
 	
+	public static final String GET_TIME = "select * from timeslot t "
+			+ "where t.timeslotid not in (select a.timeslotid from appointment a "
+			+ "where appointmentdate = ? and a.doctorid = ?)";
+
+	public static final String CANCEL_APT = "update appointment set status = ? where appointmentid = ?";
+	
 	public static final String ILLNESS_PER_SEASON_STATS = "select illnessname, state,"
 			+ "sum(case when extract(month from appointmentdate) >=1 and "
 			+ "extract(month from appointmentdate) <=3 then 1 else 0 end) as spring,"
