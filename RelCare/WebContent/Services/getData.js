@@ -78,8 +78,7 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 
 		 return promise;
 	};
-	
-	this.getHistoryForPat = function(){
+		this.getHistoryForPat = function(){
 		var myurl = "getDiagnosisHistoryOfPatient";
 		 var promise = $http({
 		        method : "GET",
