@@ -106,4 +106,43 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+	this.getRevenueStats = function(){
+		var myurl = "getBranchRevenueReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getBranches = function(){
+		var myurl = "getBranches";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	this.getIllnessStats = function(){
+		var myurl = "getIllnessStatsReport";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
 }]);

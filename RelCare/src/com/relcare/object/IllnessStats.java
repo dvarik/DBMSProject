@@ -7,14 +7,23 @@ public class IllnessStats {
 
 	String state;
 	String illnessName;
-
+	int below6;
+	int six12;
+	int thirteen19;
+	int twenty40;
+	int above40;
+	
 	List<Integer> agegroups = new ArrayList<Integer>();
 	
-	public IllnessStats(String state, String illnessName, List<Integer> agegroups) {
+	public IllnessStats(String state, String illnessName, int below6,int six,int thir,int twen, int abv) {
 		super();
 		this.state = state;
 		this.illnessName = illnessName;
-		this.agegroups = agegroups;
+		this.below6 = below6;
+		this.six12 = six;
+		this.thirteen19 = thir;
+		this.twenty40 = twen;
+		this.above40 = abv;
 	}
 
 	public String getState() {

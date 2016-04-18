@@ -3,7 +3,7 @@ package com.relcare.db;
 public class QueryConstants {
 
 	final static String REVENUE_PER_DEPT = "select tc.deptid, tc.name, br.branchid, br.city, tc.totalcost "
-			+ "from branch br join " + "(select dt.deptid, dt.name, dt.branchid, sum(b.cost) as totalcost from "
+			+ "from branch br left join " + "(select dt.deptid, dt.name, dt.branchid, sum(b.cost) as totalcost from "
 			+ "department dt left join doctors dr on dt.deptid = dr.DEPARTMENTID "
 			+ "join appointment a on a.doctorid = dr.doctorid " + "join bill b on b.appointmentid = a.appointmentid "
 			+ "group by dt.deptid, dt.name, dt.branchid) tc " + "on br.branchid = tc.branchid";
@@ -42,7 +42,7 @@ public class QueryConstants {
 			+ "sum(case when trunc(months_between(sysdate, p.dateofbirth)/12) > 19 and trunc(months_between(sysdate, p.dateofbirth)/12) <= 40  then 1 else 0 end) as \"20-40\", "
 			+ "sum(case when trunc(months_between(sysdate, p.dateofbirth)/12) > 40 then 1 else 0 end) as \"Above40\" "
 			+ "from userfile p " + "join appointment a on p.useid = a.patientid "
-			+ "join diagnosis dia on a.appointmentid = dia.DIAGNOSISID " + "group by p.state, dia.illnessname";
+			+ "join diagnosis dia on a.appointmentid = dia.DIAGNOSISID " + "group by p.state, dia.illnessname order by p.state, dia.illnessname";
 
 	public static final String AUTHENTICATE_USER = "select count(*) as c from userfile where email = ? and password = ?";
 
@@ -55,7 +55,7 @@ public class QueryConstants {
 			+ "case when (sysdate < a.appointmentdate) then 'true' else 'false' end as canCancel "
 			+ "from appointment a join timeslot t on a.timeslotid = t.timeslotid "
 			+ "join userfile u on a.patientid = u.useid "
-			+ "where a.doctorid = ? and a.status = 0 order by a.appointmentdate desc, t.starttime asc";
+			+ "where a.doctorid = ? and a.status = 0 order by a.appointmentdate asc, t.starttime asc";
 
 	final static String USER_PROFILE = "select u.fname,u.lname,u.city,u.state,u.zip,u.gender,u.dateofbirth,u.role "
 			+ "from userfile u where u.useid = ?";
@@ -96,6 +96,7 @@ public class QueryConstants {
 
 	public static final String ENTER_MEDS = "INSERT INTO MEDICINEPRESCRIBED VALUES(?,?)";
 
-	
+	final static String GET_BRANCHES = "select br.branchid, br.state, br.city "
+			+ "from branch br order by br.state,br.city";
 	
 }

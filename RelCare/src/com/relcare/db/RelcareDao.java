@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,8 +111,8 @@ public class RelcareDao {
 					public IllnessStats mapRow(ResultSet rs, int arg1) throws SQLException {
 
 						IllnessStats row = new IllnessStats(rs.getString("state"), rs.getString("illnessname"),
-								Arrays.asList(rs.getInt("0-5"), rs.getInt("6-12"), rs.getInt("13-19"),
-										rs.getInt("20-40"), rs.getInt("Above40")));
+								rs.getInt("0-5"), rs.getInt("6-12"), rs.getInt("13-19"),
+										rs.getInt("20-40"), rs.getInt("Above40"));
 
 						return row;
 					}
@@ -292,5 +291,21 @@ public class RelcareDao {
 		
 		return (row == 1);
 		
+	}
+	
+	public List<BranchDeptRevenue> getBranches() {
+		List<BranchDeptRevenue> a = jdbcTemplate.query(QueryConstants.GET_BRANCHES,
+				new RowMapper<BranchDeptRevenue>() {
+
+					@Override
+					public BranchDeptRevenue mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						BranchDeptRevenue row = new BranchDeptRevenue(rs.getInt("branchid"),
+								rs.getString("state") + " - " + rs.getString("city"), 0, null, 0);
+
+						return row;
+					}
+				});
+		return a;
 	}
 }

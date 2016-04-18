@@ -1,0 +1,42 @@
+<div id="wrapper">
+	<!-- Sidebar -->
+	<div id="sidebar-wrapper">
+		<ul class="sidebar-nav">
+			<li><a href="" ng-click="charter1()">Revenue Chart</a></li>
+			<li><a href="" ng-click="charter2()">Illness Age-group Chart</a></li>
+			<li><a href="" ng-click="chart3=true;chart1=false;chart2=false">Chart3</a></li>
+		</ul>
+	</div>
+
+	<div id="page-content-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div id="abc" ng-show="chart1=='true'" class="col-lg-12">
+					<h1>Departmental Revenue Statistics</h1>
+					<label for="select">Select Branch</label>
+  					<select ng-options="br.branchCity for br in branches"  ng-model="selectedBr" ng-change="showChartBr()"></select>
+					 <body>
+    					<div id="chartdiv" style="width: 900px; height: 500px;"></div>
+  					</body>
+				</div>
+				<div id="xyz" ng-show="chart2=='true'" class="col-lg-12">
+					<h1>Illness Count in affected age groups</h1>
+					<label for="select">Select State</label>
+  					<select ng-options="s.state for s in st"  ng-model="selectedst" ng-change="charter2a()"></select>
+					
+					<label for="select">Select Illness</label>
+  					<select ng-options="i.illnessName for i in il"  ng-model="selectedil" ng-change="showChartil()"></select>
+					 <body>
+    					<div id="chartdiv2" style="width: 900px; height: 500px;"></div>
+  					</body>
+				</div>
+				<div id="xyz" ng-show="chart2==true" class="col-lg-12">
+					<h1>Simple Sidebar</h1>
+					<p>
+						Chart3 goes here.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
