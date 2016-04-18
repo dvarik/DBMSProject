@@ -120,6 +120,8 @@ public class QueryConstants {
 	public static final String GET_DEPT = "select * from department d "
 			+ "join branch b on b.branchid = d.branchid "
 			+ "where b.state = ? and b.city = ?";
+
+	public static final String ENTER_APT = "insert into appointment(doctorId,patientId,appointmentdate,timeslotid) values(?,?,?,?)";
 			
 	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName,"
 			+ " u.gender, u.dateofbirth as dob"
@@ -132,6 +134,5 @@ public class QueryConstants {
 	public static final String GET_BRANCHES = "select br.branchid, br.state, br.city "
 			+ "from branch br order by br.state,br.city";
 			
-	public static final String ENTER_APT = "";
 	
 }

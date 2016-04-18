@@ -339,17 +339,55 @@ public class RelcareDao {
 				});
 		return a;
 	}
+
+	public List<Location> getLocation() {
+		List<Location> loc = jdbcTemplate.query(QueryConstants.GET_LOCATION,
+				new RowMapper<Location>() {
+					@Override
+					public Location mapRow(ResultSet rs, int arg1) throws SQLException {
+						Location row = new Location(rs.getInt("branchid"),rs.getString("city"),rs.getString("state"));
+						return row;
+					}
+				});
+		return loc;
+	}
+
+	public List<Data> getDoc(String  state, String  city, int  dept) {
+		List<Data> doc = jdbcTemplate.query(QueryConstants.GET_DOC,
+				new RowMapper<Data>() {
+					@Override
+					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
+						Data row = new Data(rs.getInt("doctorid"),rs.getString("docName"));
+						return row;
+					}
+				},state,city,dept);
+		return doc;
+	}
+
 	
-	public boolean saveAppointment(final int id, String date, int time) {
-		
+	public List<Data> getDept(String state, String city) {
+		List<Data> dept = jdbcTemplate.query(QueryConstants.GET_DEPT,
+				new RowMapper<Data>() {
+					@Override
+					public Data mapRow(ResultSet rs, int arg1) throws SQLException {
+						Data row = new Data(rs.getInt("deptid"),rs.getString("name"));
+						return row;
+					}
+				},state,city);
+		return dept;
+	}
+	
+
+	public boolean saveAppointment(int docId, int patientId, String date, int time) {
+
 		// define query arguments
-		Object[] params = new Object[] { id, date, time };
+		Object[] params = new Object[] { docId,patientId, date, time };
 		
 		// define SQL types of the arguments
-		int[] types = new int[] { Types.INTEGER, Types.DATE, Types.INTEGER };
-				// execute insert query to insert the data
+		int[] types = new int[] { Types.INTEGER, Types.INTEGER, Types.DATE, Types.INTEGER };
 		
-		int row = jdbcTemplate.update(QueryConstants.ENTER_DIAG, params, types);
+		// execute insert query to insert the data
+		int row = jdbcTemplate.update(QueryConstants.ENTER_APT, params, types);
 		
 		return (row == 1);
 	}

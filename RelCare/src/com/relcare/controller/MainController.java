@@ -179,9 +179,10 @@ public class MainController {
 	
 	@RequestMapping(value = "/saveAppointment", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public String saveAppointment(@RequestParam("docId") int id, @RequestParam("aptdate") String date,
+	public String saveAppointment(@RequestParam("docId") int docid, @RequestParam("aptdate") String date,
 			@RequestParam("time") int timeId) {
-		return String.valueOf(dao.saveAppointment(id, date, id));
+		int userid = Integer.parseInt(getUserId());
+		return String.valueOf(dao.saveAppointment(docid,userid, date, timeId));
 	}
 	
 	
