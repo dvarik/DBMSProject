@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,8 @@ import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
 import com.relcare.object.DeptPatients;
 import com.relcare.object.DiagnosisHistory;
-import com.relcare.object.Data;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
-import com.relcare.object.Location;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
