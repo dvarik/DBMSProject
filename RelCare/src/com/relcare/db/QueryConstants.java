@@ -42,9 +42,10 @@ public class QueryConstants {
 	
 	public static final String REGISTER_USER = "insert into userfile(fname,lname,email,password,role,gender,dateofbirth) values(?,?,?,?,?,?,"
 			+ "to_date('%s','MM/DD/YYYY'))";
-			
-	public static final String REGISTER_USER = "insert into userfile(fname,lname,email,password,gender,dateofbirth,state,city,zip,role) values(?,?,?,?,?,?,?,?,?,?)";
 	
+	public static final String REGISTER_PAT = "insert into patient values(?,?)";
+			
+	public static final String REGISTER_USER_DOC = "insert into userfile(fname,lname,email,password,gender,dateofbirth,state,city,zip,role) values(?,?,?,?,?,?,?,?,?,?)";
 	
 	final static String APPOINTMENT_FOR_DOC = "select a.appointmentId,a.patientId,u.fname || ' ' || u.lname As fullname, "
 			+ "a.appointmentdate,t.starttime,t.endtime,a.status, "
@@ -146,7 +147,6 @@ public class QueryConstants {
 
 	public static final String DELETE_DOC = "update doctors set active = 0 where doctorid = ?";
 
-	
 	public static final String ILLNESS_PER_SEASON_STATS = "select illnessname, state,"
 			+ "sum(case when extract(month from appointmentdate) >=1 and "
 			+ "extract(month from appointmentdate) <=3 then 1 else 0 end) as spring,"

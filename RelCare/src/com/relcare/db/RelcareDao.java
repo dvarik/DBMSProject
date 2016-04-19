@@ -164,30 +164,29 @@ public class RelcareDao {
 
 		String sql = QueryConstants.REGISTER_USER.replace("%s", dob);
 		// define query arguments
-		Object[] params = new Object[] { fname, lname, email, pword, role, gender};
+		Object[] params = new Object[] { fname, lname, email, pword, role, gender };
 		// define SQL types of the arguments
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-				Types.VARCHAR};
+				Types.VARCHAR };
 		// execute insert query to insert the data
 		int row = jdbcTemplate.update(sql, params, types);
+		if (row == 1) {
+			
+			Integer id = jdbcTemplate.queryForObject(QueryConstants.GET_ID, new RowMapper<Integer>() {
+				@Override
+				public Integer mapRow(ResultSet rs, int arg1) throws SQLException {
 
-		return (row == 1);
-	}
-	
-	public boolean registerUser(String fname, String lname, String email, String pword,String dob, String gender,
-			 String city, String state, String zip,String role) throws ParseException {
-		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = format.parse(dob);
-		java.sql.Date date = new java.sql.Date(d.getTime());
-		// define query arguments
-		Object[] params = new Object[] { fname, lname, email, pword, role };
-		// define SQL types of the arguments
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR ,
-				Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
-		// execute insert query to insert the data
-		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
-
+					Integer r = new Integer(rs.getInt("useid"));
+					return r;
+				}
+			}, email);
+			// define query arguments
+			params = new Object[] { id.intValue(), "Not insured" };
+			// define SQL types of the arguments
+			types = new int[] {  Types.INTEGER, Types.VARCHAR };
+			// execute insert query to insert the data
+			row = jdbcTemplate.update(QueryConstants.REGISTER_PAT, params, types);
+		}
 		return (row == 1);
 	}
 	
@@ -499,7 +498,7 @@ public class RelcareDao {
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 				Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 		// execute insert query to insert the data
-		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER, params, types);
+		int row = jdbcTemplate.update(QueryConstants.REGISTER_USER_DOC, params, types);
 		
 		if(row==1){
 			Integer id = jdbcTemplate.queryForObject(QueryConstants.GET_ID, new RowMapper<Integer>() {
@@ -520,7 +519,7 @@ public class RelcareDao {
 				}
 			}, state,branch);
 
-			Object[] param1 = new Object[] { id, reg, dept, branchId, rankid};
+			Object[] param1 = new Object[] { id.intValue(), reg, dept, branchId, rankid};
 			// define SQL types of the arguments
 			int[] type1 = new int[] { Types.INTEGER, Types.INTEGER,  Types.INTEGER, Types.VARCHAR, Types.INTEGER};
 			// execute insert query to insert the data

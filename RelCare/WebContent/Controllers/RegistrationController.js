@@ -2,6 +2,8 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 {
 	$scope.register = 'false';
 	$scope.deregister = 'false';
+	$scope.registered = false;
+	$scope.deregistered = false;
 	$scope.selectedDoc = null;
 	$scope.selectedState = null;
 	$scope.selectedBranch = null;
@@ -100,7 +102,16 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	$scope.registerDoc = function(){
 		getDataSvc.registerDoc($scope.user).then(function(res) {
 	        if (res != null) {
-	        	document.write("Doctor Registered");
+	        	$scope.registered = true;
+	        	$scope.selectedDoc = null;
+	        	$scope.selectedState = null;
+	        	$scope.selectedBranch = null;
+	        	$scope.loc = {};
+	        	$scope.range = [];
+	        	$scope.selectedDay = null;
+	        	$scope.selectedMonth = null;
+	        	$scope.user = {};
+	        	$scope.doctor = {};
 	        } else {
 	            console.log("Error");
 	        }
@@ -110,7 +121,16 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	$scope.deregisterDoc = function(){
 		getDataSvc.deregisterDoc($scope.doctor.id).then(function(res) {
 	        if (res != null) {
-	        	document.write("Doctor De-Registered");
+	        	$scope.deregistered = true;
+	        	$scope.selectedDoc = null;
+	        	$scope.selectedState = null;
+	        	$scope.selectedBranch = null;
+	        	$scope.loc = {};
+	        	$scope.range = [];
+	        	$scope.selectedDay = null;
+	        	$scope.selectedMonth = null;
+	        	$scope.user = {};
+	        	$scope.doctor = {};
 	        } else {
 	            console.log("Error");
 	        }
