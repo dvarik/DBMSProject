@@ -1,6 +1,6 @@
 angular.module('hospApp').controller('PatientAppointmentController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
-	$scope.loadingData = true;
+	$scope.loadingData = false;
 	$scope.selectedPat = null;
 	$scope.selectedDoc = null;
 	$scope.selectedState = null;
@@ -21,7 +21,6 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 
 	
     $scope.getDay = function(rep) {
-    	$scope.loadingData = true;
     	$scope.selectedMonth = rep;
     	n = 31;
         if(rep == "02"){
@@ -32,20 +31,24 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
         }
         $scope.range = new Array(n);
         $scope.apt.month = rep;
-        $scope.loadingData = false;
     };
     
     
-	
+	init();
+	function init(){
 	getDataSvc.getUpcomingAppointmentForPat().then(function(res) {
+		$scope.loadingData = true;
 		if (res != null) {
            $scope.apt1 = res;
+           $scope.loadingData = false;
         } else {
             console.log("Error");
         }
     });
+	}
 	
 	getDataSvc.getPastAppointmentForPat().then(function(res) {
+		$scope.loadingData = true;
 		if (res != null) {
            $scope.apt2 = res;
            $scope.loadingData = false;
@@ -56,11 +59,9 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	
 	$scope.showAptModal = function(rep){
 		$('#aptModal').modal('show');
-		$scope.loadingData = true;
         getDataSvc.getLocation().then(function(res) {
             if (res != null) {
                $scope.loc = res;
-               $scope.loadingData = false;
             } else {
                 console.log("Error");
             }
@@ -68,7 +69,6 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	}
 	
 	$scope.loadBranch = function(rep){
-		$scope.loadingData = true;
 		$scope.selectedState = rep;
 		$scope.branch = [];
 		 $.each($scope.loc, function() {
@@ -77,16 +77,13 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 			        $scope.branch.push(item);
 		        }
 		    });
-		 $scope.loadingData = false;
 	}
 
 	$scope.getDept = function(rep){
-		$scope.loadingData = true;
 		$scope.selectedBranch = rep;
 		getDataSvc.getDept($scope.selectedState,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.dept = res;
-	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -94,12 +91,10 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	};
 	
 	$scope.getDoc = function(rep){
-		$scope.loadingData = true;
 		$scope.selectedDoc = rep;
 		getDataSvc.getDoc($scope.selectedState,$scope.selectedBranch,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.doc = res;
-	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -108,13 +103,11 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 
 	$scope.getTimeSlot = function(){
 		var str = "";
-		$scope.loadingData = true;
 		str = str.concat($scope.selectedMonth + "-" + $scope.apt.day + "-2016");
 		$scope.apt.date = str;
 		getDataSvc.getTimeSlot(str,$scope.apt.doc).then(function(res) {
 	        if (res != null) {
 	           $scope.times = res;
-	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -128,6 +121,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	        if (res == 'true') {
 	           $('#aptModal').modal('hide');
 	       	   $scope.apt = {};
+	       	   init();
 	       	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
@@ -142,12 +136,14 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 		$scope.loadingData = true;
 		getDataSvc.cancelAppointment(rep).then(function(res) {
 	        if (res == 'true') {
+	        	$scope.loadingData = false;
 	        } else {
 	            console.log("Error");
+	            $scope.loadingData = false;
 	        }
 	    });
 		$scope.apt1.splice(index,1);
-    	$scope.loadingData = false;
+    	
 	};
 	
 	$scope.showReportModal = function(rep){

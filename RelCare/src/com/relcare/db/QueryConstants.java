@@ -118,7 +118,7 @@ public class QueryConstants {
 			+ "join branch b on b.branchid = d.branchid "
 			+ "where b.state = ? and b.city = ?";
 
-	public static final String ENTER_APT = "insert into appointment(doctorId,patientId,appointmentdate,timeslotid) values(?,?,?,?)";
+	public static final String ENTER_APT = "insert into appointment(doctorId,patientId,appointmentdate,timeslotid,status) values(?,?,?,?,0)";
 			
 	public static final String GET_PATIENTS_FOR_DOC = "select ap.PATIENTID,u.fname || ' ' || u.lname As FullName,"
 			+ " u.gender, u.dateofbirth as dob"

@@ -1,31 +1,39 @@
 <div ng-show="loggedrole=='DOCTOR'" class="container">
-<div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
-
+<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
+</div>
 
 <!---Dropdown to select patients--->
-<div class = "padding60">
+<div class="form-group">
 <div class="dropdown">
-  <label for="select">Select Patient</label>
+  <label class="col-sm-3 control-label" for="select">Select Patient</label>
   <select ng-options="pat.fname for pat in pats"  ng-model="selectedPat" ng-change="showHistory(a.appointmentid)"></select>
 </div>
 </div>
+
 <div class="row" ng-show="selectedPat!=null">
-<h4 class="modal-title">
+<legend>
      Patient Details
-</h4>                
+</legend>                
 <!--  Patient Record Table -->
-<div class="table-responsive-vertical shadow-z-1 padding50">
-  <div><label for="fname">Patient name:</label>{{selectedPat.fname}}</div>
-  <div><label for="fname">Patient dob:</label>{{selectedPat.dob}}</div>
-  <div><label for="fname">Patient gender:</label>{{selectedPat.gender}}</div>
+<div class="box-body">
+<div class="form-group">
+  <label class="col-sm-3 control-label" for="fname">Patient name:</label><div>{{selectedPat.fname}}</div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="fname">Patient dob:</label><div>{{selectedPat.dob}}</div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="fname">Patient gender:</label><div>{{selectedPat.gender}}</div>
+  </div>
 </div>
 </div>
 <div class="row">
-<h4 class="modal-title">
+<legend>
      Diagnosis Report History
-</h4>                
+</legend>             
 <!--  Patient Record Table -->
-<div class="table-responsive-vertical shadow-z-1 padding50">
+<div class="box-body">
   <!-- Table starts here -->
   <table id="table" class="table table-bordered table-hover table-mc-light-blue">
       <thead>

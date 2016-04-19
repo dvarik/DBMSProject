@@ -1,5 +1,4 @@
 <div ng-show="loggedrole=='ADMIN'" id="wrapper">
-	<div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
 	<!-- Sidebar -->
 	<div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
@@ -13,51 +12,41 @@
 
 	<div id="page-content-wrapper">
 		<div class="container-fluid">
+		<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
+		</div>
 			<div class="row">
 				<div id="c1" ng-show="chart1=='true'" class="col-lg-12">
-					<h1>Branch Revenues Statistics</h1>
+					<legend>Branch Revenues Statistics</legend>
 					<label for="select">Select Branch</label>
   					<select ng-options="br.branchCity for br in branches"  ng-model="selectedBr" ng-change="showChartBr()"></select>
-					 <body>
     					<div id="chartdiv" style="width: 900px; height: 600px;"></div>
-  					</body>
 				</div>
 				<div id="c2" ng-show="chart2=='true'" class="col-lg-12">
-					<h1>Statewise Illnesses per Age-group Statistics</h1>
+					<legend>Statewise Illnesses per Age-group Statistics</legend>
 					<label for="select">Select Illness</label>
   					<select ng-options="i.illnessName for i in il"  ng-model="selectedil" ng-change="showChartil()"></select>
-					 <body>
     					<div id="chartdiv2" style="width: 900px; height: 900px;"></div>
-  					</body>
 				</div>
 				<div id="c3" ng-show="chart3=='true'" class="col-lg-12">
-					<h1>Insurance Information</h1>
+					<legend>Insurance Information</legend>
 					<label for="select">Select Illness</label>
   					<select ng-options="i.illnessName for i in ils"  ng-model="selectedil" ng-change="showChartIns()"></select>
-					 <body>
     					<div id="chartdiv3" style="width: 900px; height: 900px;"></div>
-  					</body>
 				</div>
 				<div id="c4" ng-show="chart4=='true'" class="col-lg-12">
-					<h1>Patients per Departmental Branch</h1>
+					<legend>Patients per Departmental Branch</legend>
 					<label for="select">Select Branch</label>
   					<select ng-options="b.branchCity for b in brs"  ng-model="selectedbrs" ng-change="chart4a()"></select>
 					<label for="select">Select Year</label>
   					<select ng-options="y.year for y in years"  ng-model="selectedYear" ng-change="showChartPat()"></select>
-					 <body>
     					<div id="chartdiv4" style="width: 900px; height: 600px;"></div>
-  					</body>
 				</div>
 				<div id="c5" ng-show="chart5=='true'" class="col-lg-12">
-					<h1>Season-wise Illness Statistics Per State</h1>
+					<legend>Season-wise Illness Statistics Per State</legend>
 					<label for="select">Select Illness</label>
   					<select ng-options="ill.illnessName for ill in ills"  ng-model="selectedIll" ng-change="showChartSeason()"></select>
-					<!-- <label for="select">Select Year</label>
-  					<select ng-options="y.year for y in years"  ng-model="selectedYear" ng-change="showChartPat()"></select>
-					 --> 
-					 <body>
     					<div id="chartdiv5" style="width: 900px; height: 600px;"></div>
-  					</body>
 				</div>
 			</div>
 		</div>

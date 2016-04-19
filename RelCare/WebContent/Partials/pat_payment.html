@@ -1,7 +1,10 @@
-<div ng-show="loggedrole=='PATIENT'">
-<div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
-<div class="table-responsive-vertical shadow-z-1 padding60">
+<div class="container" ng-show="loggedrole=='PATIENT'">
+	<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
+	</div>
+<div class="box-body">
   <!-- Table starts here -->
+  <legend>Billing History</legend>
   <table id="table" class="table table-bordered table-hover table-mc-light-blue">
       <thead>
         <tr class="info">

@@ -115,8 +115,6 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	var data = google.visualization.arrayToDataTable(ilArray);
       var options = {
         title: ' Age wise Stats for ' + $scope.selectedil.illnessName,
-        width: 1000,
-        height: 800,
         bar: { groupWidth: '95%' },
         isStacked: true
       };

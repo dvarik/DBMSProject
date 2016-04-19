@@ -1,7 +1,6 @@
 <div ng-show="loggedrole=='DOCTOR'" class="container">
-	<div><span ng-show="loadingData" class="red"><img src = "load.png" alt = "Loading..."/></span></div>
-	<div class="padding60">
-
+	<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
 	</div>
 	<div class="table-responsive-vertical shadow-z-1">
 	  <!-- Table starts here -->
@@ -12,7 +11,6 @@
 			  <th>Patient</th>
 			  <th>Time-slot</th>
 			  <th>Diagnosis Report</th>
-			  <th>Cancel Appointment</th>
 			</tr>
 		  </thead>
 		  <tbody>
@@ -38,9 +36,17 @@
 				<h4 class="modal-title" id="delModalLabel">Enter Diagnosis Report</h4>
 			</div>
 			<div class="modal-body">
-				<div>Patient name:{{selectedPt.name}}</div>
-				<div>Enter illness:<input type="text" ng-model="newReport.illness"></div>
-				<div>Enter medicines:<input type="text" ng-model="newReport.meds"></div>
+				<div class="form-group">
+	  				<label class="col-sm-3 control-label" for="fname">Patient name</label><div>{{selectedPt.name}}</div>
+	  			</div>
+	  			<div class="form-group">
+	  				<label class="col-sm-3 control-label" for="fname">Enter illness</label>
+	  				<div><input class="form-control input-lg" type="text" ng-model="newReport.illness"></div>
+	  			</div>
+	  			<div class="form-group">
+	  				<label class="col-sm-3 control-label" for="fname">Enter medicines</label>
+	  				<div><input class="form-control input-lg" type="text" ng-model="newReport.meds"></div>
+	  			</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"

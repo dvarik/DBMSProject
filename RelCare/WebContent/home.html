@@ -13,7 +13,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.6/angular-filter.js"></script>
 
 <!-- Bootstrap -->
-<link href="framework/css/bootstrap.min.css" rel="stylesheet"></link>
+<!-- <link href="framework/css/bootstrap.min.css" rel="stylesheet"></link> -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link href="framework/css/simple-sidebar.css" rel="stylesheet"></link>
 <link href="framework/css/mycss.css" rel="stylesheet"></link>
 
@@ -39,32 +40,33 @@
 <script src="Controllers/StatisticsController.js" type="text/javascript"></script>
 <script src="Controllers/RegistrationController.js" type="text/javascript"></script>
 
+
 </head>
 
 <body ng-app="hospApp" class="skin-blue sidebar-mini fixed">
 	<header>
-		<nav class="navbar navbar-default">
-			<div class="container">
+		<nav class="navbar navbar-inverse  navbar-fixed-top">
+			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand">Relcare Hospitals</a>
 				</div>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#profile"><i class="fa fa-shield"></i>
+					<li><a href="#profile"><span class="glyphicon glyphicon-user"></span>
 							Profile</a></li>
-					<li><a ng-show="loggedrole=='PATIENT'" href="#patientappointments"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='PATIENT'" href="#patientappointments"><span class="glyphicon glyphicon-list-alt"></span>
 							Upcoming Appointments</a></li>
-					<li><a ng-show="loggedrole=='DOCTOR'" href="#docappointment"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='DOCTOR'" href="#docappointment"><span class="glyphicon glyphicon-list-alt"></span>
 							Appointments List</a></li>
-					<li><a ng-show="loggedrole=='DOCTOR'" href="#history"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='DOCTOR'" href="#history"><span class="glyphicon glyphicon-folder-open"></span>
 							Diagnosis History</a></li>
-					<li><a ng-show="loggedrole=='PATIENT'" href="#billing"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='PATIENT'" href="#billing"><span class="glyphicon glyphicon-usd"></span>
 							Bill History</a></li>
-					<li><a ng-show="loggedrole=='ADMIN'" href="#registration"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='ADMIN'" href="#registration"><span class="glyphicon glyphicon-wrench"></span>
 							Register/De-register</a></li>
-					<li><a ng-show="loggedrole=='ADMIN'" href="#stats"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='ADMIN'" href="#stats"><span class="glyphicon glyphicon-signal"></span>
 							Statistics</a></li>
-					<li><a href="RelCare/j_spring_security_logout"><i class="fa fa-comment"></i>
+					<li><a href="RelCare/j_spring_security_logout"><span class="glyphicon glyphicon-log-out"></span>
 							Logout</a></li>
 				</ul>
 			</div>

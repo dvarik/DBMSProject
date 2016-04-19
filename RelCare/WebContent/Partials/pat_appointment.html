@@ -1,6 +1,7 @@
-
-<div ng-show="loggedrole=='PATIENT'" class="row">
-<div><span ng-show="loadingData" class="red"><img src = "load.png" alt = "Loading..."/></span></div>
+<div class="container" ng-show="loggedrole=='PATIENT'">
+<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
+	</div>
 <div class="row">
 
 	<div class="padding60">
@@ -8,7 +9,8 @@
 		  <button class="btn btn-primary btn-lg" ng-click="showAptModal()">Make a new appointment</button>
 	</section>
 	</div>
-	<div class="table-responsive-vertical shadow-z-1">
+	<div class="box-body">
+	<legend>Upcoming appointments</legend>
 	  <!-- Table starts here -->
 	  <table id="table" class="table table-bordered table-hover table-mc-light-blue" >
 		  <thead>
@@ -21,7 +23,7 @@
 		  </thead>
 		  <tbody>
 		  <tr ng-repeat = "a in apt1 track by $index" >
-			  <td data-title="Date">{{a.id}}</td>
+			  <td data-title="Date">{{a.appointmentDate}}</td>
 			  <td data-title="Doctor">{{a.name}}</td>
 			  <td data-title="slot">{{a.startTime}}-{{a.endTime}}</td>
 			  <td data-title="cancel">
@@ -31,6 +33,7 @@
 		  </tbody>
 	</table>
 	
+	<legend>Past appointments</legend>
 	<table id="table" class="table table-bordered table-hover table-mc-light-blue">
 		  <thead>
 			<tr class="info">
@@ -53,7 +56,6 @@
 	</table>
 	</div>
 </div>
-
 <!-- New appointment Modal -->
 <div class="modal fade" id="aptModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">

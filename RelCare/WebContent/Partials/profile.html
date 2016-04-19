@@ -1,7 +1,9 @@
 <div class="container">
-	<div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
-<div>Welcome {{loggedrole | lowercase}} {{user.fname}} {{user.lname}} !</div>
+	<div ng-show="saved" class="alert alert-success">
+  		<strong>Success!</strong> Profile updated.
+	</div>
 
+	<div class="alert alert-info top-general-alert">Welcome {{loggedrole | lowercase}} {{user.fname}} {{user.lname}} !</div>
 	<div class="box box-info">
 		<div class="box-header with-border">
 			<h3 class="box-title">Personal Information</h3>
@@ -77,7 +79,6 @@
 			<!-- /.box-body -->
 			<div class="box-footer">
 				<button class="btn btn-primary" ng-click="saveProfile()">Update</button>
-				<span ng-show="saved==true">Updated!</span>
 			</div>
 			<!-- /.box-footer -->
 		</form>

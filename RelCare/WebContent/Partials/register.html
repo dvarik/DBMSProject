@@ -1,5 +1,4 @@
 <div ng-show="loggedrole=='ADMIN'" id="wrapper">
-	<div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
 	<!-- Sidebar -->
 	<div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
@@ -10,12 +9,18 @@
 
 	<div id="page-content-wrapper">
 		<div class="container-fluid">
+		<div ng-show="loadingData" class="alert alert-info">
+  		<span class="glyphicon glyphicon-time"></span> Loading...
+		</div>
 			<div class="row">
 				<div id="c1" ng-show="register" class="col-lg-12">
 					<!-- Register a doc -->
 					<div class="col-md-7">
 						<div class="box box-info">
-							<div class="box-header with-border"><h3 class="box-title">Register a Doctor</h3></div>
+						<div ng-show="registered" class="alert alert-success">
+  							<strong>Success!</strong> Doctor registered.
+						</div>
+							<div class="box-header with-border"><legend>Register a Doctor</legend></div>
 							<!-- /.box-header -->
 							<!-- form start -->
 							<form class="form-horizontal" name="userForm">
@@ -133,7 +138,6 @@
 							<!-- /.box-body -->
 							<div class="box-footer">
 								<button type="submit" class="btn btn-primary pull-right" ng-click = "registerDoc()">Save</button>
-								<span ng-show="registered==true">Registered successfully</span>
 				  			</div>
 				  			<!-- /.box-footer -->
 						</form>
@@ -146,7 +150,10 @@
 				<div id="c2" ng-show="deregister" class="col-lg-12">
 					<div class="col-md-7">
 						<div class="box box-info">
-							<div class="box-header with-border"><h3 class="box-title" style="color:#0099cc;">De-Register a Doctor</h3></div>
+						<div ng-show="deregistered" class="alert alert-success">
+  							<strong>Success!</strong> Doctor DEregistered.
+						</div>
+							<div class="box-header with-border"><legend>De-Register a Doctor</legend></div>
 							<!-- /.box-header -->
 							<!-- form start -->
 							<form class="form-horizontal" name="userForm">
@@ -188,7 +195,6 @@
 							  <!-- /.box-body -->
 							  <div class="box-footer">
 								<button type="submit" class="btn btn-primary pull-right" ng-click = "deregisterDoc()">De-register</button>
-								<span ng-show="deregistered==true">DERegistered successfully</span>
 							  </div>
 							  <!-- /.box-footer -->
 							</form>
