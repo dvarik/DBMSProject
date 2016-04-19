@@ -17,6 +17,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	$scope.chart3='false';
 	$scope.chart4='false';
 	$scope.chart5='false';
+	$scope.loadingData = false;
 	
 	$scope.selectedBranch = null;
 	$scope.branches = {};
@@ -28,13 +29,14 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 		$scope.chart3='false';
 		$scope.chart4='false';
 		$scope.chart5='false';
-		
+		$scope.loadingData = true;
 		getDataSvc.getBranches().then(function(res) {
 	        if (res != null) {
 	           $scope.branches = res;
 	           getDataSvc.getRevenueStats().then(function(res2) {
 	   	        if (res2 != null) {
 	   	           tbl1 = res2;
+	   	           $scope.loadingData = false;
 	   	        } else {
 	   	            console.log("Error");
 	   	        }
@@ -47,25 +49,29 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	}
 	
     $scope.showChartBr = function(){
+    	$scope.loadingData = true;
     	var statesArray = [["Department name","Total Revenue"]];
 	    $.each(tbl1, function() {
 	    	if(this["branchid"] == $scope.selectedBr.branchid){
 	        var item = [this["deptName"], this["totalCost"]];
 	        statesArray.push(item);
 	    	}
+	    $scope.loadingData = false;
     });
     
 	var data = google.visualization.arrayToDataTable(statesArray);
-		      var options = {
+			$scope.loadingData = true;  
+			var options = {
 		        title: 'Departmental Performance For Branch: ' + $scope.selectedBr.branchCity
 		      };
 		      var chart = new google.visualization.ColumnChart(document.getElementById('chartdiv'));
 		      chart.draw(data, options);
+		      $scope.loadingData = false;
     }
     
     var tbl2 = [];
     $scope.charter2 = function(){
-    	
+    	$scope.loadingData = true;
     	$scope.chart1='false';
 		$scope.chart2='true';
 		$scope.chart3='false';
@@ -88,6 +94,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    		   }
 	    	   });
 	    	   temp = [];
+	    	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -95,6 +102,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     }
     
     $scope.showChartil = function(){
+    	$scope.loadingData = true;
     	var ilArray = [["State","0-5 years","6-12 years","13-19 years","20-40 years","Above 40 years"]];
 	    $.each(tbl2, function() {
 	    	if(this["illnessName"] == $scope.selectedil.illnessName){
@@ -115,11 +123,13 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
       var chart = new google.visualization.BarChart(document.getElementById('chartdiv2'));
 
 	  chart.draw(data, options);
+	  $scope.loadingData = false;
     }   
     
     var tbl3 = [];
     
     $scope.charter3 = function(){
+    	$scope.loadingData = true;
         $scope.chart1='false';
     	$scope.chart2='false';
     	$scope.chart3='true';
@@ -138,6 +148,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	   	        	}
 	   		    	});
 	   	          temp = [];
+	   	       $scope.loadingData = false;
 	   	        } else {
 	   	            console.log("Error");
 	   	        }
@@ -145,6 +156,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     }
     
     $scope.showChartIns = function(){
+    	$scope.loadingData = true;
     	var inArray = [["Branch","Insured Patients count"]];
 	    $.each(tbl3, function() {
 	    	if(this["illnessName"] == $scope.selectedil.illnessName){
@@ -161,11 +173,12 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     	    };
 
 	  chart.draw(data, options);
+	  $scope.loadingData = false;
     }
     
     var tbl4 = [];
     $scope.charter4 = function(){
-    	
+    	$scope.loadingData = true;
     	$scope.chart1='false';
 		$scope.chart2='false';
 		$scope.chart3='false';
@@ -184,6 +197,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    			   temp.push(this["branchCity"]);
 	    		   }
 	    	   });
+	    	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -191,6 +205,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     }
     
     $scope.chart4a = function(){
+    	$scope.loadingData = true;
     	var t = [];
     	$scope.years = [];
 	    $.each(tbl4, function() {
@@ -202,9 +217,11 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    	}
 	    });
 	    t = [];
+	    $scope.loadingData = false;
     }
 	    
     $scope.showChartPat = function(){
+    	$scope.loadingData = true;
     	var inArray = [["Department","Patients count"]];
 	    $.each(tbl4, function() {
 	    	if(this["branchid"] == $scope.selectedbrs.branchId && this["year"] == $scope.selectedYear.year){
@@ -222,11 +239,12 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     	    };
 
 	  chart.draw(data, options);
+	  $scope.loadingData = false;
     }
     
     var tbl5 = [];
     $scope.charter5 = function(){
-    	
+    	$scope.loadingData = true;
     	$scope.chart1='false';
 		$scope.chart2='false';
 		$scope.chart3='false';
@@ -246,6 +264,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    		   }
 	    	   });
 	    	   temp = [];
+	    	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -253,6 +272,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
     }
     
     $scope.showChartSeason = function(){
+    	$scope.loadingData = true;
     	var inArray = [["State","Spring","Summer","Fall","Winter"]];
 	    $.each(tbl5, function() {
 	    	if(this["illnessName"] == $scope.selectedIll.illnessName){
@@ -269,6 +289,7 @@ angular.module('hospApp').controller('StatisticsController', ['$rootScope', '$sc
 	    	    };
 	
 		  chart.draw(data, options);
+		  $scope.loadingData = false;
     }
 
 }]);

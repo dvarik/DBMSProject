@@ -1,6 +1,6 @@
 angular.module('hospApp').controller('DocAppointmentController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
-
+	$scope.loadingData = false;
 	$scope.apts = {};
 	$scope.selectedPt = {};
 	$scope.newReport = {};
@@ -8,9 +8,11 @@ angular.module('hospApp').controller('DocAppointmentController', ['$rootScope', 
 	init();
 	
 	function init(){
+		$scope.loadingData = true;
 		getDataSvc.getAppointmentForDoc().then(function(res) {
 	        if (res != null) {
 	           $scope.apts = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -29,7 +31,7 @@ angular.module('hospApp').controller('DocAppointmentController', ['$rootScope', 
 	}
 	
 	$scope.saveDiagnosisReport = function(){
-		
+		$scope.loadingData = true;
 		$scope.newReport.id = $scope.selectedPt.appointmentId;
 		console.log($scope.newReport);
 		
@@ -39,6 +41,7 @@ angular.module('hospApp').controller('DocAppointmentController', ['$rootScope', 
 	           $scope.selectedPt = {};
 	       	   $scope.newReport = {};
 	       	   init();
+	       	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	            $('#editModal').modal('hide');

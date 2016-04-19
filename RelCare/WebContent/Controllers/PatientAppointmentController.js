@@ -1,5 +1,6 @@
 angular.module('hospApp').controller('PatientAppointmentController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
+	$scope.loadingData = true;
 	$scope.selectedPat = null;
 	$scope.selectedDoc = null;
 	$scope.selectedState = null;
@@ -20,6 +21,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 
 	
     $scope.getDay = function(rep) {
+    	$scope.loadingData = true;
     	$scope.selectedMonth = rep;
     	n = 31;
         if(rep == "02"){
@@ -30,12 +32,13 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
         }
         $scope.range = new Array(n);
         $scope.apt.month = rep;
+        $scope.loadingData = false;
     };
     
     
 	
 	getDataSvc.getUpcomingAppointmentForPat().then(function(res) {
-        if (res != null) {
+		if (res != null) {
            $scope.apt1 = res;
         } else {
             console.log("Error");
@@ -43,8 +46,9 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
     });
 	
 	getDataSvc.getPastAppointmentForPat().then(function(res) {
-        if (res != null) {
+		if (res != null) {
            $scope.apt2 = res;
+           $scope.loadingData = false;
         } else {
             console.log("Error");
         }
@@ -52,9 +56,11 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	
 	$scope.showAptModal = function(rep){
 		$('#aptModal').modal('show');
+		$scope.loadingData = true;
         getDataSvc.getLocation().then(function(res) {
             if (res != null) {
                $scope.loc = res;
+               $scope.loadingData = false;
             } else {
                 console.log("Error");
             }
@@ -62,6 +68,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	}
 	
 	$scope.loadBranch = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedState = rep;
 		$scope.branch = [];
 		 $.each($scope.loc, function() {
@@ -70,13 +77,16 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 			        $scope.branch.push(item);
 		        }
 		    });
+		 $scope.loadingData = false;
 	}
 
 	$scope.getDept = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedBranch = rep;
 		getDataSvc.getDept($scope.selectedState,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.dept = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -84,10 +94,12 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	};
 	
 	$scope.getDoc = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedDoc = rep;
 		getDataSvc.getDoc($scope.selectedState,$scope.selectedBranch,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.doc = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -96,11 +108,13 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 
 	$scope.getTimeSlot = function(){
 		var str = "";
+		$scope.loadingData = true;
 		str = str.concat($scope.selectedMonth + "-" + $scope.apt.day + "-2016");
 		$scope.apt.date = str;
 		getDataSvc.getTimeSlot(str,$scope.apt.doc).then(function(res) {
 	        if (res != null) {
 	           $scope.times = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -109,10 +123,12 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	
 	$scope.saveAppointment = function(){
 		console.log($scope.apt);
+		$scope.loadingData = true;
 		getDataSvc.saveAppointment($scope.apt).then(function(res) {
 	        if (res == 'true') {
 	           $('#aptModal').modal('hide');
 	       	   $scope.apt = {};
+	       	   $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	            $('#aptModal').modal('hide')
@@ -123,6 +139,7 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	
 	$scope.cancelAppointment = function(rep,index){
 		console.log($scope.apt);
+		$scope.loadingData = true;
 		getDataSvc.cancelAppointment(rep).then(function(res) {
 	        if (res == 'true') {
 	        } else {
@@ -130,13 +147,16 @@ angular.module('hospApp').controller('PatientAppointmentController', ['$rootScop
 	        }
 	    });
 		$scope.apt1.splice(index,1);
+    	$scope.loadingData = false;
 	};
 	
 	$scope.showReportModal = function(rep){
 	    $('#reportModal').modal('show');
+	    $scope.loadingData = true;
 		getDataSvc.getHistoryForPat(rep).then(function(res1) {
 	        if (res1 != null) {
 	           $scope.historyDetail = res1;
+	        	$scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }

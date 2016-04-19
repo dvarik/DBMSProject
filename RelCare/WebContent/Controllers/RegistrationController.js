@@ -1,7 +1,8 @@
 angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$scope', '$q', '$http', 'getDataSvc', function($rootScope, $scope, $q, $http, getDataSvc)
 {
-	$scope.register = 'false';
-	$scope.deregister = 'false';
+	$scope.loadingData = true;
+	$scope.register = false;
+	$scope.deregister = false;
 	$scope.registered = false;
 	$scope.deregistered = false;
 	$scope.selectedDoc = null;
@@ -35,21 +36,22 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	getDataSvc.getRank().then(function(res) {
         if (res != null) {
            $scope.rank = res;
+           $scope.loadingData = false;
         } else {
             console.log("Error");
         }
     });
 	
 	$scope.showRegisterDoc = function(){
-		$scope.deregister = 'false';
-		$scope.register = 'true';
+		$scope.deregister = false;
+		$scope.register = true;
 		console.log($scope.register);
 		$scope.year = new Array(100);
 	}
 	
 	$scope.showDeregisterDoc = function(){
-		$scope.deregister = 'true';
-		$scope.register = 'false';
+		$scope.deregister = true;
+		$scope.register = false;
 	}
 	
     $scope.getDay = function(rep) {
@@ -67,6 +69,7 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
     };
 
 	$scope.loadBranch = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedState = rep;
 		$scope.branch = [];
 		 $.each($scope.loc, function() {
@@ -75,13 +78,16 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 			        $scope.branch.push(item);
 		        }
 		    });
+		 $scope.loadingData = false;
 	}
 
 	$scope.getDept = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedBranch = rep;
 		getDataSvc.getDept($scope.selectedState,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.dept = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -89,10 +95,12 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	};
 	
 	$scope.getDoc = function(rep){
+		$scope.loadingData = true;
 		$scope.selectedDoc = rep;
 		getDataSvc.getDoc($scope.selectedState,$scope.selectedBranch,rep).then(function(res) {
 	        if (res != null) {
 	           $scope.doc = res;
+	           $scope.loadingData = false;
 	        } else {
 	            console.log("Error");
 	        }
@@ -100,8 +108,10 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	};
 		
 	$scope.registerDoc = function(){
+		$scope.loadingData = true;
 		getDataSvc.registerDoc($scope.user).then(function(res) {
 	        if (res != null) {
+	        	$scope.loadingData = false;
 	        	$scope.registered = true;
 	        	$scope.selectedDoc = null;
 	        	$scope.selectedState = null;
@@ -119,8 +129,10 @@ angular.module('hospApp').controller('RegistrationController', ['$rootScope', '$
 	}
 
 	$scope.deregisterDoc = function(){
+		$scope.loadingData = true;
 		getDataSvc.deregisterDoc($scope.doctor.id).then(function(res) {
 	        if (res != null) {
+	        	$scope.loadingData = false;
 	        	$scope.deregistered = true;
 	        	$scope.selectedDoc = null;
 	        	$scope.selectedState = null;
