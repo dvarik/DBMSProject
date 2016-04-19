@@ -3,9 +3,12 @@ package com.relcare.controller;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,6 +85,16 @@ public class MainController {
 		RelUserDetails userDetails = (RelUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		return String.valueOf(userDetails.getUserid());
+	}
+	
+	@RequestMapping(value="/getRole",method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getRole() {
+		RelUserDetails userDetails = (RelUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		ArrayList<GrantedAuthority> rl = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
+		String role = rl.toString().contains("DOCTOR")?"DOCTOR":(rl.toString().contains("ADMIN")?"ADMIN":"PATIENT");
+		return role;
 	}
 	
 	@RequestMapping(value="/getProfile", method = RequestMethod.GET, produces = "application/json")

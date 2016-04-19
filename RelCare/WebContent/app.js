@@ -23,7 +23,24 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	}).when('/registration', {
 		templateUrl : 'Partials/register.html',
 		controller : 'RegistrationController'
-	}).otherwise('/profile');
+	}).otherwise({
+        redirectTo: '/profile'
+    });
 	
 });
 
+hospApp.run(['$rootScope', '$location','getDataSvc', function ($rootScope, $location, getDataSvc) {
+    $rootScope.$on('$routeChangeStart', function (event) {
+
+        $rootScope.loggedrole = {};
+        
+        getDataSvc.getRole().then(function(res) {
+	        if (res != null) {
+	        	$rootScope.loggedrole = res;
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+        
+    });
+}]);

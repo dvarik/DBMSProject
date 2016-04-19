@@ -1,6 +1,9 @@
+
 <div class="container">
 <div><span ng-show="loadingData" class="red"><img ng-src = "load.png" alt = "Loading..."/></span></div>
 <div class="row">
+<div ng-show="loggedrole=='PATIENT'" class="row">
+
 	<div class="padding60">
 	<section layout="row" layout-align="center center" layout-wrap>
 		  <button class="btn btn-primary btn-lg" ng-click="showAptModal()">Make a new appointment</button>

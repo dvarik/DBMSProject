@@ -52,17 +52,17 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#profile"><i class="fa fa-shield"></i>
 							Profile</a></li>
-					<li><a href="#patientappointments"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='PATIENT'" href="#patientappointments"><i class="fa fa-comment"></i>
 							Upcoming Appointments</a></li>
-					<li><a href="#docappointment"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='DOCTOR'" href="#docappointment"><i class="fa fa-comment"></i>
 							Appointments List</a></li>
-					<li><a href="#history"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='DOCTOR'" href="#history"><i class="fa fa-comment"></i>
 							Diagnosis History</a></li>
-					<li><a href="#billing"><i class="fa fa-comment"></i>
-							Billing</a></li>
-					<li><a href="#registration"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='PATIENT'" href="#billing"><i class="fa fa-comment"></i>
+							Bill History</a></li>
+					<li><a ng-show="loggedrole=='ADMIN'" href="#registration"><i class="fa fa-comment"></i>
 							Register/De-register</a></li>
-					<li><a href="#stats"><i class="fa fa-comment"></i>
+					<li><a ng-show="loggedrole=='ADMIN'" href="#stats"><i class="fa fa-comment"></i>
 							Statistics</a></li>
 					<li><a href="RelCare/j_spring_security_logout"><i class="fa fa-comment"></i>
 							Logout</a></li>
