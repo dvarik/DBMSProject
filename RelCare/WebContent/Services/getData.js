@@ -13,6 +13,21 @@ angular.module('hospApp').service('getDataSvc', ['$http', function($http){
 		 return promise;
 	};
 	
+
+	this.getTuples = function(){
+		var myurl = "getTables";
+		 var promise = $http({
+		        method : "GET",
+		        url : myurl
+		    }).then(function(response) {
+		    	console.log(response.data);
+		        return response.data;
+		    });
+		 
+		 return promise;
+	};
+	
+	
 	this.getProfile = function(){
 		var myurl = "getProfile";
 		 var promise = $http({

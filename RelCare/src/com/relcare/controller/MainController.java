@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ import com.relcare.object.IllnessSeasonStats;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.Location;
+import com.relcare.object.Tables;
 import com.relcare.object.TimeSlot;
 import com.relcare.object.UserProfile;
 
@@ -95,6 +95,15 @@ public class MainController {
 		ArrayList<GrantedAuthority> rl = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
 		String role = rl.toString().contains("DOCTOR")?"DOCTOR":(rl.toString().contains("ADMIN")?"ADMIN":"PATIENT");
 		return role;
+	}
+	
+	@RequestMapping(value="/getTables", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String getTables() {
+		List<Tables> tbl = dao.getTuples();
+		Type type = new TypeToken<List<Tables>>() {
+		}.getType();
+		return new Gson().toJson(tbl, type);
 	}
 	
 	@RequestMapping(value="/getProfile", method = RequestMethod.GET, produces = "application/json")

@@ -163,6 +163,9 @@ public class QueryConstants {
 	public static final String UPDATE_USER_PROFILE = "update userfile set state=?, city=?, zip=? where useid = ?";
 	
 	public static final String UPDATE_INSURANCE = "update patient set insurancetype=? where patientid = ?";
+	
+	public static final String GET_TUPLES = "select table_name,  to_number( extractvalue(  xmltype(  dbms_xmlgen.getxml('select count(*) c from '||table_name))"
+			+ ",'/ROWSET/ROW/C')) count from  user_tables order by table_name";
 			
 	
 }

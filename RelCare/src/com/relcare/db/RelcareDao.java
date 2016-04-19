@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.relcare.authenticator.RelUserDetails;
-import com.relcare.object.TimeSlot;
 import com.relcare.object.Appointment;
 import com.relcare.object.Bill;
 import com.relcare.object.BranchDeptRevenue;
@@ -29,6 +28,8 @@ import com.relcare.object.IllnessSeasonStats;
 import com.relcare.object.IllnessStats;
 import com.relcare.object.InsuranceStats;
 import com.relcare.object.Location;
+import com.relcare.object.Tables;
+import com.relcare.object.TimeSlot;
 import com.relcare.object.UserProfile;
 
 @Component("RelCareDAO")
@@ -37,6 +38,26 @@ public class RelcareDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
+	public List<Tables> getTuples() {
+		List<Tables> a = jdbcTemplate.query(QueryConstants.GET_TUPLES,
+				new RowMapper<Tables>() {
+
+					@Override
+					public Tables mapRow(ResultSet rs, int arg1) throws SQLException {
+
+						Tables row = new Tables(rs.getString("table_name"), rs.getInt("count"));
+						return row;
+					}
+				});
+		
+		int count = 0;
+		for(Tables t :a){
+			count += t.getCount();
+		}
+		a.add(new Tables("Sum",count));
+		return a;
+	}
+	
 	public List<BranchDeptRevenue> getRevenuePerDept() {
 		List<BranchDeptRevenue> a = jdbcTemplate.query(QueryConstants.REVENUE_PER_DEPT,
 				new RowMapper<BranchDeptRevenue>() {
