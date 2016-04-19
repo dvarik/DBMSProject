@@ -27,3 +27,18 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	
 });
 
+hospApp.run(['$rootScope', '$location','getDataSvc', function ($rootScope, $location, getDataSvc) {
+    $rootScope.$on('$routeChangeStart', function (event) {
+
+        $rootScope.loggedrole = {};
+        
+        getDataSvc.getRole().then(function(res) {
+	        if (res != null) {
+	        	$rootScope.loggedrole = res;
+	        } else {
+	            console.log("Error");
+	        }
+	    });
+        
+    });
+}]);
