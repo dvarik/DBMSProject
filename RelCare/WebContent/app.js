@@ -23,7 +23,9 @@ hospApp.config(function($routeProvider, $httpProvider) {
 	}).when('/registration', {
 		templateUrl : 'Partials/register.html',
 		controller : 'RegistrationController'
-	}).otherwise('/profile');
+	}).otherwise({
+        redirectTo: '/profile'
+    });
 	
 });
 
